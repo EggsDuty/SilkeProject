@@ -5,6 +5,6 @@ import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <h1 className="text-3xl">Silke!</h1>
   </React.StrictMode>,
 )
