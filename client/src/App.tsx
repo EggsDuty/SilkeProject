@@ -1,11 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import LoginTest from './pages/LoginTest.tsx'
+import SignUpPage from './pages/SignUpPage.tsx'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginTest />} />
+        <Route path="/signup" element={<SignUpPage login={false} />} />
+        <Route path="/login" element={<SignUpPage login={true} />} />
       </Routes>
     </BrowserRouter>
   )
