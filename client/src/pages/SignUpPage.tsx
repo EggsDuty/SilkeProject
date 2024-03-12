@@ -2,6 +2,7 @@ import firebase from '../firebase.tsx';
 import { getAuth, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 
 import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
 import ValidateEmail from '../components/login/ValidateEmail.ts';
 import ValidatePassword from '../components/login/ValidatePassword.ts';
@@ -12,7 +13,7 @@ interface Props {
     login: boolean
 }
 
-function LandingPage(props: Props) {
+function SignUpPage(props: Props) {
     const [createdAccount, setCreatedAccount] = useState(false);
     const [emailInvalid, setEmailInvalid] = useState(false);
     const [passwordInvalid, setPasswordInvalid] = useState(false);
@@ -66,6 +67,10 @@ function LandingPage(props: Props) {
         await signOut(auth);
     }
 
+    if (signedIn) {
+        return <Navigate to="/home" replace={true} />
+    }
+
     return (
         <div className="flex flex-col ml-10 mt-5 max-w-52">
             <p>Username:</p>
@@ -81,4 +86,4 @@ function LandingPage(props: Props) {
     )
 }
 
-export default LandingPage
+export default SignUpPage;
