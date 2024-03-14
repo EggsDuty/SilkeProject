@@ -1,6 +1,8 @@
 import Header from "../components/Header"
 import Box from "../components/HomePage/Box";
 import firebase from '../firebase.tsx';
+//
+import { Link } from "react-router-dom"
 
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { useState } from "react";
@@ -29,8 +31,7 @@ function HomePage() {
 
     monitorAuthState();
 
-    return (
-        <div className="bg-test h-screen w-screen absolute bg-cover text-center">
+    return (        <div className="bg-test h-screen w-screen absolute bg-cover text-center">
             <Header />
             {signedIn ? <button onClick={handleSignOut} className="text-white">Sign out</button> : ""}
             <h1 className="mt-28 text-7xl bg-gradient-to-r from-blue-400 via-gray-50 to-blue-400 w-max m-auto text-transparent bg-clip-text font-bold">Welcome{isFirstTime ? "" : " back"}!</h1>
@@ -39,6 +40,10 @@ function HomePage() {
                 <Box img="test_calculator_picture.png" header="Calculators" text="Choose from our wide variety of calculators???" />
                 <Box img="test_whiteboard_picture.png" header="Whiteboard" text="Write down all your calculations while still having any calculator on the board??" />
                 <Box img="test_groups_picture.png" header="Groups" text="Make a group with your colleagues and work on the same board!" />
+            </div>
+
+            <div className="flex flex-row space-x-10 mt-32 ml-52 text-white">
+                <Link to='/whiteboard' className="py-2 px-8 rounded-lg bg-indigo-900 border-2 border-opacity-0 hover:border-opacity-100 border-white">Use whiteboard</Link>
             </div>
         </div>
     )
