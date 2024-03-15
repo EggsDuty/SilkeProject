@@ -2,8 +2,6 @@ import Header from "../components/Header"
 import Box from "../components/HomePage/Box";
 import firebase from '../firebase.tsx';
 import Background from "../components/Background";
-//
-import { Link } from "react-router-dom"
 
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { useState } from "react";
