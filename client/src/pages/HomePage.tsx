@@ -3,7 +3,7 @@ import Box from "../components/HomePage/Box";
 import firebase from '../firebase.tsx';
 
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const auth = getAuth(firebase);
 
@@ -16,23 +16,24 @@ function HomePage() {
         await signOut(auth);
     }
 
+    useEffect(() => {
+        const monitorAuthState = async () => {
+            onAuthStateChanged(auth, user => {
+                if (user) {
+                    setSignedIn(true);
+                } else {
+                    setSignedIn(false);
+                }
+            })
+        }
 
-    const monitorAuthState = async () => {
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                setSignedIn(true);
-            } else {
-                setSignedIn(false);
-            }
-        })
-    }
-
-    monitorAuthState();
+        monitorAuthState();
+    }, []);
 
     return (
         <div className="bg-test h-screen w-screen absolute bg-cover text-center">
             <Header />
-            {signedIn ? <button onClick={handleSignOut} className="text-white">Sign out</button> : ""}
+            {signedIn ? <button onClick={handleSignOut} className="text-white">Sign out for {auth.currentUser?.displayName}</button> : ""}
             <h1 className="mt-28 text-7xl bg-gradient-to-r from-blue-400 via-gray-50 to-blue-400 w-max m-auto text-transparent bg-clip-text font-bold">Welcome{isFirstTime ? "" : " back"}!</h1>
             <p className="mt-10 m-auto text-white font-medium">What would you like to choose?</p>
             <div className="flex flex-wrap mt-20 mx-auto space-x-20 justify-center">

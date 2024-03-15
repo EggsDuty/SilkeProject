@@ -1,13 +1,5 @@
-/* function ValidateEmail(email: string): string {
-    if (email.match(/\w+@\w+\.\w+/) == null) {
-        return "InvalidEmail";
-    }
-
-    return "ValidEmail";
-} */
-
 function ValidateEmail(email: string): string[] {
-    let errors: string[] = [];
+    const errors: string[] = [];
 
     let validFormat = false;
     const atSign = email.match(/@/)
@@ -29,7 +21,9 @@ function ValidateEmail(email: string): string[] {
                     const domain = email.match(/(?<=@).+(?=\.)/);
                     if (domain != null) {
                         if (domain[0].match(/[^a-zA-Z\d\.\-]/) != null) {
-                            errors.push("EmailDomainInvalid");
+                            if (!errors.includes("EmailDomainInvalid")) {
+                                errors.push("EmailDomainInvalid");
+                            }
                         }
                     }
 
@@ -38,32 +32,15 @@ function ValidateEmail(email: string): string[] {
                         const tld = fromAtSign[0].match(/(?<=\.).+/);
                         if (tld != null) {
                             if (tld[0].match("[^a-zA-Z]") != null) {
-                                errors.push("EmailDomainInvalid");
+                                if (!errors.includes("EmailDomainInvalid")) {
+                                    errors.push("EmailDomainInvalid");
+                                }
                             }
                         }
                     }
                 }
             }
         }
-
-        /* if (match[0] == email) {
-            validFormat = true;
-
-            let beginning = email.match(/.+(?=@)/);
-            if (beginning != null) {
-                if (beginning[0].match(/[^a-zA-Z\d\.]/) != null) {
-                    errors.push("EmailBeginningInvalid");
-                }
-            }
-
-            let domain = email.match(/(?<=@).+(?=\.)/);
-            if (domain != null) {
-                if (domain[0].match(/[^a-zA-Z\d\.\-]/) != null) {
-                    errors.push("EmailDomainInvalid");
-                }
-            }
-
-        } */
     }
 
     if (!validFormat) {
@@ -74,7 +51,7 @@ function ValidateEmail(email: string): string[] {
 }
 
 function ValidatePassword(password: string): string[] {
-    let errors: string[] = [];
+    const errors: string[] = [];
 
     if (password.length < 6) {
         errors.push("PasswordTooShort");
@@ -100,4 +77,21 @@ function ValidatePassword(password: string): string[] {
     return errors.sort()
 }
 
-export default { ValidateEmail, ValidatePassword };
+function ValidateUsername(username: string): string[] {
+    const errors: string[] = [];
+
+
+    if (username.length < 4) {
+        errors.push("UsernameTooShort");
+    }
+    if (username.length > 20) {
+        errors.push("UsernameTooLong");
+    }
+    if (username.match(/[^\w]/) != null) {
+        errors.push("UsernameHasInvalidSymbols");
+    }
+
+    return errors.sort()
+}
+
+export default { ValidateEmail, ValidatePassword, ValidateUsername };
