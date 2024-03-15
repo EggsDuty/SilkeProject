@@ -2,6 +2,8 @@ import Header from "../components/Header"
 import Box from "../components/HomePage/Box";
 import firebase from '../firebase.tsx';
 import Background from "../components/Background";
+//
+import { Link } from "react-router-dom"
 
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { useState } from "react";
@@ -43,8 +45,10 @@ function HomePage() {
                 <Box img="test_whiteboard_picture.png" header="Whiteboard" text="Write down all your calculations while still having any calculator on the board??" />
                 <Box img="test_groups_picture.png" header="Groups" text="Make a group with your colleagues and work on the same board!" />
             </div>
-            
 
+            <div className="flex flex-row space-x-10 mt-32 ml-52 text-white">
+                <Link to='/whiteboard' className="py-2 px-8 rounded-lg bg-indigo-900 border-2 border-opacity-0 hover:border-opacity-100 border-white">Use whiteboard</Link>
+            </div>
         </div>
         </>
     )
