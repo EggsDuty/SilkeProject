@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage.tsx'
 import HomePage from './pages/HomePage.tsx'
 import LandingPage from './pages/LandingPage.tsx'
 import WhiteBoard from './pages/WhiteBoard.tsx'
+import GraphingCalculators from './pages/GraphingCalculator.tsx'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/whiteboard" element={<WhiteBoard />} />
+        <Route path="/GraphingCalculator" element={<GraphingCalculators />} />
       </Routes>
     </BrowserRouter>
   )
