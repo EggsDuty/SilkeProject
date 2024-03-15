@@ -10,7 +10,7 @@ export default {
         'darkBlue': '#0a092b'
       },
       backgroundImage: {
-        'test': 'url(test_background_1.jpg)'
+        'test': 'url(background_9.jpg)'
       }
     },
   },
