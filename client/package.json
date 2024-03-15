@@ -11,6 +11,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@tsparticles/engine": "^3.3.0",
+    "@tsparticles/react": "^3.0.0",
     "firebase": "^10.8.1",
     "function-plot": "^1.24.4",
     "mathjs": "^12.4.1",
@@ -19,7 +21,8 @@
     "react-firebase-hooks": "^5.1.1",
     "react-plotly.js": "^2.6.0",
     "react-router-dom": "^6.22.3",
-    "tldraw": "^2.0.1"
+    "tldraw": "^2.0.1",
+    "tsparticles": "^3.3.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.24.0",
