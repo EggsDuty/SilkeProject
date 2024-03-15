@@ -91,8 +91,8 @@ function LoginPage() {
     return (
         <>
             {/*<Background img="background_5.jpg" cover="cover" />*/}
-            <div className="bg-test bg-cover h-screen w-screen absolute">
-                <form onSubmit={(e) => handleSignUp(e)} className="bg-indigo-900 w-1/3 m-auto mt-32 pt-5 pb-10 px-10 rounded-lg">
+            <div className="bg-test bg-cover h-screen w-screen absolute flex items-center">
+                <form onSubmit={(e) => handleSignUp(e)} className="bg-indigo-900 w-1/3 m-auto pt-5 pb-10 px-10 rounded-lg">
                     <Link to="/" className="-ml-5 text-xl text-white hover:text-indigo-200">&larr; Back</Link>
                     <h1 className="text-3xl text-white mt-5">Sign Up</h1>
                     <hr className="mb-5 mt-3" />
