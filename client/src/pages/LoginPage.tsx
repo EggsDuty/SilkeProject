@@ -61,7 +61,7 @@ function LoginPage(props: Props) {
                     <hr className="mb-5 mt-3" />
                     <AuthField var={emailField} validateFunction={Validator.ValidateEmail} setter={setEmailField} name="E-mail:" type="text" placeholder="example@mail.com" />
                     <AuthField var={passwordField} validateFunction={Validator.ValidatePassword} setter={setPasswordField} name="Password:" type="password" placeholder="Must contain a letter, capital letter and digit" />
-                    <button type="submit" className="py-2 px-6 mt-5 rounded-lg text-white bg-test border border-indigo-300 hover:border-white hover:bg-indigo-200 hover:text-black">Login</button>
+                    <button type="submit" className="py-2 px-6 mt-5 rounded-lg text-purple-200 bg-secondaryColor border border-indigo-300 hover:border-white hover:bg-indigo-200 hover:text-secondaryColor">Login</button>
                     {loginError !== "" ?
                         <div className="bg-indigo-900 my-3 p-3 pl-1 mt-10 rounded-sm text-left border-2 border-red-600">
                             <p className="text-white text-2xl">{errorMap[loginError]}</p>
