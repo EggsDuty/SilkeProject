@@ -4,6 +4,8 @@ import LoginPage from './pages/LoginPage.tsx'
 import HomePage from './pages/HomePage.tsx'
 import LandingPage from './pages/LandingPage.tsx'
 import WhiteBoard from './pages/WhiteBoard.tsx'
+import GraphingCalculators from './pages/GraphingCalculator.tsx'
+
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 import firebase from './firebase.tsx'
@@ -44,4 +46,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
