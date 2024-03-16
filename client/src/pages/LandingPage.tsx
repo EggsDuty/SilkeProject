@@ -1,10 +1,8 @@
-import { Link } from "react-router-dom"
-import Background from "../components/Background";
+import { Link } from "react-router-dom";
 
 function LandingPage() {
     return (
         <>
-            <Background img="background_8.jpg" cover="" />
             <div className="h-screen w-screen absolute">
                 <div className="ml-40 border-l-4 pl-5">
                     <h1 className="mt-28 text-8xl bg-gradient-to-r from-blue-400 via-gray-50 to-blue-400 w-max text-transparent bg-clip-text font-bold">SilkeBoard</h1>
