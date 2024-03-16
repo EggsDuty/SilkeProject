@@ -7,45 +7,26 @@ import { Link, Navigate } from 'react-router-dom';
 
 import Validator from '../components/Auth/Validator.ts';
 import AuthField from '../components/Auth/AuthField.tsx';
-import Background from '../components/Background.tsx';
 
 const auth = getAuth(firebase);
+
+interface Props {
+    signedIn: boolean
+}
 
 // Add auth/email-already-exists
 const errorMap: { [id: string]: ReactElement } = {
     "auth/invalid-credential": <>Wrong e-mail or password.</>,
 }
 
-function LoginPage() {
-    const [isLoading, setIsLoading] = useState(true);
-    const [signedIn, setSignedIn] = useState(false);
-
+function LoginPage(props: Props) {
     const [usernameField, setUsernameField] = useState("");
     const [emailField, setEmailField] = useState("");
     const [passwordField, setPasswordField] = useState("");
 
     const [loginError, setLoginError] = useState("");
 
-    useEffect(() => {
-        const monitorAuthState = async () => {
-            onAuthStateChanged(auth, user => {
-                if (user) {
-                    setSignedIn(true);
-                } else {
-                    setSignedIn(false);
-                }
-                setIsLoading(false);
-            })
-        }
-
-        monitorAuthState();
-    }, []);
-
-    if (isLoading) {
-        return <div></div>
-    }
-
-    if (signedIn) {
+    if (props.signedIn) {
         return <Navigate to="/home" replace={true} />
     }
 
@@ -91,8 +72,8 @@ function LoginPage() {
     return (
         <>
             {/*<Background img="background_5.jpg" cover="cover" />*/}
-            <div className="bg-test bg-cover h-screen w-screen absolute flex items-center">
-                <form onSubmit={(e) => handleSignUp(e)} className="bg-indigo-900 w-1/3 m-auto pt-5 pb-10 px-10 rounded-lg">
+            <div className="h-screen w-screen absolute flex items-center">
+                <form onSubmit={(e) => handleSignUp(e)} className="bg-indigo-900 w-1/3 m-auto pt-5 pb-10 px-10 rounded-lg bg-opacity-70">
                     <Link to="/" className="-ml-5 text-xl text-white hover:text-indigo-200">&larr; Back</Link>
                     <h1 className="text-3xl text-white mt-5">Sign Up</h1>
                     <hr className="mb-5 mt-3" />
