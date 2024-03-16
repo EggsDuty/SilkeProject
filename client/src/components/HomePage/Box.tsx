@@ -14,7 +14,7 @@ function Box(props: Props){
         navigate(props.link);
     }
     return(
-        <div onClick={handleClick} className="cursor-pointer select-none bg-indigo-900 w-1/5 rounded-lg bg-opacity-80 border-2 border-white border-opacity-0 hover:border-opacity-100 pb-3 px-3">
+        <div onClick={handleClick} className="cursor-pointer select-none bg-blue-400 w-1/5 rounded-lg bg-opacity-20 border-2 border-white border-opacity-0 hover:border-opacity-100 pb-3 px-3 transition-transform hover:scale-105 duration-300">
             <div className="flex flex-row py-2 border-b-2 border-white">
                 <img className="ml-3 my-auto h-10 w-10" src={props.img} />
                 <h2 className="text-white my-auto mx-3">{props.header}</h2>

@@ -11,8 +11,8 @@ function LandingPage() {
                     <p className="mt-10 m-auto text-white font-medium text-2xl">The best collaboration platform when numbers are king</p>
                 </div>
                 <div className="flex flex-row space-x-10 mt-32 ml-52 text-white">
-                    <Link to='/signup' className="py-2 px-8 rounded-lg bg-indigo-900 border-2 border-opacity-0 hover:border-opacity-100 border-white">Sign up</Link>
-                    <Link to='/login' className="py-2 px-6 rounded-lg bg-indigo-500 border-2 border-opacity-0 hover:border-opacity-100 border-white">Log in</Link>
+                    <Link to='/signup' className="py-2 px-8 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white">Sign up</Link>
+                    <Link to='/login' className="py-2 px-6 rounded-lg bg-secondaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white">Log in</Link>
                     <Link to='/home' className="py-2 px-6 underline hover:opacity-60">Use as guest</Link>
                 </div>
             </div>

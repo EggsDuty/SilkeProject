@@ -5,7 +5,7 @@ import Header from "../components/Header"
 function Whiteboard () {
     return (
 		<div style={{ position: 'fixed', inset: 0 }}>
-			<Header />
+			<Header transparent={false} />
 			<Tldraw />
 		</div>
 	)
