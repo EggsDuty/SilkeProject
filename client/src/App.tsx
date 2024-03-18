@@ -40,6 +40,7 @@ function App() {
           <Route path="/login" element={<LoginPage signedIn={signedIn} />} />
           <Route path="/home" element={<HomePage signedIn={signedIn} />} />
           <Route path="/whiteboard" element={<WhiteBoard />} />
+          <Route path="/GraphingCalculator" element={<GraphingCalculators />} />
         </Routes>
       </BrowserRouter>
     </>
