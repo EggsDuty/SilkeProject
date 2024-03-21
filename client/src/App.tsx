@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage.tsx'
 import HomePage from './pages/HomePage.tsx'
 import LandingPage from './pages/LandingPage.tsx'
 import WhiteBoard from './pages/WhiteBoard.tsx'
+import CalculatorsPage from './pages/CalculatorsPage.tsx'
 import GraphingCalculators from './pages/GraphingCalculator.tsx'
 import ForgotPasswordPage from './pages/ResetPassword/ForgotPasswordPage.tsx'
 import ResetPasswordPage from './pages/ResetPassword/ResetPasswordPage.tsx'
@@ -22,7 +23,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/whiteboard" element={<WhiteBoard />} />
-          <Route path="/GraphingCalculator" element={<GraphingCalculators />} />
+          <Route path="/calculators" element={<CalculatorsPage />} />
+          <Route path="/graphing-calculator" element={<GraphingCalculators />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Routes>
