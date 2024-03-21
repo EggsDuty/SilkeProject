@@ -1,27 +1,26 @@
 import Header from "../components/Header"
 import Box from "../components/HomePage/Box";
 import firebase from '../firebase.tsx';
-import Background from "../components/Background";
-//
-import { Link, Navigate } from "react-router-dom"
+
+import { Navigate } from "react-router-dom"
 
 import { getAuth, signOut } from 'firebase/auth';
-import { useEffect, useState } from "react";
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const auth = getAuth(firebase);
 
-interface Props {
-    signedIn: boolean
-}
-
-function HomePage(props: Props) {
-    const isFirstTime = true;
+function HomePage() {
+    const [user, loading] = useAuthState(auth);
 
     async function handleSignOut() {
         await signOut(auth);
     }
 
-    if (!props.signedIn) {
+    if (loading) {
+        return <></>
+    }
+
+    if (!user) {
         return <Navigate to="/" replace={true} />
     }
 
@@ -29,8 +28,8 @@ function HomePage(props: Props) {
         <>
             <div className="w-screen absolute text-center bg-repeat-y">
                 <Header />
-                {props.signedIn ? <button onClick={handleSignOut} className="text-white">Sign out for {auth.currentUser?.displayName}</button> : ""}
-                <h1 className="mt-28 text-7xl bg-gradient-to-r from-blue-400 via-gray-50 to-blue-400 w-max m-auto text-transparent bg-clip-text font-bold">Welcome{isFirstTime ? "" : " back"}!</h1>
+                {user ? <button onClick={handleSignOut} className="text-white">Sign out for {auth.currentUser?.displayName}</button> : ""}
+                <h1 className="mt-28 text-7xl bg-gradient-to-r from-blue-400 via-gray-50 to-blue-400 w-max m-auto text-transparent bg-clip-text font-bold">Welcome!</h1>
                 <p className="mt-10 m-auto text-white font-medium">What would you like to choose?</p>
                 <div className="flex flex-wrap mt-20 mx-auto space-x-20 justify-center">
                     <Box link="/calculators" img="test_calculator_picture.png" header="Calculators" text="Choose from our wide variety of calculators???" />

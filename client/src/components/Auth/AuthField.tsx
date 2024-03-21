@@ -21,7 +21,8 @@ const errorMap: { [id: string]: ReactElement } = {
     "PasswordHasSpecialSymbols": <>Your password has an illegal character.</>,
     "UsernameHasInvalidSymbols": <>Username should only contain letters, numbers and underscores.</>,
     "UsernameTooShort": <>Username should be at least 4 characters long.</>,
-    "UsernameTooLong": <>Username should be shorter than 20 characters.</>
+    "UsernameTooLong": <>Username should be shorter than 20 characters.</>,
+    "PasswordsNotSame": <>Your passwords should match.</>
 }
 
 
@@ -31,7 +32,6 @@ function AuthField(props: Props) {
     const [errors, setErrors] = useState(defaultValue);
 
     useEffect(() => {
-
         const _errors = props.validateFunction(props.var);
         if (_errors.length === 0 || props.var.length === 0) {
             setErrors([]);

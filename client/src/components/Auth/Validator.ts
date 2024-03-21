@@ -80,7 +80,6 @@ function ValidatePassword(password: string): string[] {
 function ValidateUsername(username: string): string[] {
     const errors: string[] = [];
 
-
     if (username.length < 4) {
         errors.push("UsernameTooShort");
     }
@@ -94,4 +93,14 @@ function ValidateUsername(username: string): string[] {
     return errors.sort()
 }
 
-export default { ValidateEmail, ValidatePassword, ValidateUsername };
+function ValidateRepeatPassword(password: string, repeatPassword: string) {
+    const errors: string[] = [];
+
+    if (password !== repeatPassword) {
+        errors.push("PasswordsNotSame");
+    }
+
+    return errors.sort();
+}
+
+export default { ValidateEmail, ValidatePassword, ValidateUsername, ValidateRepeatPassword };
