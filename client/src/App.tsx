@@ -10,6 +10,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 import firebase from './firebase.tsx'
 import Background from './components/Background.tsx'
+import CalculatorsPage from './pages/CalculatorsPage.tsx'
 
 const auth = getAuth(firebase);
 
@@ -40,7 +41,8 @@ function App() {
           <Route path="/login" element={<LoginPage signedIn={signedIn} />} />
           <Route path="/home" element={<HomePage signedIn={signedIn} />} />
           <Route path="/whiteboard" element={<WhiteBoard />} />
-          <Route path="/GraphingCalculator" element={<GraphingCalculators />} />
+          <Route path="/calculators" element={<CalculatorsPage />} />
+          <Route path="/graphing-calculator" element={<GraphingCalculators />} />
         </Routes>
       </BrowserRouter>
     </>
