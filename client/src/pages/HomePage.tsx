@@ -7,7 +7,7 @@ import { Navigate } from "react-router-dom"
 import { getAuth } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-const auth = getAuth(firebase);
+const auth = getAuth(firebase.app);
 
 function HomePage() {
     const isFirstTime = true;

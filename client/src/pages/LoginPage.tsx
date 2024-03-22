@@ -9,7 +9,7 @@ import Validator from '../components/Auth/Validator.ts';
 import AuthField from '../components/Auth/AuthField.tsx';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-const auth = getAuth(firebase);
+const auth = getAuth(firebase.app);
 
 const errorMap: { [id: string]: ReactElement } = {
     "auth/invalid-credential": <>Wrong e-mail or password.</>,

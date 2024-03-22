@@ -3,7 +3,7 @@ import firebase from '../../firebase.tsx';
 import { applyActionCode, getAuth } from "firebase/auth";
 import { Navigate } from "react-router-dom";
 
-const auth = getAuth(firebase);
+const auth = getAuth(firebase.app);
 
 function VerifyEmail() {
     const [triedToVerify, setTryToVerify] = useState(false);

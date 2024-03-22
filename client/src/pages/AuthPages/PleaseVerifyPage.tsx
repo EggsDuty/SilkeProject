@@ -4,7 +4,7 @@ import { getAuth, sendEmailVerification } from "firebase/auth";
 import { Navigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const auth = getAuth(firebase);
+const auth = getAuth(firebase.app);
 
 function PleaseVerify() {
     const [user] = useAuthState(auth);
