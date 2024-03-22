@@ -1,32 +1,35 @@
 import firebase from '../firebase.tsx';
 import { FirebaseError } from '@firebase/util';
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth';
 
-import { FormEvent, ReactElement, useEffect, useState } from 'react';
+import { FormEvent, ReactElement, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 
 import Validator from '../components/Auth/Validator.ts';
 import AuthField from '../components/Auth/AuthField.tsx';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const auth = getAuth(firebase);
 
-interface Props {
-    signedIn: boolean
-}
-
-// Add auth/email-already-exists
 const errorMap: { [id: string]: ReactElement } = {
     "auth/invalid-credential": <>Wrong e-mail or password.</>,
+    "auth/email-already-in-use": <>E-mail already in use.</>
 }
 
-function LoginPage(props: Props) {
+function LoginPage() {
+    const [user, loading] = useAuthState(auth);
+
     const [usernameField, setUsernameField] = useState("");
     const [emailField, setEmailField] = useState("");
     const [passwordField, setPasswordField] = useState("");
 
     const [loginError, setLoginError] = useState("");
 
-    if (props.signedIn) {
+    if (loading) {
+        return <></>
+    }
+
+    if (user) {
         return <Navigate to="/home" replace={true} />
     }
 
@@ -61,6 +64,7 @@ function LoginPage(props: Props) {
         try {
             if (auth.currentUser) {
                 await updateProfile(auth.currentUser, { displayName: usernameField })
+                await sendEmailVerification(auth.currentUser);
             } else {
                 throw new Error("nouser");
             }
@@ -71,7 +75,6 @@ function LoginPage(props: Props) {
 
     return (
         <>
-            {/*<Background img="background_5.jpg" cover="cover" />*/}
             <div className="h-screen w-screen absolute flex items-center">
                 <form onSubmit={(e) => handleSignUp(e)} className="bg-indigo-900 w-1/3 m-auto pt-5 pb-10 px-10 rounded-lg bg-opacity-70">
                     <Link to="/" className="-ml-5 text-xl text-white hover:text-indigo-200">&larr; Back</Link>

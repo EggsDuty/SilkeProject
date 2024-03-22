@@ -4,31 +4,17 @@ import LoginPage from './pages/LoginPage.tsx'
 import HomePage from './pages/HomePage.tsx'
 import LandingPage from './pages/LandingPage.tsx'
 import WhiteBoard from './pages/WhiteBoard.tsx'
+import CalculatorsPage from './pages/CalculatorsPage.tsx'
 import GraphingCalculators from './pages/GraphingCalculator.tsx'
+import AuthHandler from './pages/AuthPages/AuthHandler.tsx'
+import PleaseVerifyPage from './pages/AuthPages/PleaseVerifyPage.tsx'
+import VerifyEmailPage from './pages/AuthPages/VerifyEmailPage.tsx'
+import ForgotPasswordPage from './pages/AuthPages/ForgotPasswordPage.tsx'
+import ResetPasswordPage from './pages/AuthPages/ResetPasswordPage.tsx'
 
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { useEffect, useState } from 'react'
-import firebase from './firebase.tsx'
 import Background from './components/Background.tsx'
 
-const auth = getAuth(firebase);
-
 function App() {
-  const [signedIn, setSignedIn] = useState(false);
-
-  useEffect(() => {
-    const monitorAuthState = async () => {
-      onAuthStateChanged(auth, user => {
-        if (user) {
-          setSignedIn(true);
-        } else {
-          setSignedIn(false);
-        }
-      })
-    }
-
-    monitorAuthState();
-  }, []);
 
   return (
     <>
@@ -36,11 +22,17 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<LandingPage />} />
-          <Route path="/signup" element={<SignUpPage signedIn={signedIn} />} />
-          <Route path="/login" element={<LoginPage signedIn={signedIn} />} />
-          <Route path="/home" element={<HomePage signedIn={signedIn} />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/whiteboard" element={<WhiteBoard />} />
-          <Route path="/GraphingCalculator" element={<GraphingCalculators />} />
+          <Route path="/calculators" element={<CalculatorsPage />} />
+          <Route path="/graphing-calculator" element={<GraphingCalculators />} />
+          <Route path="/auth" element={<AuthHandler />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/please-verify" element={<PleaseVerifyPage />} />
+          <Route path="/verify-email" element={<VerifyEmailPage />} />
         </Routes>
       </BrowserRouter>
     </>
