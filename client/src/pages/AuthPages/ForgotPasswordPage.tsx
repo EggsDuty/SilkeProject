@@ -1,8 +1,7 @@
 import firebase from '../../firebase.tsx';
-import { FirebaseError } from '@firebase/util';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 
-import { FormEvent, ReactElement, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Validator from '../../components/Auth/Validator.ts';

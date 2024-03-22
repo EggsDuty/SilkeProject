@@ -1,6 +1,6 @@
 import firebase from '../firebase.tsx';
 import { FirebaseError } from '@firebase/util';
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth';
 
 import { FormEvent, ReactElement, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
@@ -11,9 +11,9 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 const auth = getAuth(firebase);
 
-// Add auth/email-already-exists
 const errorMap: { [id: string]: ReactElement } = {
     "auth/invalid-credential": <>Wrong e-mail or password.</>,
+    "auth/email-already-in-use": <>E-mail already in use.</>
 }
 
 function LoginPage() {
@@ -64,6 +64,7 @@ function LoginPage() {
         try {
             if (auth.currentUser) {
                 await updateProfile(auth.currentUser, { displayName: usernameField })
+                await sendEmailVerification(auth.currentUser);
             } else {
                 throw new Error("nouser");
             }

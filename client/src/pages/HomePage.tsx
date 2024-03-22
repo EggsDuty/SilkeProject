@@ -22,6 +22,10 @@ function HomePage() {
         return <Navigate to="/" replace={true} />
     }
 
+    if (!user.emailVerified) {
+        return <Navigate to="/please-verify" replace={true} />
+    }
+
     return (
         <>
             <div className="w-screen absolute text-center bg-repeat-y">
