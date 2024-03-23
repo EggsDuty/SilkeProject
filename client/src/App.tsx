@@ -13,6 +13,7 @@ import ForgotPasswordPage from './pages/AuthPages/ForgotPasswordPage.tsx'
 import ResetPasswordPage from './pages/AuthPages/ResetPasswordPage.tsx'
 
 import Background from './components/Background.tsx'
+import ProfilePage from './pages/ProfilePage.tsx'
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/please-verify" element={<PleaseVerifyPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </BrowserRouter>
     </>
