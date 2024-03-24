@@ -11,9 +11,12 @@ import PleaseVerifyPage from './pages/AuthPages/PleaseVerifyPage.tsx'
 import VerifyEmailPage from './pages/AuthPages/VerifyEmailPage.tsx'
 import ForgotPasswordPage from './pages/AuthPages/ForgotPasswordPage.tsx'
 import ResetPasswordPage from './pages/AuthPages/ResetPasswordPage.tsx'
+import ProfilePage from './pages/ProfilePage.tsx'
+import AllGroupsPage from './pages/AllGroupsPage.tsx'
+import GroupPage from './pages/GroupPage.tsx'
 
 import Background from './components/Background.tsx'
-import ProfilePage from './pages/ProfilePage.tsx'
+
 
 function App() {
 
@@ -35,6 +38,8 @@ function App() {
           <Route path="/please-verify" element={<PleaseVerifyPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
           <Route path="/profile/:uid" element={<ProfilePage />} />
+          <Route path="/groups" element={<AllGroupsPage />} />
+          <Route path="/group/:groupID" element={<GroupPage />} />
         </Routes>
       </BrowserRouter>
     </>
