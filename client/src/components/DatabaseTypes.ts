@@ -3,7 +3,7 @@ import { FieldValue, Timestamp } from "firebase/firestore"
 export interface UserInfo {
     displayName: string,
     email: string,
-    imagePath: string,
+    image: string,
     description: string,
     groups: string[]
 }

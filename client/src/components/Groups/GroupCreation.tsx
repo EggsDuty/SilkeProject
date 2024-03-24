@@ -5,7 +5,7 @@ import { collection, addDoc, setDoc, doc, arrayUnion, Timestamp } from "firebase
 import firebase from "../../firebase.tsx";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { getAuth } from "firebase/auth";
-import { GetUserDisplayName } from "../DatabaseFunctions.ts";
+import { GetUserDisplayNamePromise } from "../DatabaseFunctions.ts";
 import { GroupInfo } from "../DatabaseTypes.ts";
 
 interface Props{
@@ -34,7 +34,7 @@ function GroupCreation(props: Props){
             return;
         }
 
-        GetUserDisplayName(user!.uid).then(async (_leaderName: string) => {
+        GetUserDisplayNamePromise(user!.uid).then(async (_leaderName: string) => {
             const groupInfo: GroupInfo = {
                 name: trimmedGroupName,
                 description: trimmedDescription,

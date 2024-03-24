@@ -2,25 +2,28 @@ import Header from "../components/Header"
 import Box from "../components/HomePage/Box";
 import firebase from '../firebase.tsx';
 
-import { Link, Navigate } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 
-import { getAuth, signOut } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const auth = getAuth(firebase.app);
 
-interface Props {
-    signedIn: boolean
-}
-
-function HomePage(props: Props) {
+function HomePage() {
     const isFirstTime = true;
 
-    async function handleSignOut() {
-        await signOut(auth);
+    const [user, loading] = useAuthState(auth);
+
+    if (loading) {
+        return <></>
     }
 
-    if (!props.signedIn) {
+    if (!user) {
         return <Navigate to="/" replace={true} />
+    }
+
+    if (!user.emailVerified) {
+        return <Navigate to="/please-verify" replace={true} />
     }
 
     return (
@@ -34,7 +37,6 @@ function HomePage(props: Props) {
                     <Box link="/whiteboard" img="test_whiteboard_picture.png" header="Whiteboard" text="Write down anything you need while still having any calculator on the board" />
                     <Box link="/groups" img="test_groups_picture.png" header="Groups" text="Make a group with your colleagues and work on the same board" />
                 </div>
-
             </div>
         </>
     )

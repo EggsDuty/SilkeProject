@@ -80,7 +80,6 @@ function ValidatePassword(password: string): string[] {
 function ValidateUsername(username: string): string[] {
     const errors: string[] = [];
 
-
     if (username.length < 4) {
         errors.push("UsernameTooShort");
     }
@@ -92,6 +91,26 @@ function ValidateUsername(username: string): string[] {
     }
 
     return errors.sort()
+}
+
+function ValidateRepeatPassword(password: string, repeatPassword: string) {
+    const errors: string[] = [];
+
+    if (password !== repeatPassword) {
+        errors.push("PasswordsNotSame");
+    }
+
+    return errors.sort();
+}
+
+function ValidateDescription(description: string) {
+    const errors: string[] = [];
+
+    if (description.length > 255) {
+        errors.push("DescriptionTooLong");
+    }
+
+    return errors.sort();
 }
 
 function ValidateGroupName(name: string): string[] {
@@ -119,4 +138,4 @@ function ValidateGroupDescription(description: string): string[] {
 }
 
 
-export default { ValidateEmail, ValidatePassword, ValidateUsername, ValidateGroupName, ValidateGroupDescription };
+export default { ValidateEmail, ValidatePassword, ValidateUsername, ValidateRepeatPassword, ValidateDescription, ValidateGroupName, ValidateGroupDescription };

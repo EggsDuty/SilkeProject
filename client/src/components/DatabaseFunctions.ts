@@ -1,8 +1,8 @@
 import firebase from '../firebase.tsx';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { UserInfo } from './DatabaseTypes.ts';
 
-export async function GetUserDataFromDocument(collection: string, id: string): Promise<{}> {
+export async function GetUserDataFromDocumentPromise(collection: string, id: string) {
     console.log("call");
     const ref = doc(firebase.db, collection, id);
     const retrievedDoc = await getDoc(ref);
@@ -14,15 +14,25 @@ export async function GetUserDataFromDocument(collection: string, id: string): P
     }
 }
 
-export async function GetUserDisplayName(uid: string) {
-    const _data = await GetUserDataFromDocument("users", uid)
+export async function GetUserDisplayNamePromise(uid: string) {
+    const _data = await GetUserDataFromDocumentPromise("users", uid)
     return (_data as UserInfo).displayName;
 }
 
-export async function GetUserEmail(uid: string) {
-    GetUserDataFromDocument("users", uid).then((data) => {
-        return (data as UserInfo).email;
-    });
+export async function GetUserEmailPromise(uid: string) {
+    const _data = await GetUserDataFromDocumentPromise("users", uid);
+    return (_data as UserInfo).email;
 }
 
-export default { GetUserDataFromDocument, GetUserDisplayName, GetUserEmail };
+export async function GetUserInfoForHeader(uid: string) {
+    const _data = await GetUserDataFromDocumentPromise("users", uid);
+    const userData = _data as UserInfo;
+    return { displayName: userData.displayName, email: _data.email, image: userData.image };
+}
+
+export async function UpdateUserDataPromise(uid: string, updateMap: {}) {
+    const userRef = doc(firebase.db, "users", uid);
+    await updateDoc(userRef, updateMap);
+}
+
+export default { GetUserDataFromDocumentPromise, GetUserDisplayNamePromise, GetUserEmailPromise, GetUserInfoForHeader, UpdateUserDataPromise };
