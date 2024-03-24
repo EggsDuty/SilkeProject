@@ -19,7 +19,7 @@ function App() {
 
   return (
     <>
-      <Background img="background_5.jpg" cover="cover" />
+      <Background img="/background_5.jpg" cover="cover" />
       <BrowserRouter>
         <Routes>
           <Route index element={<LandingPage />} />
@@ -34,7 +34,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/please-verify" element={<PleaseVerifyPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/:uid" element={<ProfilePage />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -103,4 +103,14 @@ function ValidateRepeatPassword(password: string, repeatPassword: string) {
     return errors.sort();
 }
 
-export default { ValidateEmail, ValidatePassword, ValidateUsername, ValidateRepeatPassword };
+function ValidateDescription(description: string) {
+    const errors: string[] = [];
+
+    if (description.length > 255) {
+        errors.push("DescriptionTooLong");
+    }
+
+    return errors.sort();
+}
+
+export default { ValidateEmail, ValidatePassword, ValidateUsername, ValidateRepeatPassword, ValidateDescription };

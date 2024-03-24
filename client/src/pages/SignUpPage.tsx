@@ -1,6 +1,6 @@
 import firebase from '../firebase.tsx';
 import { FirebaseError } from '@firebase/util';
-import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 
 import { FormEvent, ReactElement, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { Link, Navigate } from 'react-router-dom';
 import Validator from '../components/Auth/Validator.ts';
 import AuthField from '../components/Auth/AuthField.tsx';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 const auth = getAuth(firebase.app);
 
@@ -63,8 +64,15 @@ function LoginPage() {
 
         try {
             if (auth.currentUser) {
-                await updateProfile(auth.currentUser, { displayName: usernameField })
+                //await updateProfile(auth.currentUser, { displayName: usernameField })
                 await sendEmailVerification(auth.currentUser);
+                await setDoc(doc(firebase.db, "users", auth.currentUser.uid), {
+                    displayName: usernameField,
+                    image: "/placeholder.jpg",
+                    description: "",
+                    email: auth.currentUser.email,
+                    groups: []
+                });
             } else {
                 throw new Error("nouser");
             }
