@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import ProfileEditField from "./ProfileEditField";
 import Validator from "../Auth/Validator";
-import { UserInfo } from "../DatabaseTypes";
 import { UpdateUserDataPromise } from "../DatabaseFunctions";
 import { Navigate } from "react-router-dom";
 

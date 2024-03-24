@@ -47,7 +47,7 @@ function Header(props: Props) {
                 <Link to='/whiteboard' className="text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent">Whiteboard</Link>
                 <Link to='/groups' className="text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent">Groups</Link>
                 <div className="flex flex-row ml-auto mr-4 group w-[12%]">
-                    <img src={image} className="rounded-full h-8 w-auto mt-[2px] ml-auto mr-4" />
+                    <img src={image} className="rounded-full h-8 w-8 mt-[2px] ml-auto mr-4" />
                     <div className="mt-10 bg-[#100524] rounded-sm w-[12%] fixed flex flex-col invisible hover:visible group-hover:visible p-2 text-white text-left bg-opacity-90">
                         <p className="text-lg text-white">{username}</p>
                         <p className="text-sm mb-3 text-neutral-300">{email}</p>
