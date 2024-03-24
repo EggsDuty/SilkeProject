@@ -9,7 +9,7 @@ import Validator from '../components/Auth/Validator.ts';
 import AuthField from '../components/Auth/AuthField.tsx';
 import Background from '../components/Background.tsx';
 
-const auth = getAuth(firebase);
+const auth = getAuth(firebase.app);
 
 interface Props {
     signedIn: boolean

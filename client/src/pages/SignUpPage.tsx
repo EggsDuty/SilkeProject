@@ -8,7 +8,7 @@ import { Link, Navigate } from 'react-router-dom';
 import Validator from '../components/Auth/Validator.ts';
 import AuthField from '../components/Auth/AuthField.tsx';
 
-const auth = getAuth(firebase);
+const auth = getAuth(firebase.app);
 
 interface Props {
     signedIn: boolean

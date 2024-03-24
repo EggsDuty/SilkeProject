@@ -94,4 +94,29 @@ function ValidateUsername(username: string): string[] {
     return errors.sort()
 }
 
-export default { ValidateEmail, ValidatePassword, ValidateUsername };
+function ValidateGroupName(name: string): string[] {
+    const errors: string[] = [];
+
+
+    if (name.length < 4) {
+        errors.push("GroupNameTooShort");
+    }
+    if (name.length > 20) {
+        errors.push("GroupNameTooLong");
+    }
+
+    return errors.sort()
+}
+
+function ValidateGroupDescription(description: string): string[] {
+    const errors: string[] = [];
+
+    if(description.length > 255){
+        errors.push("DescriptionTooLong");
+    }
+    
+    return errors.sort()   
+}
+
+
+export default { ValidateEmail, ValidatePassword, ValidateUsername, ValidateGroupName, ValidateGroupDescription };

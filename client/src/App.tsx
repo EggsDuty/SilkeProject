@@ -11,8 +11,10 @@ import { useEffect, useState } from 'react'
 import firebase from './firebase.tsx'
 import Background from './components/Background.tsx'
 import CalculatorsPage from './pages/CalculatorsPage.tsx'
+import AllGroupsPage from './pages/AllGroupsPage.tsx'
+import GroupPage from './pages/GroupPage.tsx'
 
-const auth = getAuth(firebase);
+const auth = getAuth(firebase.app);
 
 function App() {
   const [signedIn, setSignedIn] = useState(false);
@@ -43,6 +45,8 @@ function App() {
           <Route path="/whiteboard" element={<WhiteBoard />} />
           <Route path="/calculators" element={<CalculatorsPage />} />
           <Route path="/graphing-calculator" element={<GraphingCalculators />} />
+          <Route path="/groups" element={<AllGroupsPage />} />
+          <Route path="/group/:groupID" element={<GroupPage />} />
         </Routes>
       </BrowserRouter>
     </>

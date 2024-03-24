@@ -6,7 +6,7 @@ import { Link, Navigate } from "react-router-dom"
 
 import { getAuth, signOut } from 'firebase/auth';
 
-const auth = getAuth(firebase);
+const auth = getAuth(firebase.app);
 
 interface Props {
     signedIn: boolean

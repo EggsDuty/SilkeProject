@@ -6,7 +6,7 @@ interface Props {
     transparent?: boolean
 }
 
-const auth = getAuth(firebase);
+const auth = getAuth(firebase.app);
 
 function Header(props: Props) {
 
