@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btnCalc-number {
+    @apply text-white bg-[#3b3b3b] rounded hover:bg-[#323232] w-[75px] h-[45px];
+  }
+  .btnCalc-operation {
+    @apply text-white bg-[#323232] rounded hover:bg-[#3b3b3b] w-[75px] h-[45px];
+  }
+}
