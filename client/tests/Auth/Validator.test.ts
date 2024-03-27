@@ -1,3 +1,4 @@
+import { test, expect } from 'vitest';
 import Validator from '../../src/components/Auth/Validator.ts';
 
 test('Check if string is e-mail', () => {
