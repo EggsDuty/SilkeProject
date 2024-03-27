@@ -5,8 +5,13 @@ import Header from "../components/Header";
 import functionPlot from "function-plot";
 import Popup from "reactjs-popup";
 import Select from "react-dropdown-select";
+//import { boolean } from "mathjs";
+//import math from "mathjs"
+import { validateInput } from "../components/Calculator/InputValidation";
+  
 
 function GraphingCalculators() {
+  
   //Equation components
   interface Equation {
     Input1: string;
@@ -25,11 +30,16 @@ function GraphingCalculators() {
     Input4?: string;
     Points: Points[];
     Line: "polyline" | "scatter";
+    Error?: string
   }
   interface Points {
     InputX: string;
     InputY: string;
   }
+  
+
+  
+
   //Function type option list
   const optionsType = [
     {
@@ -314,7 +324,7 @@ function GraphingCalculators() {
               if (type === "linear") {
                 return {
                   fnType: type,
-                  fn: Input1,
+                  fn: validateInput(Input1, type)?Input1:"0",
                   graphType: Line,
                   color: color,
                   closed: closed,
@@ -322,14 +332,14 @@ function GraphingCalculators() {
               } else if (type === "implicit") {
                 return {
                   fnType: type,
-                  fn: Input1,
+                  fn: validateInput(Input1, type)?Input1:"0",
                   color: color,
                   closed: closed,
                 };
               } else if (type === "polar") {
                 return {
                   fnType: type,
-                  r: Input1,
+                  r: validateInput(Input1, type)?Input1:"0",
                   graphType: Line,
                   color: color,
                   closed: closed,
@@ -363,8 +373,8 @@ function GraphingCalculators() {
               } else if (type === "parametric") {
                 return {
                   fnType: type,
-                  x: Input1,
-                  y: Input2,
+                  x: validateInput(Input1, type)?Input1:"0",
+                  y: validateInput(Input2?Input2:"", type)?Input1:"0",
                   graphType: Line,
                   color: color,
                   closed: closed,
@@ -397,15 +407,22 @@ function GraphingCalculators() {
   }, [equations]); // Add other input dependencies here
   //Handling equation input change
   const handleInputChange1 =
+  
     (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      
       const newEquations = [...equations];
+     
       newEquations[index].Input1 = e.target.value;
+      validateInput(newEquations[index].Input1, newEquations[index].type)===false? newEquations[index].Error="Incorrect input":(newEquations[index].Error="")
+   
       setEquations(newEquations);
+      
     };
   const handleInputChange2 =
     (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const newEquations = [...equations];
       newEquations[index].Input2 = e.target.value;
+      validateInput(e.target.value, newEquations[index].type)===false? newEquations[index].Error="Incorrect input":(newEquations[index].Error="")
 
       setEquations(newEquations);
     };
@@ -413,14 +430,14 @@ function GraphingCalculators() {
     (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const newEquations = [...equations];
       newEquations[index].Input3 = e.target.value;
-
+      validateInput(e.target.value, newEquations[index].type)===false? newEquations[index].Error="Incorrect input":(newEquations[index].Error="")
       setEquations(newEquations);
     };
   const handleInputChange4 =
     (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const newEquations = [...equations];
       newEquations[index].Input4 = e.target.value;
-
+     validateInput(e.target.value, newEquations[index].type)===false? newEquations[index].Error="Incorrect input":(newEquations[index].Error="")
       setEquations(newEquations);
     };
   const handlePInputChangeX =
@@ -514,6 +531,7 @@ function GraphingCalculators() {
   };
 
   return (
+    
     //Layout
     <div className=" absolute w-full h-full ">
       <div className="w-full">
@@ -837,6 +855,7 @@ function GraphingCalculators() {
                     onChange={handleClosedInputChange(index)}
                     className="border border-black bg-secondaryColor text-red-100 h-5/6 my-auto"
                   />
+                  <p className="text-red-600">{equations[index].Error}</p>
                 </div>
               </div>
             </div>
