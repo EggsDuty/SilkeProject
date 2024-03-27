@@ -1,7 +1,5 @@
-import { test, expect } from '@jest/globals';
 import Validator from '../../src/components/Auth/Validator.ts';
 
-// expect(Validator.ValidateEmail()).toEqual([]);
 test('Check if string is e-mail', () => {
     expect(Validator.ValidateEmail("eggsduty@gmail.com")).toEqual([]);
     expect(Validator.ValidateEmail("a")).toEqual(["EmailInvalidFormat"]);
