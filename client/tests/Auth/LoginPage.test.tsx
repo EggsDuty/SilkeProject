@@ -1,8 +1,6 @@
-import { vi, test, expect } from 'vitest'
+import { test, expect } from 'vitest'
 import { render, screen } from "@testing-library/react"
-import App from '../../src/App.tsx';
 import LoginPage from '../../src/pages/LoginPage.tsx'
-import Validator from '../../src/components/Auth/Validator.ts'
 import user from '@testing-library/user-event'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom';
@@ -15,11 +13,57 @@ test("E-mail input error appears", async () => {
             <LoginPage />
         </BrowserRouter>
     )
-    const textBox = await screen.findByPlaceholderText("example@mail.com");
-    await user.type(textBox, "3")
+    const usernameTextBox = await screen.findByPlaceholderText("example@mail.com");
 
+    await user.type(usernameTextBox, "#")
     await new Promise(res => setTimeout(res, 1100));
+    const formatError = screen.getByText("E-mail format is invalid.");
+    expect(formatError).toBeInTheDocument();
 
-    const error = screen.getByText("E-mail format is invalid.")
-    expect(error).toBeInTheDocument();
+    await user.clear(usernameTextBox);
+    await user.type(usernameTextBox, "eggsduty@gmail.com");
+    const beginningError = screen.queryByText(/beginning/i);
+    expect(formatError).not.toBeInTheDocument();
+    expect(beginningError).toBeNull();
+
+    await user.type(usernameTextBox, "#");
+    await new Promise(res => setTimeout(res, 1100));
+    const endingError = screen.getByText(/ending/i);
+    expect(endingError).toBeInTheDocument();
+
+    await user.clear(usernameTextBox);
+    await user.type(usernameTextBox, "eggs-duty@gmail.com");
+    await new Promise(res => setTimeout(res, 1100));
+    expect(screen.getByText(/beginning/i)).toBeInTheDocument();
+
+}, 10000);
+
+test("Password input error appears", async () => {
+    user.setup();
+
+    render(
+        <BrowserRouter>
+            <LoginPage />
+        </BrowserRouter>
+    )
+
+    const passwordTextBox = await screen.findByPlaceholderText("Must contain a letter, capital letter and digit");
+
+    await user.type(passwordTextBox, "password1")
+    await new Promise(res => setTimeout(res, 1100));
+    const capitalError = screen.getByText("Your password should contain a capital letter.");
+    expect(capitalError).toBeInTheDocument();
+
+    await user.clear(passwordTextBox);
+    await user.type(passwordTextBox, "Password")
+    await new Promise(res => setTimeout(res, 1100));
+    const numberError = screen.getByText("Your password should contain a number.");
+    expect(numberError).toBeInTheDocument();
+
+    await user.clear(passwordTextBox);
+    await user.type(passwordTextBox, "Password1")
+    const capitalErrorNull = screen.queryByText("Your password should contain a capital letter.");
+    const numberErrorNull = screen.queryByText("Your password should contain a number.");
+    expect(capitalErrorNull).toBeNull();
+    expect(numberErrorNull).toBeNull();
 });
