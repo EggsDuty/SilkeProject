@@ -1,239 +1,235 @@
-//Add points
-//change user guide
 import React, { useState, useEffect, useRef } from "react";
 import Header from "../components/Header";
 import functionPlot from "function-plot";
 import Popup from "reactjs-popup";
 import Select from "react-dropdown-select";
-//import { boolean } from "mathjs";
-//import math from "mathjs"
 import { validateInput } from "../components/Calculator/InputValidation";
-  
+interface Point {
+  InputX: string;
+  InputY: string;
+}
+
+interface Equation {
+  Input1: string;
+  type:
+    | "linear"
+    | "implicit"
+    | "polar"
+    | "parametric"
+    | "vector"
+    | "text"
+    | "points";
+  color?: string;
+  closed?: boolean;
+  Input2?: string;
+  Input3?: string;
+  Input4?: string;
+  Points: Point[];
+  Line: "polyline" | "scatter";
+  Error?: string;
+}
+
+
+
+
+//Function type option list
+const optionsType = [
+  {
+    id: 1,
+    name: "linear",
+  },
+  {
+    id: 2,
+    name: "implicit",
+  },
+  {
+    id: 3,
+    name: "polar",
+  },
+  {
+    id: 4,
+    name: "parametric",
+  },
+  {
+    id: 5,
+    name: "vector",
+  },
+  {
+    id: 6,
+    name: "text",
+  },
+  {
+    id: 7,
+    name: "points",
+  },
+];
+//Function color option list
+const optionsColor = [
+  {
+    id: 1,
+    name: "Lime",
+    value: "#00ff00",
+  },
+  {
+    id: 2,
+    name: "Red",
+    value: "#ff0000",
+  },
+  {
+    id: 3,
+    name: "Green",
+    value: "#008000",
+  },
+  {
+    id: 4,
+    name: "Teal",
+    value: "#008080",
+  },
+  {
+    id: 5,
+    name: "Olive",
+    value: "#808000",
+  },
+  {
+    id: 6,
+    name: "Aqua",
+    value: "#00FFFF",
+  },
+  {
+    id: 7,
+    name: "Aquamarine",
+    value: "#7FFFD4",
+  },
+  {
+    id: 8,
+    name: "Steel Blue",
+    value: "#4682B4",
+  },
+  {
+    id: 9,
+    name: "Blue",
+    value: "#0000FF",
+  },
+  {
+    id: 10,
+    name: "Medium Slate Blue",
+    value: "#7B68EE",
+  },
+  {
+    id: 11,
+    name: "Chocolate",
+    value: "#D2691E",
+  },
+  {
+    id: 12,
+    name: "Brown",
+    value: "#A52A2A",
+  },
+  {
+    id: 13,
+    name: "Lavender Blush",
+    value: "#FFF0F5",
+  },
+  {
+    id: 14,
+    name: "Gray",
+    value: "#808080",
+  },
+  {
+    id: 15,
+    name: "Black",
+    value: "#000000",
+  },
+  {
+    id: 16,
+    name: "Dark Slate Gray",
+    value: "#2F4F4F",
+  },
+  {
+    id: 17,
+    name: "Pink",
+    value: "#FFC0CB",
+  },
+  {
+    id: 18,
+    name: "Deep Pink",
+    value: "#FF1493",
+  },
+  {
+    id: 19,
+    name: "Hot Pink",
+    value: "#FF69B4",
+  },
+  {
+    id: 20,
+    name: "Medium Violet Red",
+    value: "#C71585",
+  },
+  {
+    id: 21,
+    name: "Orange",
+    value: "#FFA500",
+  },
+  {
+    id: 22,
+    name: "Orange Red",
+    value: "#FF4500",
+  },
+  {
+    id: 23,
+    name: "Dark Orange",
+    value: "#FF8C00",
+  },
+  {
+    id: 25,
+    name: "Gold",
+    value: "#FFD700",
+  },
+  {
+    id: 26,
+    name: "Yellow",
+    value: "#FFFF00",
+  },
+  {
+    id: 27,
+    name: "Khaki",
+    value: "#F0E68C",
+  },
+  {
+    id: 28,
+    name: "Magenta",
+    value: "#FF00FF",
+  },
+  {
+    id: 29,
+    name: "Rebecca Purple",
+    value: "#663399",
+  },
+  {
+    id: 30,
+    name: "Indigo",
+    value: "#4B0082",
+  },
+  {
+    id: 31,
+    name: "Purple",
+    value: "#800080",
+  },
+  {
+    id: 32,
+    name: "Dark Violet",
+    value: "#9400D3",
+  },
+  {
+    id: 33,
+    name: "Plum",
+    value: "#DDA0DD",
+  },
+];
 
 function GraphingCalculators() {
-  
-  //Equation components
-  interface Equation {
-    Input1: string;
-    type:
-      | "linear"
-      | "implicit"
-      | "polar"
-      | "parametric"
-      | "vector"
-      | "text"
-      | "points";
-    color?: string;
-    closed?: boolean;
-    Input2?: string;
-    Input3?: string;
-    Input4?: string;
-    Points: Points[];
-    Line: "polyline" | "scatter";
-    Error?: string
-  }
-  interface Points {
-    InputX: string;
-    InputY: string;
-  }
-  
 
   
-
-  //Function type option list
-  const optionsType = [
-    {
-      id: 1,
-      name: "linear",
-    },
-    {
-      id: 2,
-      name: "implicit",
-    },
-    {
-      id: 3,
-      name: "polar",
-    },
-    {
-      id: 4,
-      name: "parametric",
-    },
-    {
-      id: 5,
-      name: "vector",
-    },
-    {
-      id: 6,
-      name: "text",
-    },
-    {
-      id: 7,
-      name: "points",
-    },
-  ];
-  //Function color option list
-  const optionsColor = [
-    {
-      id: 1,
-      name: "Lime",
-      value: "#00ff00",
-    },
-    {
-      id: 2,
-      name: "Red",
-      value: "#ff0000",
-    },
-    {
-      id: 3,
-      name: "Green",
-      value: "#008000",
-    },
-    {
-      id: 4,
-      name: "Teal",
-      value: "#008080",
-    },
-    {
-      id: 5,
-      name: "Olive",
-      value: "#808000",
-    },
-    {
-      id: 6,
-      name: "Aqua",
-      value: "#00FFFF",
-    },
-    {
-      id: 7,
-      name: "Aquamarine",
-      value: "#7FFFD4",
-    },
-    {
-      id: 8,
-      name: "Steel Blue",
-      value: "#4682B4",
-    },
-    {
-      id: 9,
-      name: "Blue",
-      value: "#0000FF",
-    },
-    {
-      id: 10,
-      name: "Medium Slate Blue",
-      value: "#7B68EE",
-    },
-    {
-      id: 11,
-      name: "Chocolate",
-      value: "#D2691E",
-    },
-    {
-      id: 12,
-      name: "Brown",
-      value: "#A52A2A",
-    },
-    {
-      id: 13,
-      name: "Lavender Blush",
-      value: "#FFF0F5",
-    },
-    {
-      id: 14,
-      name: "Gray",
-      value: "#808080",
-    },
-    {
-      id: 15,
-      name: "Black",
-      value: "#000000",
-    },
-    {
-      id: 16,
-      name: "Dark Slate Gray",
-      value: "#2F4F4F",
-    },
-    {
-      id: 17,
-      name: "Pink",
-      value: "#FFC0CB",
-    },
-    {
-      id: 18,
-      name: "Deep Pink",
-      value: "#FF1493",
-    },
-    {
-      id: 19,
-      name: "Hot Pink",
-      value: "#FF69B4",
-    },
-    {
-      id: 20,
-      name: "Medium Violet Red",
-      value: "#C71585",
-    },
-    {
-      id: 21,
-      name: "Orange",
-      value: "#FFA500",
-    },
-    {
-      id: 22,
-      name: "Orange Red",
-      value: "#FF4500",
-    },
-    {
-      id: 23,
-      name: "Dark Orange",
-      value: "#FF8C00",
-    },
-    {
-      id: 25,
-      name: "Gold",
-      value: "#FFD700",
-    },
-    {
-      id: 26,
-      name: "Yellow",
-      value: "#FFFF00",
-    },
-    {
-      id: 27,
-      name: "Khaki",
-      value: "#F0E68C",
-    },
-    {
-      id: 28,
-      name: "Magenta",
-      value: "#FF00FF",
-    },
-    {
-      id: 29,
-      name: "Rebecca Purple",
-      value: "#663399",
-    },
-    {
-      id: 30,
-      name: "Indigo",
-      value: "#4B0082",
-    },
-    {
-      id: 31,
-      name: "Purple",
-      value: "#800080",
-    },
-    {
-      id: 32,
-      name: "Dark Violet",
-      value: "#9400D3",
-    },
-    {
-      id: 33,
-      name: "Plum",
-      value: "#DDA0DD",
-    },
-  ];
 
   //Initial equations
   const [equations, setEquations] = useState<Equation[]>([
@@ -795,6 +791,7 @@ function GraphingCalculators() {
                     searchable={false}
                     clearable={true}
                     closeOnClickInput={true}
+                    placeholder="Select type..."
                     closeOnSelect={true}
                     labelField="name"
                     valueField="id"
@@ -815,6 +812,7 @@ function GraphingCalculators() {
                     clearable={true}
                     closeOnClickInput={true}
                     closeOnSelect={true}
+                    placeholder="Select color..."
                     labelField="name"
                     valueField="name"
                     onChange={(selectedOptions) =>
