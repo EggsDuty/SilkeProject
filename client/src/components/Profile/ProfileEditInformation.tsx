@@ -71,11 +71,13 @@ function ProfileEditInformation(props: Props) {
                     updateMap.image = _result.target.result as string;
                 }
                 UpdateUserDataPromise(props.uid, updateMap).then(() => {
+                    localStorage.setItem("requireUpdate", "true");
                     setSaved(true);
                 });
             });
         } else {
             UpdateUserDataPromise(props.uid, updateMap).then(() => {
+                localStorage.setItem("requireUpdate", "true");
                 setSaved(true);
             });
         }

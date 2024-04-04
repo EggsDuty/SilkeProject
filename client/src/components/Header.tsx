@@ -24,13 +24,39 @@ function Header(props: Props) {
             return;
         }
 
+        if (localStorage.getItem("uid") !== user.uid) {
+            localStorage.setItem("requireUpdate", "true");
+        }
+
+        if (localStorage.getItem("requireUpdate") === "false") {
+
+            const _username = localStorage.getItem("username");
+            const _email = localStorage.getItem("email");
+            const _uid = localStorage.getItem("uid");
+            const _image = localStorage.getItem("image");
+
+            if (!(_username === null || _email === null || _uid === null || _image === null)) {
+                setUsername(_username);
+                setEmail(_email);
+                setUid(_uid);
+                setImage(_image);
+                return;
+            }
+        }
+
         GetUserInfoForHeader(user.uid).then((_data: { displayName: string, email: string, image: string }) => {
+            localStorage.setItem("requireUpdate", "false");
+            localStorage.setItem("username", _data.displayName);
+            localStorage.setItem("email", _data.email);
+            localStorage.setItem("uid", user.uid);
+            localStorage.setItem("image", _data.image);
+
             setUsername(_data.displayName);
             setEmail(_data.email);
             setUid(user.uid);
             setImage(_data.image);
         });
-    }, [loading])
+    }, [loading]);
 
     async function handleLogout() {
         await signOut(auth);
@@ -39,8 +65,6 @@ function Header(props: Props) {
     return (
         <>
             <div className={`flex flex-row min-h-10 ${props.transparent || props.transparent == null ? "bg-black bg-opacity-70 backdrop-blur-sm" : "bg-[#100524]"} sticky top-0 z-50`}>
-                {//<h1 className="text-white mx-6 text-3xl">Silkė</h1>
-                }
                 <img className="mx-6 h-9 w-auto" src="/fish1.png" />
                 <Link to='/home' className="text-white ml-32 leading-9 px-10 border-x-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent">Home</Link>
                 <Link to='/calculators' className="text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent">Calculators</Link>
