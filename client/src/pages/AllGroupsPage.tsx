@@ -21,6 +21,13 @@ function AllGroupsPage() {
     const defaultValue: ExtendedGroupInfo[] = [];
     const [groupInfo, setGroupInfo] = useState(defaultValue);
     const [doneGettingGroups, setDoneGettingGroups] = useState(false);
+    const [searchBarValue, setSearchBarValue] = useState(" ");
+    const [filteredAndSortedGroupArray, setFilteredAndSortedGroupArray] = useState(defaultValue);
+
+    function handleSearch(){
+        const searchBar = document.getElementById("group-page-search-bar") as HTMLTextAreaElement
+        setSearchBarValue(searchBar.value)
+    }
 
     function addGroup(group: ExtendedGroupInfo){
         const newGroups = [...groupInfo];
@@ -53,11 +60,15 @@ function AllGroupsPage() {
                         biggestIndex = i;
                     }
                 }
-                sortedGroupArray.push(groupArray.at(biggestIndex)!);
+                console.log(searchBarValue)
+
+                sortedGroupArray.push(groupArray.at(biggestIndex)!);           
                 groupArray.splice(biggestIndex, 1);
             }
+            
             setGroupInfo(sortedGroupArray);
             setDoneGettingGroups(true);
+            handleSearch();
         }
     }
     useEffect(() => {
@@ -68,26 +79,35 @@ function AllGroupsPage() {
 
     }, [loading]);
 
-    console.log(groupInfo)
+    useEffect(() => {
+        const tempFilteredGroupArray: ExtendedGroupInfo[] =  [];
+        for(let i = 0; i < groupInfo.length; i++){
+            if(groupInfo.at(i)?.name.match(new RegExp(searchBarValue, "i")) !== null){
+                tempFilteredGroupArray.push(groupInfo.at(i)!);
+            }
+        }
+        setFilteredAndSortedGroupArray(tempFilteredGroupArray)
+    }, [searchBarValue])
+
+    
     return (
         <>
             <div className="w-screen absolute bg-repeat-y">
                 <Header />
                 <h1 className="text-left mt-24 text-4xl text-white w-max ml-[9vw] border-l-4 pl-5 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]" >Your groups:</h1>
 
-                {/*<div className="flex flex-row">
-                    <div className="relative pl-[9vw] ml-[860px] text-left mt-10">
-                        <input type="text" className="h-8 w-56 pr-8 pl-5 rounded-lg z-0 focus:shadow focus:outline-none opacity-80" placeholder="Search name..."/>
-                        <div className="absolute top-4 right-3">
-                            <i className="fa fa-search text-gray-400 z-20 hover:text-gray-500"></i>
-                        </div>
+                <div className="flex flex-row relative pl-[9vw] ml-[860px] text-left mt-10">
+                    <div className="absolute z-10 mt-[2px] ml-[6px] pointer-events-auto">
+                        <img className="h-7 invert contrast-[20%]" src="search_picture.svg" />
                     </div>
-                </div>*/}
+                    <input id="group-page-search-bar" onChange={handleSearch} type="text" className="relative h-8 w-56 pr-8 pl-10 rounded-lg z-0 focus:shadow focus:outline-none opacity-80" placeholder="Search name..."/> 
+                </div>
+
              
 
-                <div className="bg-blue-400 w-[1100px] rounded-lg bg-opacity-20 mt-8 ml-[9vw] mr-[9vw] overflow-y-scroll max-h-[1000px] h-[50vh]">
-                    {groupInfo.length > 0 ? 
-                    groupInfo.map((_group, index) => (
+                <div className="bg-blue-400 w-[1100px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] mr-[9vw] overflow-y-scroll max-h-[1000px] h-[50vh]">
+                    {filteredAndSortedGroupArray.length > 0 ? 
+                    filteredAndSortedGroupArray.map((_group, index) => (
                         
                         <GroupBox key={index} index={index} groupID={_group.groupID} groupName={_group.name} description={_group.description} leaderName={_group.leaderName}/>
                     )) : 
