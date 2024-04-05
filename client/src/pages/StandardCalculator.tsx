@@ -1,13 +1,14 @@
 import Header from "../components/Header";
 import { useState } from "react";
 import { Textfit } from "react-textfit";
-import { sqrt, square, divide, multiply } from "mathjs";
+import { sqrt, square, divide, multiply, round } from "mathjs";
 
 function StandardCalculator() {
   const [currentOperand, setCurrOperand] = useState("0");
   const [previousOperand, setPrevOperand] = useState("");
   const [currentOperation, setCurrentOperation] = useState("0");
   const [previousOperation, setPreviousOperation] = useState("");
+  const [result, setResult] = useState("");
   const [operation, setOperation] = useState("");
   const [changedOperand, setChangedOperand] = useState(false);
   const [didCalculation, setDidCalculation] = useState(false);
@@ -83,19 +84,23 @@ function StandardCalculator() {
   };
 
   const changeSign = () => {
-    if (currentOperand === "0") {
-      setCurrOperand(currentOperand);
-      setCurrentOperation(currentOperand);
+    if (!didCalculation) {
+      if (currentOperand === "0") {
+        setCurrOperand(currentOperand);
+        setCurrentOperation(currentOperand);
+      } else {
+        setCurrOperand(String(parseFloat(currentOperand) * -1));
+        setCurrentOperation(String(parseFloat(currentOperand) * -1));
+      }
     } else {
-      setCurrOperand(String(parseFloat(currentOperand) * -1));
-      setCurrentOperation(String(parseFloat(currentOperand) * -1));
+      setCurrOperand(String(parseFloat(result) * -1));
+      setCurrentOperation(String(parseFloat(result) * -1));
+      setDidCalculation(false);
     }
   };
 
   const swapOperand = (value: string) => {
     const ops = ["+", "-", "*", "/"];
-    console.log(currentOperand);
-    console.log(previousOperand);
     if (!didCalculation) {
       if (!ops.some((op) => previousOperand.endsWith(op))) {
         setPrevOperand(currentOperand + value);
@@ -129,67 +134,101 @@ function StandardCalculator() {
   };
 
   const handleSquareRoot = () => {
-    if (currentOperand) {
-      if (!previousOperand) {
-        const currValue = parseFloat(currentOperand);
-        let result = sqrt(currValue);
-        setPreviousOperation("sqrt(" + currentOperand + ")");
-        setCurrentOperation(result.toString());
-        setPrevOperand(result.toString());
-        setCurrOperand(result.toString());
+    if (currentOperand != "0") {
+      if (!currentOperand.startsWith("-")) {
+        if (!previousOperand) {
+          const currValue = parseFloat(currentOperand);
+          let calculation = round(sqrt(parseFloat(currentOperand)), 3);
+          setPreviousOperation("sqrt(" + currentOperand + ")");
+          setCurrentOperation(calculation.toString());
+          setPrevOperand(calculation.toString());
+          setCurrOperand(calculation.toString());
+          console.log(calculation);
+        } else {
+          const currValue = parseFloat(currentOperand).toFixed(1);
+          let calculation = sqrt(parseFloat(currValue));
+          console.log(calculation);
+          if (didCalculation) {
+            setPreviousOperation("sqrt(" + currentOperand + ")");
+          } else {
+            setPreviousOperation(previousOperation + "sqrt(" + currentOperand + ")");
+          }
+          setCurrentOperation(calculation.toString());
+          setPrevOperand(previousOperand);
+          setCurrOperand(calculation.toString());
+        }
       } else {
-        console.log(previousOperand);
-        const currValue = parseFloat(currentOperand);
-        let result = sqrt(currValue);
-        console.log(result);
-        setPreviousOperation(previousOperation + "sqrt(" + currentOperand + ")");
-        setCurrentOperation(result.toString());
-        setPrevOperand(previousOperand);
-        setCurrOperand(result.toString());
+        setPreviousOperation("sqrt(" + currentOperand + ")");
+        setCurrentOperation("Invalid input");
+        setDidCalculation(true);
       }
     }
   };
 
   const handleSquare = () => {
-    if (currentOperand) {
-      if (!previousOperand) {
-        const currValue = parseFloat(currentOperand);
-        let result = square(currValue);
-        setPreviousOperation("sqr(" + currentOperand + ")");
-        setCurrentOperation(result.toString());
-        setPrevOperand(result.toString());
-        setCurrOperand(result.toString());
-      } else {
-        console.log(previousOperand);
-        const currValue = parseFloat(currentOperand);
-        let result = square(currValue);
-        console.log(result);
-        setPreviousOperation(previousOperation + "sqr(" + currentOperand + ")");
-        setCurrentOperation(result.toString());
-        setPrevOperand(previousOperand);
-        setCurrOperand(result.toString());
+    if (!didCalculation) {
+      if (currentOperand) {
+        if (!previousOperand) {
+          let calculation = round(square(parseFloat(currentOperand)), 3);
+          setPreviousOperation("sqr(" + currentOperand + ")");
+          setCurrentOperation(calculation.toString());
+          setPrevOperand(calculation.toString());
+          setCurrOperand(calculation.toString());
+        } else {
+          console.log(previousOperand);
+          let calculation = round(square(parseFloat(currentOperand)), 3);
+          setPreviousOperation(previousOperation + "sqr(" + currentOperand + ")");
+          setCurrentOperation(calculation.toString());
+          setPrevOperand(previousOperand);
+          setCurrOperand(calculation.toString());
+        }
       }
+    } else {
+      console.log(previousOperand);
+      let calculation = round(square(parseFloat(result)), 1);
+      setPreviousOperation("sqr(" + result + ")");
+      setCurrentOperation(calculation.toString());
+      setPrevOperand(previousOperand);
+      setCurrOperand(calculation.toString());
     }
   };
 
   const handleOneDividedBy = () => {
-    if (currentOperand) {
-      if (!previousOperand) {
-        const currValue = parseFloat(currentOperand);
-        let result = divide(1, currValue);
-        setPreviousOperation("1/(" + currentOperand + ")");
-        setCurrentOperation(result.toString());
-        setPrevOperand(result.toString());
-        setCurrOperand(result.toString());
-      } else {
-        console.log(previousOperand);
-        const currValue = parseFloat(currentOperand);
-        let result = divide(1, currValue);
-        console.log(result);
-        setPreviousOperation(previousOperation + "1/(" + currentOperand + ")");
-        setCurrentOperation(result.toString());
-        setPrevOperand(previousOperand);
-        setCurrOperand(result.toString());
+    if (!didCalculation) {
+      if (currentOperand) {
+        if (!previousOperand) {
+          const currValue = parseFloat(currentOperand);
+          let calculation = divide(1, currValue);
+          setPreviousOperation("1/(" + currentOperand + ")");
+          setCurrentOperation(calculation.toString());
+          setPrevOperand(calculation.toString());
+          setCurrOperand(calculation.toString());
+        } else {
+          const currValue = parseFloat(currentOperand);
+          let calculation = divide(1, currValue);
+          setPreviousOperation(previousOperation + "1/(" + currentOperand + ")");
+          setCurrentOperation(calculation.toString());
+          setPrevOperand(previousOperand);
+          setCurrOperand(calculation.toString());
+        }
+      }
+    } else {
+      if (currentOperand) {
+        if (!previousOperand) {
+          let calculation = divide(1, parseFloat(result));
+          setPreviousOperation("1/(" + currentOperand + ")");
+          setCurrentOperation(calculation.toString());
+          setPrevOperand(calculation.toString());
+          setCurrOperand(calculation.toString());
+        } else {
+          let calculation = divide(1, parseFloat(result));
+          setPreviousOperation("1/(" + result + ")");
+          setCurrentOperation(calculation.toString());
+          setPrevOperand(calculation.toString());
+          setCurrOperand(result);
+          console.log(calculation);
+          console.log(previousOperand);
+        }
       }
     }
   };
@@ -222,25 +261,28 @@ function StandardCalculator() {
           setPrevOperand(result.toString());
           setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
           setCurrentOperation(result.toString());
-          console.log(currentOperand);
+          setResult(result.toString());
           break;
         case "-":
           result = prevValue - currValue;
           setPrevOperand(result.toString());
           setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
           setCurrentOperation(result.toString());
+          setResult(result.toString());
           break;
         case "*":
           result = prevValue * currValue;
           setPrevOperand(result.toString());
           setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
           setCurrentOperation(result.toString());
+          setResult(result.toString());
           break;
         case "/":
           result = prevValue / currValue;
           setPrevOperand(result.toString());
           setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
           setCurrentOperation(result.toString());
+          setResult(result.toString());
           break;
       }
     }
