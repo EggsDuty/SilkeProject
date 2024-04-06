@@ -17,6 +17,7 @@ import GroupPage from "./pages/GroupPage.tsx";
 
 import Background from "./components/Background.tsx";
 import StandardCalculator from "./pages/StandardCalculator.tsx";
+import ScientificCalculator from "./pages/ScientificCalculator.tsx";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/whiteboard" element={<WhiteBoard />} />
           <Route path="/calculators" element={<CalculatorsPage />} />
           <Route path="/standard-calculator" element={<StandardCalculator />} />
+          <Route path="/scientific-calculator" element={<ScientificCalculator />} />
           <Route path="/graphing-calculator" element={<GraphingCalculators />} />
           <Route path="/auth" element={<AuthHandler />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
