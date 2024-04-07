@@ -1,5 +1,5 @@
 import firebase from '../firebase.tsx';
-import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { GroupInfo, UserInfo } from './DatabaseTypes.ts';
 
 export async function GetUserDataFromDocumentPromise(collection: string, id: string) {
@@ -69,6 +69,20 @@ export async function GetUserInfoForMemberList(uid: string) {
 export async function UpdateUserDataPromise(uid: string, updateMap: {}) {
     const userRef = doc(firebase.db, "users", uid);
     await updateDoc(userRef, updateMap);
+}
+
+export async function GetUsersWithDisplayNamePromise(name: string) {
+    const usersRef = collection(firebase.db, "users");
+    const _query = query(usersRef, where("displayName", "==", name));
+    const snapshot = await getDocs(_query);
+
+    const displayNames: string[] = [];
+
+    snapshot.forEach((_doc) => {
+        displayNames.push(_doc.data().displayName);
+    });
+
+    return displayNames;
 }
 
 export async function GetGroupInfoPromise(uid: string) {

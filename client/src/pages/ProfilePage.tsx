@@ -39,12 +39,19 @@ function ProfilePage() {
     return (
         <div className="h-screen w-screen absolute overflow-x-hidden">
             <Header />
-            <div className="bg-extraColor1 rounded-lg bg-opacity-80 w-1/2 mx-auto p-10 mt-10 drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
-                {!editMode ?
-                    <ProfileInformation own={user?.uid === uid} info={convertedData} setEditMode={setEditMode} /> :
-                    <ProfileEditInformation uid={user!.uid} displayName={convertedData.displayName} description={convertedData.description} setEditMode={setEditMode} />
-                }
+            <div className="flex flex-row justify-evenly mt-28">
+                <div className="bg-extraColor1 rounded-lg bg-opacity-80 w-1/2 p-10 drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                    {!editMode ?
+                        <ProfileInformation own={user?.uid === uid} info={convertedData} setEditMode={setEditMode} /> :
+                        <ProfileEditInformation uid={user!.uid} displayName={convertedData.displayName} description={convertedData.description} setEditMode={setEditMode} />
+                    }
+                </div>
+                <div className="bg-extraColor1 rounded-lg bg-opacity-80 w-1/4 h-[600px] p-10 drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                    <h1 className="text-3xl text-white font-bold mb-2">Friends</h1>
+                    <hr />
+                </div>
             </div>
+
         </div>
     );
 }
