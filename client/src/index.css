@@ -9,10 +9,16 @@
   .btnCalc-operation {
     @apply text-white bg-[#323232] rounded hover:bg-[#3b3b3b] w-[75px] h-[45px];
   }
+  .btnCalc-equals {
+    @apply bg-[#76b9ed] text-black rounded w-[75px] h-[45px];
+  }
   .btnScientificCalc-number {
     @apply text-white bg-[#3b3b3b] rounded hover:bg-[#323232] w-[60px] h-[30px];
   }
   .btnScientificCalc-operation {
     @apply text-white bg-[#323232] rounded hover:bg-[#3b3b3b] w-[60px] h-[30px];
+  }
+  .btnScientificCalc-equals {
+    @apply bg-[#76b9ed] text-black rounded w-[60px] h-[30px];
   }
 }

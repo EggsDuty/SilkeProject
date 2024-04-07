@@ -11,6 +11,7 @@ function ScientificCalculator() {
   const [operation, setOperation] = useState("");
   const [changedOperand, setChangedOperand] = useState(false);
   const [didCalculation, setDidCalculation] = useState(false);
+  const [did2nd, setDid2nd] = useState(false);
 
   const updateOperand = (value: string) => {
     if (!didCalculation) {
@@ -247,6 +248,14 @@ function ScientificCalculator() {
     }
   };
 
+  const handle2nd = () => {
+    if (did2nd) {
+      setDid2nd(false);
+    } else {
+      setDid2nd(true);
+    }
+  };
+
   const handleEquals = () => {
     if (previousOperand && currentOperand) {
       const prevValue = parseFloat(previousOperand);
@@ -299,9 +308,15 @@ function ScientificCalculator() {
           </Textfit>
         </div>
         <div className="calculator_buttons grid grid-cols-5 gap-1 p-1">
-          <button onClick={() => handlePercentage()} className="btnScientificCalc-operation">
-            2nd
-          </button>
+          {did2nd ? (
+            <button onClick={() => handle2nd()} className="btnScientificCalc-equals">
+              2<sup>nd</sup>
+            </button>
+          ) : (
+            <button onClick={() => handle2nd()} className="btnScientificCalc-operation">
+              2<sup>nd</sup>
+            </button>
+          )}
           <button onClick={() => clearCurrentOperation()} className="btnScientificCalc-operation">
             pi
           </button>
@@ -314,9 +329,15 @@ function ScientificCalculator() {
           <button onClick={() => removeLastDigit()} className="btnScientificCalc-operation">
             &#8592;
           </button>
-          <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-            x&#178;
-          </button>
+          {did2nd ? (
+            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              x<sup>3</sup>
+            </button>
+          ) : (
+            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              x<sup>2</sup>
+            </button>
+          )}
           <button onClick={() => handleOneDividedBy()} className="btnScientificCalc-operation">
             1/x
           </button>
@@ -329,9 +350,15 @@ function ScientificCalculator() {
           <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
             mod
           </button>
-          <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
-            &#x221A;
-          </button>
+          {did2nd ? (
+            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              &#x221B;
+            </button>
+          ) : (
+            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              &#x221A;
+            </button>
+          )}
           <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
             (
           </button>
@@ -344,9 +371,15 @@ function ScientificCalculator() {
           <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
             /
           </button>
-          <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
-            x^y
-          </button>
+          {did2nd ? (
+            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              y&#x221A;x
+            </button>
+          ) : (
+            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              x^y
+            </button>
+          )}
           <button onClick={() => updateOperand("7")} className="btnScientificCalc-number">
             7
           </button>
@@ -359,9 +392,15 @@ function ScientificCalculator() {
           <button onClick={() => swapOperand("*")} className="btnScientificCalc-operation">
             &#215;
           </button>
-          <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
-            10^x
-          </button>
+          {did2nd ? (
+            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              2<sup>x</sup>
+            </button>
+          ) : (
+            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              10<sup>x</sup>
+            </button>
+          )}
           <button onClick={() => updateOperand("4")} className="btnScientificCalc-number">
             4
           </button>
@@ -374,9 +413,15 @@ function ScientificCalculator() {
           <button onClick={() => swapOperand("-")} className="btnScientificCalc-operation">
             &#8722;
           </button>
-          <button onClick={() => updateOperand("6")} className="btnScientificCalc-number">
-            log
-          </button>
+          {did2nd ? (
+            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              logyx
+            </button>
+          ) : (
+            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              log
+            </button>
+          )}
           <button onClick={() => updateOperand("1")} className="btnScientificCalc-number">
             1
           </button>
@@ -389,9 +434,15 @@ function ScientificCalculator() {
           <button onClick={() => swapOperand("+")} className="btnScientificCalc-operation">
             &#43;
           </button>
-          <button onClick={() => updateOperand("6")} className="btnScientificCalc-number">
-            ln
-          </button>
+          {did2nd ? (
+            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              e<sup>x</sup>
+            </button>
+          ) : (
+            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              ln
+            </button>
+          )}
           <button onClick={() => changeSign()} className="btnScientificCalc-number">
             +/-
           </button>
@@ -401,7 +452,7 @@ function ScientificCalculator() {
           <button onClick={() => updateOperand(".")} className="btnScientificCalc-number">
             .
           </button>
-          <button onClick={() => handleEquals()} className="bg-[#76b9ed] text-black rounded w-[60px] h-[30px]">
+          <button onClick={() => handleEquals()} className="btnScientificCalc-equals">
             =
           </button>
         </div>

@@ -368,7 +368,7 @@ function StandardCalculator() {
           <button onClick={() => updateOperand(".")} className="btnCalc-number">
             .
           </button>
-          <button onClick={() => handleEquals()} className="bg-[#76b9ed] text-black rounded w-[75px] h-[45px]">
+          <button onClick={() => handleEquals()} className="btnCalc-equals">
             =
           </button>
         </div>
