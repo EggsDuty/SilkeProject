@@ -5,7 +5,9 @@ function StandardCalculatorPage() {
   return (
     <>
       <Header />
-      <StandardCalculator />
+      <div className="flex justify-center items-center h-screen">
+        <StandardCalculator />
+      </div>
     </>
   );
 }

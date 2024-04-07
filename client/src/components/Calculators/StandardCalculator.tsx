@@ -288,91 +288,89 @@ function StandardCalculator() {
 
   return (
     <>
-      <div className="flex justify-center items-center h-screen">
-        <div className="calculator_base bg-[#202020] w-[325px]  z-10">
-          <div className="screen text-white text-right pr-5 pl-3 min-h-[70px]"></div>
-          <div className="screen text-white text-right  min-h-[90px] max-h-[90px]">
-            <Textfit min={10} max={15} mode="single" className="calculator_screen_h min-h-[20px] max-h-[20px] text-gray-400 text-right pr-3 pl-3">
-              {previousOperation}
-            </Textfit>
-            <Textfit min={20} max={50} mode="single" className="calculator_screen min-h-[80px] max-h-[80px] text-white text-right pr-3 pl-3">
-              {currentOperation}
-            </Textfit>
-          </div>
-          <div className="calculator_buttons grid grid-cols-4 gap-1 p-1">
-            <button onClick={() => handlePercentage()} className="btnCalc-operation">
-              %
-            </button>
-            <button onClick={() => clearCurrentOperation()} className="btnCalc-operation">
-              CE
-            </button>
-            <button onClick={() => clearCalculator()} className="btnCalc-operation">
-              C
-            </button>
-            <button onClick={() => removeLastDigit()} className="btnCalc-operation">
-              &#8592;
-            </button>
-            <button onClick={() => handleOneDividedBy()} className="btnCalc-operation">
-              1/x
-            </button>
-            <button onClick={() => handleSquare()} className="btnCalc-operation">
-              x&#178;
-            </button>
-            <button onClick={() => handleSquareRoot()} className="btnCalc-operation">
-              &#x221A;
-            </button>
-            <button onClick={() => swapOperand("/")} className="btnCalc-operation">
-              /
-            </button>
-            <button onClick={() => updateOperand("7")} className="btnCalc-number">
-              7
-            </button>
-            <button onClick={() => updateOperand("8")} className="btnCalc-number">
-              8
-            </button>
-            <button onClick={() => updateOperand("9")} className="btnCalc-number">
-              9
-            </button>
-            <button onClick={() => swapOperand("*")} className="btnCalc-operation">
-              &#215;
-            </button>
-            <button onClick={() => updateOperand("4")} className="btnCalc-number">
-              4
-            </button>
-            <button onClick={() => updateOperand("5")} className="btnCalc-number">
-              5
-            </button>
-            <button onClick={() => updateOperand("6")} className="btnCalc-number">
-              6
-            </button>
-            <button onClick={() => swapOperand("-")} className="btnCalc-operation">
-              &#8722;
-            </button>
-            <button onClick={() => updateOperand("1")} className="btnCalc-number">
-              1
-            </button>
-            <button onClick={() => updateOperand("2")} className="btnCalc-number">
-              2
-            </button>
-            <button onClick={() => updateOperand("3")} className="btnCalc-number">
-              3
-            </button>
-            <button onClick={() => swapOperand("+")} className="btnCalc-operation">
-              &#43;
-            </button>
-            <button onClick={() => changeSign()} className="btnCalc-number">
-              +/-
-            </button>
-            <button onClick={() => updateOperand("0")} className="btnCalc-number">
-              0
-            </button>
-            <button onClick={() => updateOperand(".")} className="btnCalc-number">
-              .
-            </button>
-            <button onClick={() => handleEquals()} className="bg-[#76b9ed] text-black rounded w-[75px] h-[45px]">
-              =
-            </button>
-          </div>
+      <div className="calculator_base bg-[#202020] w-[325px]  z-10">
+        <div className="screen text-white text-right pr-5 pl-3 min-h-[70px]"></div>
+        <div className="screen text-white text-right  min-h-[90px] max-h-[90px]">
+          <Textfit min={10} max={15} mode="single" className="calculator_screen_h min-h-[20px] max-h-[20px] text-gray-400 text-right pr-3 pl-3">
+            {previousOperation}
+          </Textfit>
+          <Textfit min={20} max={50} mode="single" className="calculator_screen min-h-[80px] max-h-[80px] text-white text-right pr-3 pl-3">
+            {currentOperation}
+          </Textfit>
+        </div>
+        <div className="calculator_buttons grid grid-cols-4 gap-1 p-1">
+          <button onClick={() => handlePercentage()} className="btnCalc-operation">
+            %
+          </button>
+          <button onClick={() => clearCurrentOperation()} className="btnCalc-operation">
+            CE
+          </button>
+          <button onClick={() => clearCalculator()} className="btnCalc-operation">
+            C
+          </button>
+          <button onClick={() => removeLastDigit()} className="btnCalc-operation">
+            &#8592;
+          </button>
+          <button onClick={() => handleOneDividedBy()} className="btnCalc-operation">
+            1/x
+          </button>
+          <button onClick={() => handleSquare()} className="btnCalc-operation">
+            x&#178;
+          </button>
+          <button onClick={() => handleSquareRoot()} className="btnCalc-operation">
+            &#x221A;
+          </button>
+          <button onClick={() => swapOperand("/")} className="btnCalc-operation">
+            /
+          </button>
+          <button onClick={() => updateOperand("7")} className="btnCalc-number">
+            7
+          </button>
+          <button onClick={() => updateOperand("8")} className="btnCalc-number">
+            8
+          </button>
+          <button onClick={() => updateOperand("9")} className="btnCalc-number">
+            9
+          </button>
+          <button onClick={() => swapOperand("*")} className="btnCalc-operation">
+            &#215;
+          </button>
+          <button onClick={() => updateOperand("4")} className="btnCalc-number">
+            4
+          </button>
+          <button onClick={() => updateOperand("5")} className="btnCalc-number">
+            5
+          </button>
+          <button onClick={() => updateOperand("6")} className="btnCalc-number">
+            6
+          </button>
+          <button onClick={() => swapOperand("-")} className="btnCalc-operation">
+            &#8722;
+          </button>
+          <button onClick={() => updateOperand("1")} className="btnCalc-number">
+            1
+          </button>
+          <button onClick={() => updateOperand("2")} className="btnCalc-number">
+            2
+          </button>
+          <button onClick={() => updateOperand("3")} className="btnCalc-number">
+            3
+          </button>
+          <button onClick={() => swapOperand("+")} className="btnCalc-operation">
+            &#43;
+          </button>
+          <button onClick={() => changeSign()} className="btnCalc-number">
+            +/-
+          </button>
+          <button onClick={() => updateOperand("0")} className="btnCalc-number">
+            0
+          </button>
+          <button onClick={() => updateOperand(".")} className="btnCalc-number">
+            .
+          </button>
+          <button onClick={() => handleEquals()} className="bg-[#76b9ed] text-black rounded w-[75px] h-[45px]">
+            =
+          </button>
         </div>
       </div>
     </>

@@ -288,124 +288,122 @@ function ScientificCalculator() {
 
   return (
     <>
-      <div className="flex justify-center items-center h-screen">
-        <div className="calculator_base bg-[#202020] w-[325px]  z-10">
-          <div className="screen text-white text-right pr-5 pl-3 min-h-[70px]"></div>
-          <div className="screen text-white text-right  min-h-[90px] max-h-[90px]">
-            <Textfit min={10} max={15} mode="single" className="calculator_screen_h min-h-[20px] max-h-[20px] text-gray-400 text-right pr-3 pl-3">
-              {previousOperation}
-            </Textfit>
-            <Textfit min={20} max={50} mode="single" className="calculator_screen min-h-[80px] max-h-[80px] text-white text-right pr-3 pl-3">
-              {currentOperation}
-            </Textfit>
-          </div>
-          <div className="calculator_buttons grid grid-cols-5 gap-1 p-1">
-            <button onClick={() => handlePercentage()} className="btnScientificCalc-operation">
-              2nd
-            </button>
-            <button onClick={() => clearCurrentOperation()} className="btnScientificCalc-operation">
-              pi
-            </button>
-            <button onClick={() => clearCalculator()} className="btnScientificCalc-operation">
-              e
-            </button>
-            <button onClick={() => clearCurrentOperation()} className="btnScientificCalc-operation">
-              C
-            </button>
-            <button onClick={() => removeLastDigit()} className="btnScientificCalc-operation">
-              &#8592;
-            </button>
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              x&#178;
-            </button>
-            <button onClick={() => handleOneDividedBy()} className="btnScientificCalc-operation">
-              1/x
-            </button>
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              |x|
-            </button>
-            <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
-              exp
-            </button>
-            <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
-              mod
-            </button>
-            <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
-              &#x221A;
-            </button>
-            <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
-              (
-            </button>
-            <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
-              )
-            </button>
-            <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
-              n!
-            </button>
-            <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
-              /
-            </button>
-            <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
-              x^y
-            </button>
-            <button onClick={() => updateOperand("7")} className="btnScientificCalc-number">
-              7
-            </button>
-            <button onClick={() => updateOperand("8")} className="btnScientificCalc-number">
-              8
-            </button>
-            <button onClick={() => updateOperand("9")} className="btnScientificCalc-number">
-              9
-            </button>
-            <button onClick={() => swapOperand("*")} className="btnScientificCalc-operation">
-              &#215;
-            </button>
-            <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
-              10^x
-            </button>
-            <button onClick={() => updateOperand("4")} className="btnScientificCalc-number">
-              4
-            </button>
-            <button onClick={() => updateOperand("5")} className="btnScientificCalc-number">
-              5
-            </button>
-            <button onClick={() => updateOperand("6")} className="btnScientificCalc-number">
-              6
-            </button>
-            <button onClick={() => swapOperand("-")} className="btnScientificCalc-operation">
-              &#8722;
-            </button>
-            <button onClick={() => updateOperand("6")} className="btnScientificCalc-number">
-              log
-            </button>
-            <button onClick={() => updateOperand("1")} className="btnScientificCalc-number">
-              1
-            </button>
-            <button onClick={() => updateOperand("2")} className="btnScientificCalc-number">
-              2
-            </button>
-            <button onClick={() => updateOperand("3")} className="btnScientificCalc-number">
-              3
-            </button>
-            <button onClick={() => swapOperand("+")} className="btnScientificCalc-operation">
-              &#43;
-            </button>
-            <button onClick={() => updateOperand("6")} className="btnScientificCalc-number">
-              ln
-            </button>
-            <button onClick={() => changeSign()} className="btnScientificCalc-number">
-              +/-
-            </button>
-            <button onClick={() => updateOperand("0")} className="btnScientificCalc-number">
-              0
-            </button>
-            <button onClick={() => updateOperand(".")} className="btnScientificCalc-number">
-              .
-            </button>
-            <button onClick={() => handleEquals()} className="bg-[#76b9ed] text-black rounded w-[60px] h-[30px]">
-              =
-            </button>
-          </div>
+      <div className="calculator_base bg-[#202020] w-[325px]  z-10">
+        <div className="screen text-white text-right pr-5 pl-3 min-h-[70px]"></div>
+        <div className="screen text-white text-right  min-h-[90px] max-h-[90px]">
+          <Textfit min={10} max={15} mode="single" className="calculator_screen_h min-h-[20px] max-h-[20px] text-gray-400 text-right pr-3 pl-3">
+            {previousOperation}
+          </Textfit>
+          <Textfit min={20} max={50} mode="single" className="calculator_screen min-h-[80px] max-h-[80px] text-white text-right pr-3 pl-3">
+            {currentOperation}
+          </Textfit>
+        </div>
+        <div className="calculator_buttons grid grid-cols-5 gap-1 p-1">
+          <button onClick={() => handlePercentage()} className="btnScientificCalc-operation">
+            2nd
+          </button>
+          <button onClick={() => clearCurrentOperation()} className="btnScientificCalc-operation">
+            pi
+          </button>
+          <button onClick={() => clearCalculator()} className="btnScientificCalc-operation">
+            e
+          </button>
+          <button onClick={() => clearCurrentOperation()} className="btnScientificCalc-operation">
+            C
+          </button>
+          <button onClick={() => removeLastDigit()} className="btnScientificCalc-operation">
+            &#8592;
+          </button>
+          <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+            x&#178;
+          </button>
+          <button onClick={() => handleOneDividedBy()} className="btnScientificCalc-operation">
+            1/x
+          </button>
+          <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+            |x|
+          </button>
+          <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
+            exp
+          </button>
+          <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
+            mod
+          </button>
+          <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
+            &#x221A;
+          </button>
+          <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
+            (
+          </button>
+          <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
+            )
+          </button>
+          <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
+            n!
+          </button>
+          <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
+            /
+          </button>
+          <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
+            x^y
+          </button>
+          <button onClick={() => updateOperand("7")} className="btnScientificCalc-number">
+            7
+          </button>
+          <button onClick={() => updateOperand("8")} className="btnScientificCalc-number">
+            8
+          </button>
+          <button onClick={() => updateOperand("9")} className="btnScientificCalc-number">
+            9
+          </button>
+          <button onClick={() => swapOperand("*")} className="btnScientificCalc-operation">
+            &#215;
+          </button>
+          <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
+            10^x
+          </button>
+          <button onClick={() => updateOperand("4")} className="btnScientificCalc-number">
+            4
+          </button>
+          <button onClick={() => updateOperand("5")} className="btnScientificCalc-number">
+            5
+          </button>
+          <button onClick={() => updateOperand("6")} className="btnScientificCalc-number">
+            6
+          </button>
+          <button onClick={() => swapOperand("-")} className="btnScientificCalc-operation">
+            &#8722;
+          </button>
+          <button onClick={() => updateOperand("6")} className="btnScientificCalc-number">
+            log
+          </button>
+          <button onClick={() => updateOperand("1")} className="btnScientificCalc-number">
+            1
+          </button>
+          <button onClick={() => updateOperand("2")} className="btnScientificCalc-number">
+            2
+          </button>
+          <button onClick={() => updateOperand("3")} className="btnScientificCalc-number">
+            3
+          </button>
+          <button onClick={() => swapOperand("+")} className="btnScientificCalc-operation">
+            &#43;
+          </button>
+          <button onClick={() => updateOperand("6")} className="btnScientificCalc-number">
+            ln
+          </button>
+          <button onClick={() => changeSign()} className="btnScientificCalc-number">
+            +/-
+          </button>
+          <button onClick={() => updateOperand("0")} className="btnScientificCalc-number">
+            0
+          </button>
+          <button onClick={() => updateOperand(".")} className="btnScientificCalc-number">
+            .
+          </button>
+          <button onClick={() => handleEquals()} className="bg-[#76b9ed] text-black rounded w-[60px] h-[30px]">
+            =
+          </button>
         </div>
       </div>
     </>
