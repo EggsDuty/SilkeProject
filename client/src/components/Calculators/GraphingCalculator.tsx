@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import Header from "../components/Header";
 import functionPlot from "function-plot";
 import Popup from "reactjs-popup";
 import Select from "react-dropdown-select";
-import { validateInput } from "../components/Calculator/InputValidation";
+import { validateInput } from "../Calculator/InputValidation";
+import { Background } from "@tsparticles/engine";
 interface Point {
   InputX: string;
   InputY: string;
@@ -234,59 +234,11 @@ function GraphingCalculators() {
   //Initial equations
   const [equations, setEquations] = useState<Equation[]>([
     {
-      Input1: "log(3*x) / log(6)",
-      type: "linear",
-      Points: [{ InputX: "0", InputY: "0" }],
-      Line: "polyline",
-    },
-    {
-      Input1: "2*theta",
-      type: "polar",
-      Points: [{ InputX: "0", InputY: "0" }],
-      Line: "polyline",
-    },
-    {
-      Input1: "x^2",
-      type: "linear",
-      Points: [{ InputX: "0", InputY: "0" }],
-      Line: "polyline",
-    },
-    {
-      Input1: "2^x",
-      type: "linear",
-      Points: [{ InputX: "0", InputY: "0" }],
-      Line: "polyline",
-    },
-    {
-      Input1: "exp(x)",
-      type: "linear",
-      Points: [{ InputX: "0", InputY: "0" }],
-      Line: "polyline",
-    },
-    {
-      Input1: "sqrt(x)",
-      type: "linear",
-      Points: [{ InputX: "0", InputY: "0" }],
-      Line: "polyline",
-    },
-    {
-      Input1: "nthRoot(x,3)",
-      type: "linear",
-      Points: [{ InputX: "0", InputY: "0" }],
-      Line: "polyline",
-    },
-    {
-      Input1: "x*x+y*y-1",
+      Input1: "(x^2+y^2-1)^3-(x^2)*(y^3)",
       type: "implicit",
       Points: [{ InputX: "0", InputY: "0" }],
       Line: "polyline",
-    },
-    {
-      Input1: "2cos(t)",
-      Input2: "2sin(t)",
-      type: "parametric",
-      Points: [{ InputX: "0", InputY: "0" }],
-      Line: "polyline",
+      color:"red"
     },
   ]);
 
@@ -529,12 +481,11 @@ function GraphingCalculators() {
   return (
     
     //Layout
-    <div className=" absolute w-full h-full ">
-      <div className="w-full">
-        <Header />
+    <div className=" absolute w-fit h-fit bg-primaryColor" >
+      <div className="w-fit">
       </div>
-      <div className="flex h-full">
-        <div className="w-2/5 z-50">
+      <div className="flex h-fit">
+        <div className=" z-50">
           <Popup
             trigger={
               <button className="text-white md:font-bold italic underline">
@@ -544,6 +495,8 @@ function GraphingCalculators() {
             }
             modal
             nested
+            closeOnEscape
+            
             children={
               <div className="bg-slate-500 rounded border-8 border-black w-4/6 m-auto overflow-y-scroll h-96 bg-opacity-95">
                 <h4 className="text-6xl text-center m-4 md:font-bold">GUIDE</h4>
@@ -800,7 +753,7 @@ function GraphingCalculators() {
                     }
                     values={[{ id: 1, name: equation.type }]}
                   />
-                  ;
+                  
                 </div>
                 <div>
                   <p className="text-white my-auto mx-2"> Color: </p>
@@ -820,7 +773,7 @@ function GraphingCalculators() {
                     }
                     values={[]}
                   />
-                  ;
+                  
                 </div>
                 <div className="flex">
                   <label
@@ -860,14 +813,14 @@ function GraphingCalculators() {
           ))}
 
           <button //Button to add input
-            className="border-2 border-black my-2 bg-primaryColor text-white w-1/3"
+            className="border-2 border-black my-2 bg-primaryColor text-white w-fit"
             onClick={addEquation}
           >
             Add Equation
           </button>
         </div>
         <div
-          className="bg-gray-200 border border-black w-3/5 h-auto "
+          className="bg-gray-200 border border-black w-fit h-fit "
           ref={rootEl}
         ></div>
       </div>

@@ -5,7 +5,7 @@ import HomePage from "./pages/HomePage.tsx";
 import LandingPage from "./pages/LandingPage.tsx";
 import WhiteBoard from "./pages/WhiteBoard.tsx";
 import CalculatorsPage from "./pages/CalculatorsPage.tsx";
-import GraphingCalculators from "./pages/GraphingCalculator.tsx";
+import GraphingCalculators from "./pages/GraphingCalculatorPage.tsx";
 import AuthHandler from "./pages/AuthPages/AuthHandler.tsx";
 import PleaseVerifyPage from "./pages/AuthPages/PleaseVerifyPage.tsx";
 import VerifyEmailPage from "./pages/AuthPages/VerifyEmailPage.tsx";
