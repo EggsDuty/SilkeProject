@@ -5,7 +5,9 @@ export interface UserInfo {
     email: string,
     image: string,
     description: string,
-    groups: string[]
+    groups: string[],
+    groupInvites: string[],
+    friendInvites: string[]
 }
 
 export interface GroupInfo {
