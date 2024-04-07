@@ -1,6 +1,6 @@
 import firebase from '../firebase.tsx';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { UserInfo } from './DatabaseTypes.ts';
+import { GroupInfo, UserInfo } from './DatabaseTypes.ts';
 
 export async function GetUserDataFromDocumentPromise(collection: string, id: string) {
     console.log("call");
@@ -30,9 +30,21 @@ export async function GetUserInfoForHeader(uid: string) {
     return { displayName: userData.displayName, email: _data.email, image: userData.image };
 }
 
+export async function GetUserInfoForMemberList(uid: string) {
+    const _data = await GetUserDataFromDocumentPromise("users", uid);
+    const userData = _data as UserInfo;
+    return { displayName: userData.displayName, image: userData.image, userID: uid };
+}
+
 export async function UpdateUserDataPromise(uid: string, updateMap: {}) {
     const userRef = doc(firebase.db, "users", uid);
     await updateDoc(userRef, updateMap);
+}
+
+export async function GetGroupInfoPromise(uid: string) {
+    const _data = await GetUserDataFromDocumentPromise("groups", uid);
+    const groupData = _data as GroupInfo;
+    return groupData;
 }
 
 export default { GetUserDataFromDocumentPromise, GetUserDisplayNamePromise, GetUserEmailPromise, GetUserInfoForHeader, UpdateUserDataPromise };

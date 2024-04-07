@@ -60,7 +60,6 @@ function AllGroupsPage() {
                         biggestIndex = i;
                     }
                 }
-                console.log(searchBarValue)
 
                 sortedGroupArray.push(groupArray.at(biggestIndex)!);           
                 groupArray.splice(biggestIndex, 1);
