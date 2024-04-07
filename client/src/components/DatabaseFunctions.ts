@@ -1,5 +1,5 @@
 import firebase from '../firebase.tsx';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { GroupInfo, UserInfo } from './DatabaseTypes.ts';
 
 export async function GetUserDataFromDocumentPromise(collection: string, id: string) {
@@ -24,7 +24,37 @@ export async function GetUserEmailPromise(uid: string) {
     return (_data as UserInfo).email;
 }
 
-export async function GetUserInfoForHeader(uid: string) {
+export async function CreateGroupInvitePromise(uid: string, groupID: string, groupName: string, groupLeader: string) {
+    const userRef = doc(firebase.db, "users", uid);
+    await updateDoc(userRef, {
+        groupInvites: arrayUnion(`${groupID};${groupName};${groupLeader}`)
+    });
+}
+
+export async function GetUserGroupInvitesPromise(uid: string) {
+    const _data = await GetUserDataFromDocumentPromise("users", uid);
+    return (_data as UserInfo).groupInvites;
+}
+
+export async function AcceptUserIntoGroupPromise(uid: string, groupID: string) {
+    const userRef = doc(firebase.db, "users", uid);
+    const groupRef = doc(firebase.db, "groups", groupID);
+    await updateDoc(userRef, {
+        groups: arrayUnion(groupID)
+    });
+    await updateDoc(groupRef, {
+        members: arrayUnion(uid)
+    });
+}
+
+export async function DeleteUserGroupInvitePromise(uid: string, value: string) {
+    const ref = doc(firebase.db, "users", uid);
+    await updateDoc(ref, {
+        groupInvites: arrayRemove(value)
+    });
+}
+
+export async function GetUserInfoForHeaderPromise(uid: string) {
     const _data = await GetUserDataFromDocumentPromise("users", uid);
     const userData = _data as UserInfo;
     return { displayName: userData.displayName, email: _data.email, image: userData.image };
@@ -47,4 +77,5 @@ export async function GetGroupInfoPromise(uid: string) {
     return groupData;
 }
 
-export default { GetUserDataFromDocumentPromise, GetUserDisplayNamePromise, GetUserEmailPromise, GetUserInfoForHeader, UpdateUserDataPromise };
+
+export default { GetUserDataFromDocumentPromise, GetUserDisplayNamePromise, GetUserEmailPromise, GetUserInfoForHeaderPromise, UpdateUserDataPromise };

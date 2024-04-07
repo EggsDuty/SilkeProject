@@ -5,7 +5,7 @@ import HomePage from "./pages/HomePage.tsx";
 import LandingPage from "./pages/LandingPage.tsx";
 import WhiteBoard from "./pages/WhiteBoard.tsx";
 import CalculatorsPage from "./pages/CalculatorsPage.tsx";
-import GraphingCalculators from "./pages/GraphingCalculator.tsx";
+import GraphingCalculators from "./pages/GraphingCalculatorPage.tsx";
 import AuthHandler from "./pages/AuthPages/AuthHandler.tsx";
 import PleaseVerifyPage from "./pages/AuthPages/PleaseVerifyPage.tsx";
 import VerifyEmailPage from "./pages/AuthPages/VerifyEmailPage.tsx";
@@ -14,9 +14,9 @@ import ResetPasswordPage from "./pages/AuthPages/ResetPasswordPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
 import AllGroupsPage from "./pages/AllGroupsPage.tsx";
 import GroupPage from "./pages/GroupPage.tsx";
-
 import Background from "./components/Background.tsx";
-import StandardCalculator from "./pages/StandardCalculator.tsx";
+import ScientificCalculatorPage from "./pages/ScientificCalculatorPage.tsx";
+import StandardCalculatorPage from "./pages/StandardCalculatorPage.tsx";
 
 function App() {
   return (
@@ -30,7 +30,8 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/whiteboard" element={<WhiteBoard />} />
           <Route path="/calculators" element={<CalculatorsPage />} />
-          <Route path="/standard-calculator" element={<StandardCalculator />} />
+          <Route path="/standard-calculator" element={<StandardCalculatorPage />} />
+          <Route path="/scientific-calculator" element={<ScientificCalculatorPage />} />
           <Route path="/graphing-calculator" element={<GraphingCalculators />} />
           <Route path="/auth" element={<AuthHandler />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
