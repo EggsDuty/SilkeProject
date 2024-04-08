@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import Header from "../components/Header"
 import { GroupInfo } from "../components/DatabaseTypes";
 import { useEffect, useState } from "react";
@@ -6,13 +6,13 @@ import { GetGroupInfoPromise, GetUserInfoForMemberList } from "../components/Dat
 import MemberBox from "../components/Groups/MemberBox";
 import Popup from "reactjs-popup";
 
-interface MemberInfo{
+interface MemberInfo {
     userID: string,
     displayName: string,
     image: string
 }
 
-function GroupPage(){
+function GroupPage() {
     const { groupID } = useParams();
 
     const [groupInfo, setGroupInfo] = useState<GroupInfo>();
@@ -29,7 +29,7 @@ function GroupPage(){
     }, [])
 
     useEffect(() => {
-        if(isLoading){
+        if (isLoading) {
             return
         }
         GetAllMemberNames().then((_membersNames) => {
@@ -38,22 +38,22 @@ function GroupPage(){
         });
     }, [isLoading])
 
-    async function GetAllMemberNames(){
+    async function GetAllMemberNames() {
         const membersInfo: MemberInfo[] = [];
-        
-        for(let i=0; i<groupInfo?.members.length!; i++){
+
+        for (let i = 0; i < groupInfo?.members.length!; i++) {
             membersInfo.push(await GetUserInfoForMemberList(groupInfo?.members.at(i)!));
         }
         return membersInfo;
     }
 
-    if(isLoading){
-        return(
+    if (isLoading) {
+        return (
             <>
                 <div className="w-screen absolute text-center bg-repeat-y">
                     <Header />
                     <div className="flex flex-row  mt-6 ml-6 align-middle">
-                        <img src="/loading_picture.svg" className="animate-spin invert h-10"/>
+                        <img src="/loading_picture.svg" className="animate-spin invert h-10" />
                         <p className="text-gray-500 text-2xl font-bold ml-2">Loading...</p>
                     </div>
                 </div>
@@ -61,7 +61,7 @@ function GroupPage(){
         )
     }
 
-    return(
+    return (
         <>
             <div className="w-[99vw] absolute text-center bg-repeat-y">
                 <Header />
@@ -74,7 +74,7 @@ function GroupPage(){
                     <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Members</h2>
                     <Popup
                         trigger={
-                        <img src="/member_add_picture.svg" className="cursor-pointer mt-[42px] ml-3 invert z-20 h-[31px] w-auto hover:contrast-[60%] mr-[250px] drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]"/>
+                            <img src="/member_add_picture.svg" className="cursor-pointer mt-[42px] ml-3 invert z-20 h-[31px] w-auto hover:contrast-[60%] mr-[250px] drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]" />
                         }
 
                         modal
@@ -83,12 +83,12 @@ function GroupPage(){
                     >
                         {/* @ts-ignore */}
                         {(close) => (
-                        <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[40vw] min-w-[500px] m-auto overflow-y-scroll h-[80vh] min-h-[600px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
-                            <button onClick={close} className="text-3xl ml-2">X</button>
-                            <h1 className="text-4xl text-center mt-10">Add a member</h1>
-                            
-                        </div>
-                            )}
+                            <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[40vw] min-w-[500px] m-auto overflow-y-scroll h-[80vh] min-h-[600px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                                <button onClick={close} className="text-3xl ml-2">X</button>
+                                <h1 className="text-4xl text-center mt-10">Add a member</h1>
+
+                            </div>
+                        )}
 
                     </Popup>
                     <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Calendar (not yet functional)</h2>
@@ -96,28 +96,29 @@ function GroupPage(){
 
                 <div className="flex flex-row w-max overflow-x-hidden mb-20">
                     <div className="bg-blue-400 min-w-[400px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] mr-[9vw] overflow-y-scroll min-h-[400px] h-[50vh] overflow-x-hidden">
-                        {isLoadingMembers ? 
-                        <div className="flex flex-row  mt-6 ml-6 align-middle">
-                            <img src="/loading_picture.svg" className="animate-spin invert h-10"/>
-                            <p className="text-gray-500 text-2xl font-bold ml-2">Loading...</p>
-                        </div> 
-                        :
-                        userNameInfo.map((_memberInfo, index) => (
-                            <MemberBox key={index} memberID={_memberInfo.userID} image={_memberInfo.image} memberName={_memberInfo.displayName} isLeader={_memberInfo.displayName === groupInfo?.leaderName ? true : false} />
-                        ))
+                        {isLoadingMembers ?
+                            <div className="flex flex-row  mt-6 ml-6 align-middle">
+                                <img src="/loading_picture.svg" className="animate-spin invert h-10" />
+                                <p className="text-gray-500 text-2xl font-bold ml-2">Loading...</p>
+                            </div>
+                            :
+                            userNameInfo.map((_memberInfo, index) => (
+                                <MemberBox key={index} memberID={_memberInfo.userID} image={_memberInfo.image} memberName={_memberInfo.displayName} isLeader={_memberInfo.displayName === groupInfo?.leaderName ? true : false} />
+                            ))
                         }
                     </div>
-                    
+
                     <div className="bg-blue-400 min-w-[500px] rounded-lg bg-opacity-20 mt-3 ml-[1vw] min-h-[400px] overflow-x-hidden w-max">
-                       
+
                     </div>
                 </div>
 
 
                 <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Chat (not yet functional)</h2>
                 <div className="bg-blue-400 min-w-[800px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] min-h-[500px] overflow-x-hidden w-max mb-20">
-                       
+
                 </div>
+                <Link className="text-white" to={"/whiteboard/" + groupID}>Go to whiteboard</Link>
             </div>
         </>
     )

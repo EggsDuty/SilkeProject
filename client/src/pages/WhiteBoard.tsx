@@ -1,9 +1,9 @@
-import { ChangeEvent, useState } from 'react';
 import { Tldraw, track, useEditor } from '@tldraw/tldraw';
 import '@tldraw/tldraw/tldraw.css';
 import { useYjsStore } from '../useYjsStore.ts';
 import Header from '../components/Header';
 import Sidebar from '../components/Whiteboard/Sidebar.tsx';
+import { useParams } from 'react-router-dom';
 
 const HOST_URL =
     import.meta.env.MODE === 'development'
@@ -11,31 +11,16 @@ const HOST_URL =
         : 'wss://demos.yjs.dev';
 
 export default function YjsExample() {
-    const [roomId, setRoomId] = useState('');
+    const { groupID } = useParams();
 
     const store = useYjsStore({
-        roomId: roomId,
+        roomId: groupID,
         hostUrl: HOST_URL,
     });
-
-    const handleRoomIdChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setRoomId(event.target.value);
-    };
 
     return (
         <>
             <Header transparent={false} />
-			<div className='absolute mt-10 ml-44 z-10'>
-                    <input
-                        type="text"
-                        placeholder="Enter Room ID"
-                        value={roomId}
-                        onChange={handleRoomIdChange}
-                        style={{ zIndex: 999, border: '1px solid #ccc', // Border style
-                        borderRadius: '4px', // Border radius
-                        padding: '8px', }} // Ensure the text box is displayed in front
-                    />
-                </div>
             <Sidebar />
 
             <div className="ml-32" style={{ position: 'fixed', inset: 0 }}>
@@ -46,7 +31,7 @@ export default function YjsExample() {
                         SharePanel: NameEditor,
                     }}
                 />
-                
+
             </div>
         </>
     );
