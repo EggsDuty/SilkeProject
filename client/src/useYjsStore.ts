@@ -14,7 +14,7 @@ import {
 	react,
 	compareSchemas,
 	SerializedSchema,
-} from 'tldraw'
+} from '@tldraw/tldraw'
 import { useEffect, useMemo, useState } from 'react'
 import { YKeyValue } from 'y-utility/y-keyvalue'
 import { WebsocketProvider } from 'y-websocket'
