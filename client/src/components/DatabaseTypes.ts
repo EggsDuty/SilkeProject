@@ -7,7 +7,8 @@ export interface UserInfo {
     description: string,
     groups: string[],
     groupInvites: string[],
-    friendInvites: string[]
+    friendInvites: string[],
+    friends: string[]
 }
 
 export interface GroupInfo {

@@ -1,10 +1,11 @@
-import { useParams } from "react-router-dom"
+import { Navigate, useNavigate, useParams } from "react-router-dom"
 import Header from "../components/Header"
 import { GroupInfo } from "../components/DatabaseTypes";
 import { useEffect, useState } from "react";
-import { GetGroupInfoPromise, GetUserInfoForMemberList } from "../components/DatabaseFunctions";
+import { DeleteGroupIDPromise, DeleteUserFromGroupPromise, GetGroupInfoPromise, GetUserInfoForMemberList, UpdateLeaderNameInGroupListPromise } from "../components/DatabaseFunctions";
 import MemberBox from "../components/Groups/MemberBox";
 import Popup from "reactjs-popup";
+import MemberAdd from "../components/Groups/MemberAdd";
 
 interface MemberInfo{
     userID: string,
@@ -14,12 +15,15 @@ interface MemberInfo{
 
 function GroupPage(){
     const { groupID } = useParams();
+    const userID = localStorage.getItem("uid");
+    const userDisplayName = localStorage.getItem("username");
 
     const [groupInfo, setGroupInfo] = useState<GroupInfo>();
     const defaultValue: MemberInfo[] = [];
     const [userNameInfo, setUserNameInfo] = useState(defaultValue)
     const [isLoading, setIsLoading] = useState(true);
     const [isLoadingMembers, setIsLoadingMembers] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         GetGroupInfoPromise(groupID!).then((_groupInfo) => {
@@ -61,6 +65,19 @@ function GroupPage(){
         )
     }
 
+    function HandleGroupLeaveClick(){
+        DeleteUserFromGroupPromise(userID!, groupID!).then(() => {
+            if(groupInfo?.members.length === 1){
+                DeleteGroupIDPromise(groupID!);
+            }
+            else if(userDisplayName === groupInfo?.leaderName){
+                UpdateLeaderNameInGroupListPromise(groupID!, userNameInfo.at(1)!.displayName)
+            }
+            navigate("/groups");
+        })
+
+    }
+
     return(
         <>
             <div className="w-[99vw] absolute text-center bg-repeat-y">
@@ -83,10 +100,10 @@ function GroupPage(){
                     >
                         {/* @ts-ignore */}
                         {(close) => (
-                        <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[40vw] min-w-[500px] m-auto overflow-y-scroll h-[80vh] min-h-[600px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                        <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[700px] m-auto overflow-y-scroll h-[80vh] min-h-[600px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
                             <button onClick={close} className="text-3xl ml-2">X</button>
                             <h1 className="text-4xl text-center mt-10">Add a member</h1>
-                            
+                            <MemberAdd groupInfo={groupInfo!} groupID={groupID!}/>
                         </div>
                             )}
 
@@ -94,7 +111,7 @@ function GroupPage(){
                     <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Calendar (not yet functional)</h2>
                 </div>
 
-                <div className="flex flex-row w-max overflow-x-hidden mb-20">
+                <div className="flex flex-row w-max overflow-x-hidden">
                     <div className="bg-blue-400 min-w-[400px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] mr-[9vw] overflow-y-scroll min-h-[400px] h-[50vh] overflow-x-hidden">
                         {isLoadingMembers ? 
                         <div className="flex flex-row  mt-6 ml-6 align-middle">
@@ -113,6 +130,31 @@ function GroupPage(){
                     </div>
                 </div>
 
+                <Popup
+                    trigger={
+                    <div className="relative cursor-pointer mb-20 ml-[280px]">
+                        <img src="/leave_group_picture.svg" className="invert absolute z-20 ml-[9vw] pl-4 mt-[6px] h-6 w-auto peer" />
+                        <p className="w-max text-white py-1 pl-12 pr-4 mt-4 ml-[9vw] rounded-lg bg-red-950 border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Leave</p>
+                    </div>
+                    }
+
+                    modal
+                    nested
+                    closeOnDocumentClick={false}
+                >
+                    {/* @ts-ignore */}
+                    {(close) => (
+                    <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[600px] m-auto h-[230px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                        <button onClick={close} className="text-3xl ml-2">X</button>
+                        <h1 className="text-2xl text-center mt-10">Are you sure you want to leave this group?</h1>
+                        <div className="flex flex-row mt-10 ml-96">
+                            <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleGroupLeaveClick()}>Yes</button>
+                            <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
+                        </div>
+                    </div>
+                        )}
+
+                </Popup>
 
                 <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Chat (not yet functional)</h2>
                 <div className="bg-blue-400 min-w-[800px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] min-h-[500px] overflow-x-hidden w-max mb-20">

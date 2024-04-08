@@ -1,5 +1,5 @@
 import firebase from '../firebase.tsx';
-import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { GroupInfo, UserInfo } from './DatabaseTypes.ts';
 
 export async function GetUserDataFromDocumentPromise(collection: string, id: string) {
@@ -64,6 +64,42 @@ export async function GetUserInfoForMemberList(uid: string) {
     const _data = await GetUserDataFromDocumentPromise("users", uid);
     const userData = _data as UserInfo;
     return { displayName: userData.displayName, image: userData.image, userID: uid };
+}
+
+export async function GetFriendsListOfUser(uid: string) {
+    const _data = await GetUserDataFromDocumentPromise("users", uid);
+    const userData = _data as UserInfo;
+    return userData.friends;
+}
+
+export async function CreateFriendInvitePromise(uid: string, friendID: string) {
+    const userRef = doc(firebase.db, "users", friendID);
+    await updateDoc(userRef, {
+        friendInvites: arrayUnion(uid)
+    });
+}
+
+export async function DeleteUserFromGroupPromise(uid: string, groupID: string) {
+    const userRef = doc(firebase.db, "users", uid);
+    const groupRef = doc(firebase.db, "groups", groupID);
+    await updateDoc(userRef, {
+        groups: arrayRemove(groupID)
+    });
+    await updateDoc(groupRef, {
+        members: arrayRemove(uid)
+    });
+}
+
+export async function DeleteGroupIDPromise(groupID: string) {
+    const groupRef = doc(firebase.db, "groups", groupID);
+    await deleteDoc(groupRef);
+}
+
+export async function UpdateLeaderNameInGroupListPromise(groupID: string, newName: string) {
+    const groupRef = doc(firebase.db, "groups", groupID);
+    await updateDoc(groupRef, {
+        leaderName: newName
+    })
 }
 
 export async function UpdateUserDataPromise(uid: string, updateMap: {}) {
