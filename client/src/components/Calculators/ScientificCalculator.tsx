@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Textfit } from "react-textfit";
-import { sqrt, square, divide, multiply, round } from "mathjs";
+import { sqrt, square, divide, multiply, round, pi } from "mathjs";
 
 function ScientificCalculator() {
   const [currentOperand, setCurrOperand] = useState("0");
@@ -317,7 +317,7 @@ function ScientificCalculator() {
               2<sup>nd</sup>
             </button>
           )}
-          <button onClick={() => clearCurrentOperation()} className="btnScientificCalc-operation">
+          <button onClick={() => updateOperand(pi.toString())} className="btnScientificCalc-operation">
             pi
           </button>
           <button onClick={() => clearCalculator()} className="btnScientificCalc-operation">

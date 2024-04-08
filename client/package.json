@@ -16,6 +16,7 @@
     "@tsparticles/engine": "^3.3.0",
     "@tsparticles/react": "^3.0.0",
     "@types/react-textfit": "^1.1.4",
+    "better-react-mathjax": "^2.0.3",
     "firebase": "^10.8.1",
     "function-plot": "^1.24.4",
     "mathjs": "^12.4.1",
