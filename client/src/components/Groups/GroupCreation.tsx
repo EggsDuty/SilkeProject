@@ -8,14 +8,18 @@ import { getAuth } from "firebase/auth";
 import { GetUserDisplayNamePromise } from "../DatabaseFunctions.ts";
 import { GroupInfo } from "../DatabaseTypes.ts";
 
-interface Props{
+interface Props {
     closeFunction: any,
     addGroup: any
 }
 
+interface ExtendedGroupInfo extends GroupInfo {
+    groupID: string
+}
+
 const auth = getAuth(firebase.app);
 
-function GroupCreation(props: Props){
+function GroupCreation(props: Props) {
     const [user, loading] = useAuthState(auth);
     const [groupName, setGroupName] = useState("");
     const [description, setDescription] = useState("");
@@ -23,43 +27,47 @@ function GroupCreation(props: Props){
     const trimmedGroupName = groupName.trim();
     const trimmedDescription = description.trim();
     let hasErrors = false;
-    if(Validator.ValidateGroupName(trimmedGroupName).length !== 0 || Validator.ValidateGroupDescription(trimmedDescription).length !== 0){
+    if (Validator.ValidateGroupName(trimmedGroupName).length !== 0 || Validator.ValidateGroupDescription(trimmedDescription).length !== 0) {
         hasErrors = true;
     }
 
-    async function handleGroupCreation(e: FormEvent){
+    async function handleGroupCreation(e: FormEvent) {
         e.preventDefault();
-        
-        if(hasErrors){
+
+        if (hasErrors) {
             return;
         }
 
         GetUserDisplayNamePromise(user!.uid).then(async (_leaderName: string) => {
-            const groupInfo: GroupInfo = {
+            const groupInfo: ExtendedGroupInfo = {
                 name: trimmedGroupName,
                 description: trimmedDescription,
                 creationDate: Timestamp.now(),
                 members: [user!.uid],
                 leaderID: user!.uid,
-                leaderName: _leaderName
+                leaderName: _leaderName,
+                groupID: ""
             }
-            props.addGroup(groupInfo)
-            const groupRef = await addDoc(collection(firebase.db, "groups"), groupInfo).then((groupRef) => {
+
+            await addDoc(collection(firebase.db, "groups"), groupInfo).then((groupRef) => {
                 const userRef = doc(firebase.db, "users", user!.uid);
-                setDoc(userRef, { groups: arrayUnion(groupRef.id) }, { merge: true })
+                setDoc(userRef, { groups: arrayUnion(groupRef.id) }, { merge: true }).then(() => {
+                    groupInfo.groupID = groupRef.id;
+                    props.addGroup(groupInfo)
+                });
             });
         })
-        
+
         props.closeFunction();
     }
-    
+
     return (
         <form onSubmit={(e) => handleGroupCreation(e)} className="mx-16">
-            <GroupField name="Group name:" placeholder="Your group name..." type="text" validateFunction={Validator.ValidateGroupName}  var={trimmedGroupName} setter={setGroupName} />
-            <GroupField name="Description (optional):" placeholder="Your group description..." type="text" validateFunction={Validator.ValidateGroupDescription}  var={trimmedDescription} setter={setDescription} />
+            <GroupField name="Group name:" placeholder="Your group name..." type="text" validateFunction={Validator.ValidateGroupName} var={trimmedGroupName} setter={setGroupName} />
+            <GroupField name="Description (optional):" placeholder="Your group description..." type="text" validateFunction={Validator.ValidateGroupDescription} var={trimmedDescription} setter={setDescription} />
             <button type="submit" className={`mt-6 py-2 px-6 text-white rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white ${hasErrors ? "cursor-not-allowed" : ""}`}>Create</button>
         </form>
-       
+
     )
 }
 
