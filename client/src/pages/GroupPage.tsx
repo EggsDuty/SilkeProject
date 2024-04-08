@@ -1,4 +1,4 @@
-import { Navigate, useNavigate, useParams } from "react-router-dom"
+import { Navigate, useNavigate, Link, useParams } from "react-router-dom"
 import Header from "../components/Header"
 import { GroupInfo } from "../components/DatabaseTypes";
 import { useEffect, useState } from "react";
@@ -7,13 +7,13 @@ import MemberBox from "../components/Groups/MemberBox";
 import Popup from "reactjs-popup";
 import MemberAdd from "../components/Groups/MemberAdd";
 
-interface MemberInfo{
+interface MemberInfo {
     userID: string,
     displayName: string,
     image: string
 }
 
-function GroupPage(){
+function GroupPage() {
     const { groupID } = useParams();
     const userID = localStorage.getItem("uid");
     const userDisplayName = localStorage.getItem("username");
@@ -33,7 +33,7 @@ function GroupPage(){
     }, [])
 
     useEffect(() => {
-        if(isLoading){
+        if (isLoading) {
             return
         }
         GetAllMemberNames().then((_membersNames) => {
@@ -42,22 +42,22 @@ function GroupPage(){
         });
     }, [isLoading])
 
-    async function GetAllMemberNames(){
+    async function GetAllMemberNames() {
         const membersInfo: MemberInfo[] = [];
-        
-        for(let i=0; i<groupInfo?.members.length!; i++){
+
+        for (let i = 0; i < groupInfo?.members.length!; i++) {
             membersInfo.push(await GetUserInfoForMemberList(groupInfo?.members.at(i)!));
         }
         return membersInfo;
     }
 
-    if(isLoading){
-        return(
+    if (isLoading) {
+        return (
             <>
                 <div className="w-screen absolute text-center bg-repeat-y">
                     <Header />
                     <div className="flex flex-row  mt-6 ml-6 align-middle">
-                        <img src="/loading_picture.svg" className="animate-spin invert h-10"/>
+                        <img src="/loading_picture.svg" className="animate-spin invert h-10" />
                         <p className="text-gray-500 text-2xl font-bold ml-2">Loading...</p>
                     </div>
                 </div>
@@ -78,7 +78,7 @@ function GroupPage(){
 
     }
 
-    return(
+    return (
         <>
             <div className="w-[99vw] absolute text-center bg-repeat-y">
                 <Header />
@@ -91,7 +91,7 @@ function GroupPage(){
                     <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Members</h2>
                     <Popup
                         trigger={
-                        <img src="/member_add_picture.svg" className="cursor-pointer mt-[42px] ml-3 invert z-20 h-[31px] w-auto hover:contrast-[60%] mr-[250px] drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]"/>
+                            <img src="/member_add_picture.svg" className="cursor-pointer mt-[42px] ml-3 invert z-20 h-[31px] w-auto hover:contrast-[60%] mr-[250px] drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]" />
                         }
 
                         modal
@@ -113,20 +113,20 @@ function GroupPage(){
 
                 <div className="flex flex-row w-max overflow-x-hidden">
                     <div className="bg-blue-400 min-w-[400px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] mr-[9vw] overflow-y-scroll min-h-[400px] h-[50vh] overflow-x-hidden">
-                        {isLoadingMembers ? 
-                        <div className="flex flex-row  mt-6 ml-6 align-middle">
-                            <img src="/loading_picture.svg" className="animate-spin invert h-10"/>
-                            <p className="text-gray-500 text-2xl font-bold ml-2">Loading...</p>
-                        </div> 
-                        :
-                        userNameInfo.map((_memberInfo, index) => (
-                            <MemberBox key={index} memberID={_memberInfo.userID} image={_memberInfo.image} memberName={_memberInfo.displayName} isLeader={_memberInfo.displayName === groupInfo?.leaderName ? true : false} />
-                        ))
+                        {isLoadingMembers ?
+                            <div className="flex flex-row  mt-6 ml-6 align-middle">
+                                <img src="/loading_picture.svg" className="animate-spin invert h-10" />
+                                <p className="text-gray-500 text-2xl font-bold ml-2">Loading...</p>
+                            </div>
+                            :
+                            userNameInfo.map((_memberInfo, index) => (
+                                <MemberBox key={index} memberID={_memberInfo.userID} image={_memberInfo.image} memberName={_memberInfo.displayName} isLeader={_memberInfo.displayName === groupInfo?.leaderName ? true : false} />
+                            ))
                         }
                     </div>
-                    
+
                     <div className="bg-blue-400 min-w-[500px] rounded-lg bg-opacity-20 mt-3 ml-[1vw] min-h-[400px] overflow-x-hidden w-max">
-                       
+
                     </div>
                 </div>
 
@@ -158,8 +158,9 @@ function GroupPage(){
 
                 <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Chat (not yet functional)</h2>
                 <div className="bg-blue-400 min-w-[800px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] min-h-[500px] overflow-x-hidden w-max mb-20">
-                       
+
                 </div>
+                <Link className="text-white" to={"/whiteboard/" + groupID}>Go to whiteboard</Link>
             </div>
         </>
     )

@@ -136,9 +136,9 @@ function AllGroupsPage() {
 
                 <Popup
                     trigger={
-                        <div className="relative cursor-pointer">
-                            <img src="group_add_picture.svg" className="invert absolute z-20 ml-[9vw] pl-4 mt-1 h-9 w-auto peer" />
-                            <p className="w-max text-white py-2 pl-16 pr-6 mt-4 ml-[9vw] rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Create group</p>
+                        <div className="relative cursor-pointer w-max ml-[9vw]">
+                            <img src="group_add_picture.svg" className="invert absolute z-20 pl-4 mt-1 h-9 w-auto peer" />
+                            <p className="w-max text-white py-2 pl-16 pr-6 mt-4 rounded-lg bg-secondaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Create group</p>
                         </div>
                     }
 
@@ -154,15 +154,14 @@ function AllGroupsPage() {
                             <GroupCreation closeFunction={close} addGroup={addGroup} />
                         </div>
                     )}
-
                 </Popup>
 
                 {/* Group invite button */}
                 <Popup
                     trigger={
-                        <div className="relative cursor-pointer">
-                            <img src="/invite_picture.svg" className="invert absolute z-20 ml-[9vw] pl-4 mt-1 h-9 w-auto peer" />
-                            <p className="w-max text-white py-2 pl-16 pr-6 mt-4 ml-[9vw] rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">View Invites</p>
+                        <div className="relative cursor-pointer w-max ml-[9vw]">
+                            <img src="/invite_picture.svg" className="invert absolute z-20 pl-4 mt-1 h-9 w-auto peer" />
+                            <p className="w-max text-white py-2 pl-16 pr-6 mt-4 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">View Invites</p>
                         </div>
                     }
 

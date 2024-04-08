@@ -28,7 +28,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/home" element={<HomePage />} />
-          <Route path="/whiteboard" element={<WhiteBoard />} />
+          <Route path="/whiteboard/:groupID" element={<WhiteBoard />} />
           <Route path="/calculators" element={<CalculatorsPage />} />
           <Route path="/standard-calculator" element={<StandardCalculatorPage />} />
           <Route path="/scientific-calculator" element={<ScientificCalculatorPage />} />
