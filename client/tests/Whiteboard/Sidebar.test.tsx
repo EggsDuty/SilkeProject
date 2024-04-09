@@ -18,12 +18,15 @@ test("Add DraggableBox on click", async() =>{
     await user.click(addStandardCalculator);
     let totalCalculators = screen.getAllByText("Remove");
     expect(totalCalculators.length).toBe(1);
+
     await user.click(addScientificCalculator);
     await user.click(addGraphingCalculator);
     await user.click(addStandardCalculator);
+
     totalCalculators = screen.getAllByText("Remove");
     expect(totalCalculators.length).toBe(5);
 });
+
 test("Add correct type of calculator on click", async() =>{
     render(
         <BrowserRouter>
@@ -33,6 +36,7 @@ test("Add correct type of calculator on click", async() =>{
     const addStandardCalculator = screen.getByText("Standard Calculator");
     const addScientificCalculator = screen.getByText("Scientific Calculator");
     const addGraphingCalculator = screen.getByText("Graphing Calculator");
+
     expect(screen.queryByText("Standard calculator")).not.toBeInTheDocument();
     await user.click(addStandardCalculator);
     expect(screen.queryByText("Standard calculator")).toBeInTheDocument();
@@ -43,6 +47,7 @@ test("Add correct type of calculator on click", async() =>{
     await user.click(addGraphingCalculator);
     expect(screen.queryByText("Graphing calculator")).toBeInTheDocument();
 })
+
 test("Remove DraggableBox", async() =>{
     render(
         <BrowserRouter>
@@ -52,13 +57,16 @@ test("Remove DraggableBox", async() =>{
     const addStandardCalculator = screen.getByText("Standard Calculator");
     const addScientificCalculator = screen.getByText("Scientific Calculator");
     const addGraphingCalculator = screen.getByText("Graphing Calculator");
+
     await user.click(addStandardCalculator);
     expect(screen.queryByText("Remove")).toBeInTheDocument()
     await user.click(screen.getByText("Remove"))
     expect(screen.queryByText("Remove")).not.toBeInTheDocument()
+
     await user.click(addScientificCalculator);
     await user.click(addStandardCalculator);
     await user.click(addGraphingCalculator);
+    
     expect(screen.queryAllByText("Remove").length).toBe(4)
     expect(screen.queryAllByText("Remove")[0]).toBeInTheDocument()
     await user.click(screen.getAllByText("Remove")[0])
@@ -70,6 +78,7 @@ test("Remove DraggableBox", async() =>{
     await user.click(screen.getAllByText("Remove")[0])
     expect(screen.queryAllByText("Remove").length).toBe(0)
 })
+
 test("Functionality of calculators in DraggableBox", async() =>{
     render(
         <BrowserRouter>
