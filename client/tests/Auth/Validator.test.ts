@@ -25,3 +25,18 @@ test('Check if password is valid', () => {
     expect(Validator.ValidatePassword("Slaptazodis_123")).toEqual([]);
     expect(Validator.ValidatePassword("Slaptazodis`123")).toEqual(["PasswordHasSpecialSymbols"]);
 });
+
+test('Check if group name is valid', () => {
+    expect(Validator.ValidateGroupName("df")).toEqual(["GroupNameTooShort"]);
+    expect(Validator.ValidateGroupName("1")).toEqual(["GroupNameTooShort"]);
+    expect(Validator.ValidateGroupName("Ė%")).toEqual(["GroupNameTooShort"]);
+    expect(Validator.ValidateGroupName("         #%@")).toEqual(["GroupNameTooShort"]);
+    expect(Validator.ValidateGroupName("         a           ")).toEqual(["GroupNameTooShort"]);
+    expect(Validator.ValidateGroupName("abc             ")).toEqual(["GroupNameTooShort"]);
+    expect(Validator.ValidateGroupName("dfsdfgsdfgfdgsdfgsdfgsdfgsdfgfdgaagfdfgadgafadgsfgdfa")).toEqual(["GroupNameTooLong"]);
+    expect(Validator.ValidateGroupName("dfsdfgsdf  gfdgsdfg sdfgsdfgsdfgfd  gaagfdfgadgafadgsf  gdfa")).toEqual(["GroupNameTooLong"]);
+    expect(Validator.ValidateGroupName("***************************************************************")).toEqual(["GroupNameTooLong"]);
+    expect(Validator.ValidateGroupName("dfhj")).toEqual([]);
+    expect(Validator.ValidateGroupName("$%^&*@!~")).toEqual([]);
+    expect(Validator.ValidateGroupName("             1021 1210          ")).toEqual([]);
+});
