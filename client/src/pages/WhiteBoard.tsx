@@ -23,7 +23,7 @@ export default function YjsExample() {
             <Header transparent={false} />
             <Sidebar />
 
-            <div className="ml-32" style={{ position: 'fixed', inset: 0 }}>
+            <div className="ml-32 mt-10" style={{ position: 'fixed', inset: 0 }}>
                 <Tldraw
                     autoFocus
                     store={store}
