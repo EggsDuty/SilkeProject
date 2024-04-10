@@ -92,7 +92,7 @@ function ProfilePage() {
         <div className="h-screen w-screen absolute overflow-x-hidden">
             <Header />
             {gottenFriends ?
-                <div className="flex flex-row justify-evenly mt-28">
+                <div className="flex flex-row justify-evenly mt-28 mb-20">
                     <div className="bg-extraColor1 rounded-lg bg-opacity-80 w-1/2 p-10 drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
                         {!editMode ?
                             <ProfileInformation own={user?.uid === uid} info={convertedData} setEditMode={setEditMode} /> :
