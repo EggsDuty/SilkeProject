@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Textfit } from "react-textfit";
 import { sqrt, square, divide, multiply, round, pi } from "mathjs";
+import { MathJax, MathJaxContext } from "better-react-mathjax";
 
 function ScientificCalculator() {
   const [currentOperand, setCurrOperand] = useState("0");
@@ -295,6 +296,12 @@ function ScientificCalculator() {
     }
   };
 
+  const config = {
+    chtml: {
+      scale: 1,
+    },
+  };
+
   return (
     <>
       <div className="calculator_base bg-[#202020] w-[325px]  z-10">
@@ -307,155 +314,157 @@ function ScientificCalculator() {
             {currentOperation}
           </Textfit>
         </div>
-        <div className="calculator_buttons grid grid-cols-5 gap-1 p-1">
-          {did2nd ? (
-            <button onClick={() => handle2nd()} className="btnScientificCalc-equals">
-              2<sup>nd</sup>
+        <MathJaxContext config={config} version={3}>
+          <div className="calculator_buttons grid grid-cols-5 gap-1 p-1">
+            {did2nd ? (
+              <button onClick={() => handle2nd()} className="btnScientificCalc-equals">
+                <MathJax>{"\\(2^{nd}\\)"}</MathJax>
+              </button>
+            ) : (
+              <button onClick={() => handle2nd()} className="btnScientificCalc-operation">
+                <MathJax>{"\\(2^{nd}\\)"}</MathJax>
+              </button>
+            )}
+            <button onClick={() => updateOperand(pi.toString())} className="btnScientificCalc-operation">
+              <MathJax>{"\\(\\pi\\)"}</MathJax>
             </button>
-          ) : (
-            <button onClick={() => handle2nd()} className="btnScientificCalc-operation">
-              2<sup>nd</sup>
+            <button onClick={() => clearCalculator()} className="btnScientificCalc-operation">
+              e
             </button>
-          )}
-          <button onClick={() => updateOperand(pi.toString())} className="btnScientificCalc-operation">
-            pi
-          </button>
-          <button onClick={() => clearCalculator()} className="btnScientificCalc-operation">
-            e
-          </button>
-          <button onClick={() => clearCurrentOperation()} className="btnScientificCalc-operation">
-            C
-          </button>
-          <button onClick={() => removeLastDigit()} className="btnScientificCalc-operation">
-            &#8592;
-          </button>
-          {did2nd ? (
+            <button onClick={() => clearCurrentOperation()} className="btnScientificCalc-operation">
+              C
+            </button>
+            <button onClick={() => removeLastDigit()} className="btnScientificCalc-operation">
+              &#8592;
+            </button>
+            {did2nd ? (
+              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+                <MathJax>{"\\(x^3\\)"}</MathJax>
+              </button>
+            ) : (
+              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+                <MathJax>{"\\(x^2\\)"}</MathJax>
+              </button>
+            )}
+            <button onClick={() => handleOneDividedBy()} className="btnScientificCalc-operation">
+              <MathJax>{"\\(\\frac{1}{x}\\)"}</MathJax>
+            </button>
             <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              x<sup>3</sup>
+              <MathJax>{"\\(\\lvert x \\rvert\\)"}</MathJax>
             </button>
-          ) : (
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              x<sup>2</sup>
+            <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
+              exp
             </button>
-          )}
-          <button onClick={() => handleOneDividedBy()} className="btnScientificCalc-operation">
-            1/x
-          </button>
-          <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-            |x|
-          </button>
-          <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
-            exp
-          </button>
-          <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
-            mod
-          </button>
-          {did2nd ? (
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              &#x221B;
+            <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
+              mod
             </button>
-          ) : (
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              &#x221A;
+            {did2nd ? (
+              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+                <MathJax>{"\\(\\sqrt[3]x\\)"}</MathJax>
+              </button>
+            ) : (
+              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+                <MathJax>{"\\(\\sqrt[2]x\\)"}</MathJax>
+              </button>
+            )}
+            <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
+              (
             </button>
-          )}
-          <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
-            (
-          </button>
-          <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
-            )
-          </button>
-          <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
-            n!
-          </button>
-          <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
-            /
-          </button>
-          {did2nd ? (
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              y&#x221A;x
+            <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
+              )
             </button>
-          ) : (
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              x^y
+            <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
+              n!
             </button>
-          )}
-          <button onClick={() => updateOperand("7")} className="btnScientificCalc-number">
-            7
-          </button>
-          <button onClick={() => updateOperand("8")} className="btnScientificCalc-number">
-            8
-          </button>
-          <button onClick={() => updateOperand("9")} className="btnScientificCalc-number">
-            9
-          </button>
-          <button onClick={() => swapOperand("*")} className="btnScientificCalc-operation">
-            &#215;
-          </button>
-          {did2nd ? (
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              2<sup>x</sup>
+            <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
+              /
             </button>
-          ) : (
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              10<sup>x</sup>
+            {did2nd ? (
+              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+                <MathJax>{"\\(\\sqrt[y]x\\)"}</MathJax>
+              </button>
+            ) : (
+              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+                <MathJax>{"\\(x^y\\)"}</MathJax>
+              </button>
+            )}
+            <button onClick={() => updateOperand("7")} className="btnScientificCalc-number">
+              7
             </button>
-          )}
-          <button onClick={() => updateOperand("4")} className="btnScientificCalc-number">
-            4
-          </button>
-          <button onClick={() => updateOperand("5")} className="btnScientificCalc-number">
-            5
-          </button>
-          <button onClick={() => updateOperand("6")} className="btnScientificCalc-number">
-            6
-          </button>
-          <button onClick={() => swapOperand("-")} className="btnScientificCalc-operation">
-            &#8722;
-          </button>
-          {did2nd ? (
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              logyx
+            <button onClick={() => updateOperand("8")} className="btnScientificCalc-number">
+              8
             </button>
-          ) : (
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              log
+            <button onClick={() => updateOperand("9")} className="btnScientificCalc-number">
+              9
             </button>
-          )}
-          <button onClick={() => updateOperand("1")} className="btnScientificCalc-number">
-            1
-          </button>
-          <button onClick={() => updateOperand("2")} className="btnScientificCalc-number">
-            2
-          </button>
-          <button onClick={() => updateOperand("3")} className="btnScientificCalc-number">
-            3
-          </button>
-          <button onClick={() => swapOperand("+")} className="btnScientificCalc-operation">
-            &#43;
-          </button>
-          {did2nd ? (
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              e<sup>x</sup>
+            <button onClick={() => swapOperand("*")} className="btnScientificCalc-operation">
+              &#215;
             </button>
-          ) : (
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
-              ln
+            {did2nd ? (
+              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+                <MathJax>{"\\(2^x\\)"}</MathJax>
+              </button>
+            ) : (
+              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+                <MathJax>{"\\(10^x\\)"}</MathJax>
+              </button>
+            )}
+            <button onClick={() => updateOperand("4")} className="btnScientificCalc-number">
+              4
             </button>
-          )}
-          <button onClick={() => changeSign()} className="btnScientificCalc-number">
-            +/-
-          </button>
-          <button onClick={() => updateOperand("0")} className="btnScientificCalc-number">
-            0
-          </button>
-          <button onClick={() => updateOperand(".")} className="btnScientificCalc-number">
-            .
-          </button>
-          <button onClick={() => handleEquals()} className="btnScientificCalc-equals">
-            =
-          </button>
-        </div>
+            <button onClick={() => updateOperand("5")} className="btnScientificCalc-number">
+              5
+            </button>
+            <button onClick={() => updateOperand("6")} className="btnScientificCalc-number">
+              6
+            </button>
+            <button onClick={() => swapOperand("-")} className="btnScientificCalc-operation">
+              &#8722;
+            </button>
+            {did2nd ? (
+              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+                <MathJax>{"\\(log_y x\\)"}</MathJax>
+              </button>
+            ) : (
+              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+                <MathJax>{"\\(log\\)"}</MathJax>
+              </button>
+            )}
+            <button onClick={() => updateOperand("1")} className="btnScientificCalc-number">
+              1
+            </button>
+            <button onClick={() => updateOperand("2")} className="btnScientificCalc-number">
+              2
+            </button>
+            <button onClick={() => updateOperand("3")} className="btnScientificCalc-number">
+              3
+            </button>
+            <button onClick={() => swapOperand("+")} className="btnScientificCalc-operation">
+              &#43;
+            </button>
+            {did2nd ? (
+              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+                <MathJax>{"\\(e^x\\)"}</MathJax>
+              </button>
+            ) : (
+              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+                <MathJax>{"\\(ln\\)"}</MathJax>
+              </button>
+            )}
+            <button onClick={() => changeSign()} className="btnScientificCalc-number">
+              +/-
+            </button>
+            <button onClick={() => updateOperand("0")} className="btnScientificCalc-number">
+              0
+            </button>
+            <button onClick={() => updateOperand(".")} className="btnScientificCalc-number">
+              .
+            </button>
+            <button onClick={() => handleEquals()} className="btnScientificCalc-equals">
+              =
+            </button>
+          </div>
+        </MathJaxContext>
       </div>
     </>
   );
