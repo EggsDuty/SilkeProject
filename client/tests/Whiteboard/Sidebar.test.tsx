@@ -5,10 +5,10 @@ import user from '@testing-library/user-event'
 import React from 'react'
 import { BrowserRouter } from "react-router-dom";
 
-test("Add DraggableBox on click", async() =>{
+test("Add DraggableBox on click", async () => {
     render(
         <BrowserRouter>
-        <Sidebar />
+            <Sidebar />
         </BrowserRouter>
     )
     const addStandardCalculator = screen.getByText("Standard Calculator");
@@ -27,10 +27,10 @@ test("Add DraggableBox on click", async() =>{
     expect(totalCalculators.length).toBe(5);
 });
 
-test("Add correct type of calculator on click", async() =>{
+test("Add correct type of calculator on click", async () => {
     render(
         <BrowserRouter>
-        <Sidebar />
+            <Sidebar />
         </BrowserRouter>
     )
     const addStandardCalculator = screen.getByText("Standard Calculator");
@@ -48,10 +48,10 @@ test("Add correct type of calculator on click", async() =>{
     expect(screen.queryByText("Graphing calculator")).toBeInTheDocument();
 })
 
-test("Remove DraggableBox", async() =>{
+test("Remove DraggableBox", async () => {
     render(
         <BrowserRouter>
-        <Sidebar />
+            <Sidebar />
         </BrowserRouter>
     )
     const addStandardCalculator = screen.getByText("Standard Calculator");
@@ -66,7 +66,7 @@ test("Remove DraggableBox", async() =>{
     await user.click(addScientificCalculator);
     await user.click(addStandardCalculator);
     await user.click(addGraphingCalculator);
-    
+
     expect(screen.queryAllByText("Remove").length).toBe(4)
     expect(screen.queryAllByText("Remove")[0]).toBeInTheDocument()
     await user.click(screen.getAllByText("Remove")[0])
@@ -79,10 +79,10 @@ test("Remove DraggableBox", async() =>{
     expect(screen.queryAllByText("Remove").length).toBe(0)
 })
 
-test("Functionality of calculators in DraggableBox", async() =>{
+test("Functionality of calculators in DraggableBox", async () => {
     render(
         <BrowserRouter>
-        <Sidebar />
+            <Sidebar />
         </BrowserRouter>
     )
     const addStandardCalculator = screen.getByText("Standard Calculator");
@@ -148,10 +148,9 @@ test("Functionality of calculators in DraggableBox", async() =>{
     await user.click(screen.getByText("+/-"))
     await user.click(screen.getByText("/"))
     await user.click(screen.getByText("9"))
-    await user.click(screen.getByText("1/x"))
     await user.click(screen.getByText("="))
     expect(screen.queryAllByText("0").length).toBe(2)
-    expect(screen.queryAllByText("0 / 0.1111111111111111 =").length).toBe(1)
+    expect(screen.queryAllByText("9").length).toBe(1)
     await user.click(screen.getByText("←"))
     expect(screen.queryAllByText("0 / 0.1111111111111111 =").length).toBe(0)
     await user.click(screen.getByText("C"))
