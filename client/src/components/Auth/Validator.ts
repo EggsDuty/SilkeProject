@@ -115,7 +115,7 @@ function ValidateDescription(description: string) {
 
 function ValidateGroupName(name: string): string[] {
     const errors: string[] = [];
-
+    name=name.trim();
 
     if (name.length < 4) {
         errors.push("GroupNameTooShort");
@@ -129,6 +129,7 @@ function ValidateGroupName(name: string): string[] {
 
 function ValidateGroupDescription(description: string): string[] {
     const errors: string[] = [];
+    description=description.trim();
 
     if(description.length > 255){
         errors.push("DescriptionTooLong");
