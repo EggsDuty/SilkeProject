@@ -1,6 +1,5 @@
 import { getAuth } from 'firebase/auth';
 import firebase from '../firebase.tsx';
-import DatabaseFunctions, { AcceptFriendRequestPromise, DeleteUserFriendInvitePromise, GetFriendInvitesListOfUser, GetFriendsListOfUser, GetUserInfoForMemberList } from '../components/DatabaseFunctions.ts';
 import { UserInfo } from '../components/DatabaseTypes.ts';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -10,18 +9,28 @@ import ProfileInformation from '../components/Profile/ProfileInformation.tsx';
 import ProfileEditInformation from '../components/Profile/ProfileEditInformation.tsx';
 import MemberBox from '../components/Groups/MemberBox.tsx';
 
-const auth = getAuth(firebase.app);
-
 interface Person {
     userID: string,
     displayName: string,
     image: string
 }
 
-function ProfilePage() {
+interface Props {
+    databaseFunctions: {
+        GetUserDataFromDocumentPromise: Function,
+        AcceptFriendRequestPromise: Function
+        DeleteUserFriendInvitePromise: Function,
+        GetFriendInvitesListOfUser: Function,
+        GetFriendsListOfUser: Function,
+        GetUserInfoForMemberList: Function
+    }
+}
+
+function ProfilePage(props: Props) {
+    const dbf = props.databaseFunctions;
+
     const { uid } = useParams();
-    const [user, loading] = useAuthState(auth);
-    const [data, setData] = useState({});
+    const [data, setData] = useState<UserInfo>();
 
     const [toggledFriendAndInvites, setToggledFriendAndInvites] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -40,20 +49,20 @@ function ProfilePage() {
         const friends: Person[] = [];
 
         for (let i = 0; i < uids.length; i++) {
-            friends.push(await GetUserInfoForMemberList(uids.at(i)!));
+            friends.push(await dbf.GetUserInfoForMemberList(uids.at(i)!));
         }
 
         return friends;
     }
 
     function handleDecline(valueToRemove: string) {
-        DeleteUserFriendInvitePromise(uid!, valueToRemove).then(() => {
+        dbf.DeleteUserFriendInvitePromise(uid!, valueToRemove).then(() => {
             setGottenInvites(false);
         });
     }
 
     function handleAccept(friendID: string) {
-        AcceptFriendRequestPromise(uid!, friendID).then(() => {
+        dbf.AcceptFriendRequestPromise(uid!, friendID).then(() => {
             setGottenFriends(false);
             handleDecline(friendID);
         });
@@ -61,11 +70,11 @@ function ProfilePage() {
 
     useEffect(() => {
         if (uid !== null) {
-            DatabaseFunctions.GetUserDataFromDocumentPromise("users", uid).then((_data) => {
+            dbf.GetUserDataFromDocumentPromise("users", uid).then((_data: UserInfo) => {
                 setData(_data);
             });
             if (!gottenFriends) {
-                GetFriendsListOfUser(uid).then((_friendIDs) => {
+                dbf.GetFriendsListOfUser(uid).then((_friendIDs: string[]) => {
                     getAllFriendInfo(_friendIDs).then((_friendsInfo) => {
                         setGottenFriends(true);
                         setFriendList(_friendsInfo);
@@ -73,11 +82,11 @@ function ProfilePage() {
                 });
             }
         }
-    }, [loading, uid, gottenFriends]);
+    }, [uid, gottenFriends]);
 
     useEffect(() => {
         if (!gottenInvites) {
-            GetFriendInvitesListOfUser(uid).then((_inviteIDs) => {
+            dbf.GetFriendInvitesListOfUser(uid).then((_inviteIDs: string[]) => {
                 getAllFriendInfo(_inviteIDs).then((_personInfo) => {
                     setGottenInvites(true);
                     setInviteList(_personInfo);
@@ -86,8 +95,6 @@ function ProfilePage() {
         }
     }, [gottenInvites]);
 
-    const convertedData = data as UserInfo;
-
     return (
         <div className="h-screen w-screen absolute overflow-x-hidden">
             <Header />
@@ -95,8 +102,8 @@ function ProfilePage() {
                 <div className="flex flex-row justify-evenly mt-28 mb-20">
                     <div className="bg-extraColor1 rounded-lg bg-opacity-80 w-1/2 p-10 drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
                         {!editMode ?
-                            <ProfileInformation own={user?.uid === uid} info={convertedData} setEditMode={setEditMode} /> :
-                            <ProfileEditInformation uid={user!.uid} displayName={convertedData.displayName} description={convertedData.description} setEditMode={setEditMode} />
+                            <ProfileInformation own={localStorage.getItem("uid") === uid} info={data!} setEditMode={setEditMode} /> :
+                            <ProfileEditInformation uid={localStorage.getItem("uid")!} displayName={data!.displayName} description={data!.description} setEditMode={setEditMode} />
                         }
                     </div>
                     <div className="bg-extraColor1 flex flex-col rounded-lg bg-opacity-80 w-1/4 h-[600px] pt-10 px-10 pb-5 drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)] group">
@@ -116,10 +123,10 @@ function ProfilePage() {
                                     inviteList.map((_person, _index) => (
                                         <div key={_index} className="flex flex-row relative">
                                             <div className="cursor-pointer" onClick={() => handleAccept(_person.userID)}>
-                                                <img src={"/invite_accept_picture.svg"} className="absolute h-10 w-10 right-[5rem] translate-y-[15%]" />
+                                                <img src={"/invite_accept_picture.svg"} alt="accept" className="absolute h-10 w-10 right-[5rem] translate-y-[15%]" />
                                             </div>
                                             <div className="cursor-pointer" onClick={() => handleDecline(_person.userID)}>
-                                                <img src="/invite_decline_picture.svg" className="absolute h-10 w-10 right-[1rem] translate-y-[15%]" />
+                                                <img src="/invite_decline_picture.svg" alt="decline" className="absolute h-10 w-10 right-[1rem] translate-y-[15%]" />
                                             </div>
                                             <MemberBox memberID={_person.userID} image={_person.image} memberName={_person.displayName} isLeader={false} />
                                         </div>

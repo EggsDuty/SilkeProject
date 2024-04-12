@@ -17,6 +17,7 @@ import GroupPage from "./pages/GroupPage.tsx";
 import Background from "./components/Background.tsx";
 import ScientificCalculatorPage from "./pages/ScientificCalculatorPage.tsx";
 import StandardCalculatorPage from "./pages/StandardCalculatorPage.tsx";
+import * as dbf from '../src/components/DatabaseFunctions.ts';
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/please-verify" element={<PleaseVerifyPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
-          <Route path="/profile/:uid" element={<ProfilePage />} />
+          <Route path="/profile/:uid" element={<ProfilePage databaseFunctions={dbf} />} />
           <Route path="/groups" element={<AllGroupsPage />} />
           <Route path="/group/:groupID" element={<GroupPage />} />
         </Routes>
