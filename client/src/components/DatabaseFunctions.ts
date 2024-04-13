@@ -152,6 +152,3 @@ export async function GetGroupInfoPromise(uid: string) {
     const groupData = _data as GroupInfo;
     return groupData;
 }
-
-
-export default { GetUserDataFromDocumentPromise, GetUserDisplayNamePromise, GetUserEmailPromise, GetUserInfoForHeaderPromise, UpdateUserDataPromise };

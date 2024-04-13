@@ -1,29 +1,16 @@
-import { getAuth } from 'firebase/auth';
-import firebase from '../firebase.tsx';
 import { UserInfo } from '../components/DatabaseTypes.ts';
 import { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { Navigate, useParams } from 'react-router-dom';
 import Header from '../components/Header.tsx';
 import ProfileInformation from '../components/Profile/ProfileInformation.tsx';
 import ProfileEditInformation from '../components/Profile/ProfileEditInformation.tsx';
 import MemberBox from '../components/Groups/MemberBox.tsx';
+import { AcceptFriendRequestPromise, DeleteUserFriendInvitePromise, GetFriendInvitesListOfUser, GetFriendsListOfUser, GetUserDataFromDocumentPromise, GetUserInfoForMemberList } from '../components/DatabaseFunctions.ts';
 
 interface Person {
     userID: string,
     displayName: string,
     image: string
-}
-
-interface Props {
-    databaseFunctions: {
-        GetUserDataFromDocumentPromise: Function,
-        AcceptFriendRequestPromise: Function
-        DeleteUserFriendInvitePromise: Function,
-        GetFriendInvitesListOfUser: Function,
-        GetFriendsListOfUser: Function,
-        GetUserInfoForMemberList: Function
-    }
 }
 
 function ProfilePage() {
@@ -48,20 +35,20 @@ function ProfilePage() {
         const friends: Person[] = [];
 
         for (let i = 0; i < uids.length; i++) {
-            friends.push(await dbf.GetUserInfoForMemberList(uids.at(i)!));
+            friends.push(await GetUserInfoForMemberList(uids.at(i)!));
         }
 
         return friends;
     }
 
     function handleDecline(valueToRemove: string) {
-        dbf.DeleteUserFriendInvitePromise(uid!, valueToRemove).then(() => {
+        DeleteUserFriendInvitePromise(uid!, valueToRemove).then(() => {
             setGottenInvites(false);
         });
     }
 
     function handleAccept(friendID: string) {
-        dbf.AcceptFriendRequestPromise(uid!, friendID).then(() => {
+        AcceptFriendRequestPromise(uid!, friendID).then(() => {
             setGottenFriends(false);
             handleDecline(friendID);
         });
@@ -69,11 +56,12 @@ function ProfilePage() {
 
     useEffect(() => {
         if (uid !== null) {
-            dbf.GetUserDataFromDocumentPromise("users", uid).then((_data: UserInfo) => {
-                setData(_data);
+            GetUserDataFromDocumentPromise("users", uid).then((_data) => {
+                const _convertedData = _data as UserInfo;
+                setData(_convertedData);
             });
             if (!gottenFriends) {
-                dbf.GetFriendsListOfUser(uid).then((_friendIDs: string[]) => {
+                GetFriendsListOfUser(uid).then((_friendIDs: string[]) => {
                     getAllFriendInfo(_friendIDs).then((_friendsInfo) => {
                         setGottenFriends(true);
                         setFriendList(_friendsInfo);
@@ -85,7 +73,7 @@ function ProfilePage() {
 
     useEffect(() => {
         if (!gottenInvites) {
-            dbf.GetFriendInvitesListOfUser(uid).then((_inviteIDs: string[]) => {
+            GetFriendInvitesListOfUser(uid).then((_inviteIDs: string[]) => {
                 getAllFriendInfo(_inviteIDs).then((_personInfo) => {
                     setGottenInvites(true);
                     setInviteList(_personInfo);

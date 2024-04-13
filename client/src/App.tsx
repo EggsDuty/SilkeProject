@@ -39,7 +39,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/please-verify" element={<PleaseVerifyPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
-          <Route path="/profile/:uid" element={<ProfilePage databaseFunctions={dbf} />} />
+          <Route path="/profile/:uid" element={<ProfilePage />} />
           <Route path="/groups" element={<AllGroupsPage />} />
           <Route path="/group/:groupID" element={<GroupPage />} />
         </Routes>

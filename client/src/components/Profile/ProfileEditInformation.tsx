@@ -89,7 +89,7 @@ function ProfileEditInformation(props: Props) {
             <hr className="border border-white my-10 w-auto -mx-10" />
 
             <h2 className="text-4xl text-white text-left">Profile picture</h2>
-            <input onChange={handleFileChange} type="file" title="hi" accept="image/png, image/jpeg, image/jpg" className="mt-3 text-white" />
+            <input onChange={handleFileChange} type="file" title="Upload an image!" accept="image/png, image/jpeg, image/jpg" className="mt-3 text-white" />
             {image !== null ?
                 <>
                     <p className="text-2xl text-white my-3">Preview:</p>
