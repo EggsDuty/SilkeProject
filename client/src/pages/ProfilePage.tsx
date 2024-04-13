@@ -26,8 +26,7 @@ interface Props {
     }
 }
 
-function ProfilePage(props: Props) {
-    const dbf = props.databaseFunctions;
+function ProfilePage() {
 
     const { uid } = useParams();
     const [data, setData] = useState<UserInfo>();
