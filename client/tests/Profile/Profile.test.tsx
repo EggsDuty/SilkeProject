@@ -28,9 +28,9 @@ const info: UserInfoWithUID = {
 vi.mock('react-router-dom', async (importOriginal) => {
     const mod = await importOriginal<typeof import('react-router-dom')>()
     return {
-      ...mod,
-      default: { useParams: vi.fn() },
-      useParams: vi.fn(() => {return {uid: "1"}}),
+        ...mod,
+        default: { useParams: vi.fn() },
+        useParams: vi.fn(() => { return { uid: "1" } }),
     }
 });
 
@@ -38,13 +38,13 @@ vi.mock('../../src/components/DatabaseFunctions.ts', async (importOriginal) => {
     const mod = await importOriginal<typeof import('../../src/components/DatabaseFunctions.ts')>()
     return {
         ...mod,
-        GetUserDataFromDocumentPromise: async () => {return (info as UserInfo)},
-        GetFriendInvitesListOfUser: async () => {return ["1"]},
-        GetFriendsListOfUser: async () => {return ["1"]},
-        GetUserInfoForMemberList: async () => {return { displayName: info.displayName, image: info.image, userID: info.uid }},
-        UpdateUserDataPromise: vi.fn(async () => {}),
-        AcceptFriendRequestPromise: vi.fn(async () => {}),
-        DeleteUserFriendInvitePromise: vi.fn(async () => {})
+        GetUserDataFromDocumentPromise: async () => { return (info as UserInfo) },
+        GetFriendInvitesListOfUser: async () => { return ["1"] },
+        GetFriendsListOfUser: async () => { return ["1"] },
+        GetUserInfoForMemberList: async () => { return { displayName: info.displayName, image: info.image, userID: info.uid } },
+        UpdateUserDataPromise: vi.fn(async () => { }),
+        AcceptFriendRequestPromise: vi.fn(async () => { }),
+        DeleteUserFriendInvitePromise: vi.fn(async () => { })
     }
 });
 
@@ -103,9 +103,9 @@ test("Friend decline works in main profile page", async () => {
     user.setup();
 
     render(
-            <BrowserRouter>
-                <ProfilePage />
-            </BrowserRouter>
+        <BrowserRouter>
+            <ProfilePage />
+        </BrowserRouter>
     )
 
     await new Promise(res => setTimeout(res, 10));
@@ -125,9 +125,9 @@ test("Friend accept works in main profile page", async () => {
     user.setup();
 
     render(
-            <BrowserRouter>
-                <ProfilePage />
-            </BrowserRouter>
+        <BrowserRouter>
+            <ProfilePage />
+        </BrowserRouter>
     )
 
     await new Promise(res => setTimeout(res, 10));
@@ -148,9 +148,9 @@ test("User information is correctly updated to database in ProfileEditInformatio
     user.setup();
 
     render(
-            <BrowserRouter>
-                <ProfileEditInformation uid={info.uid} displayName={info.displayName} description={info.description} setEditMode={vi.fn()} />
-            </BrowserRouter>
+        <BrowserRouter>
+            <ProfileEditInformation uid={info.uid} displayName={info.displayName} description={info.description} setEditMode={vi.fn()} />
+        </BrowserRouter>
     )
 
     const saveButton = screen.getByText("Save");
@@ -165,6 +165,6 @@ test("User information is correctly updated to database in ProfileEditInformatio
 
     await user.click(saveButton);
 
-    expect(updateMock).toHaveBeenCalledWith(info.uid, {displayName: info.displayName + "1", description: info.description + "1"});
+    expect(updateMock).toHaveBeenCalledWith(info.uid, { displayName: info.displayName + "1", description: info.description + "1" });
     updateMock.mockClear();
 });

@@ -43,6 +43,7 @@ function LoginPage() {
         }
 
         try {
+            localStorage.setItem("requireUpdate", "true");
             await signInWithEmailAndPassword(auth, emailField, passwordField);
         }
         catch (error: unknown) {
