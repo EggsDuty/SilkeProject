@@ -18,7 +18,7 @@ function MemberBox(props: Props){
     const [isButtonPressed, setIsButtonPressed] = useState(false)
 
     function HandleClick(){
-        CreateGroupInvitePromise(props.memberID, props.groupID!, props.groupInfo?.name!, props.groupInfo?.leaderName!)
+        CreateGroupInvitePromise(props.memberID, props.groupID!, props.groupInfo?.name!, props.groupInfo?.leaderID!)
         setIsButtonPressed(true);
     }
 

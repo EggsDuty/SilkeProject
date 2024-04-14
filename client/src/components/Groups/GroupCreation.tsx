@@ -14,7 +14,7 @@ interface Props {
 }
 
 interface ExtendedGroupInfo extends GroupInfo {
-    groupID: string
+    groupID?: string
 }
 
 const auth = getAuth(firebase.app);
@@ -38,23 +38,19 @@ function GroupCreation(props: Props) {
             return;
         }
 
-        GetUserDisplayNamePromise(user!.uid).then(async (_leaderName: string) => {
-            const groupInfo: ExtendedGroupInfo = {
-                name: trimmedGroupName,
-                description: trimmedDescription,
-                creationDate: Timestamp.now(),
-                members: [user!.uid],
-                leaderID: user!.uid,
-                leaderName: _leaderName,
-                groupID: ""
-            }
+        const groupInfo: ExtendedGroupInfo = {
+            name: trimmedGroupName,
+            description: trimmedDescription,
+            creationDate: Timestamp.now(),
+            members: [user!.uid],
+            leaderID: user!.uid
+        }
 
-            await addDoc(collection(firebase.db, "groups"), groupInfo).then((groupRef) => {
-                const userRef = doc(firebase.db, "users", user!.uid);
-                setDoc(userRef, { groups: arrayUnion(groupRef.id) }, { merge: true }).then(() => {
-                    groupInfo.groupID = groupRef.id;
-                    props.addGroup(groupInfo)
-                });
+        await addDoc(collection(firebase.db, "groups"), groupInfo).then((groupRef) => {
+            const userRef = doc(firebase.db, "users", user!.uid);
+            setDoc(userRef, { groups: arrayUnion(groupRef.id) }, { merge: true }).then(async () => {
+                groupInfo.groupID = groupRef.id;
+                props.addGroup(groupInfo)
             });
         })
 

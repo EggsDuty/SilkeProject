@@ -2,7 +2,7 @@ import { Navigate, useNavigate, Link, useParams } from "react-router-dom"
 import Header from "../components/Header"
 import { GroupInfo } from "../components/DatabaseTypes";
 import { useEffect, useState } from "react";
-import { DeleteGroupIDPromise, DeleteUserFromGroupPromise, GetGroupInfoPromise, GetUserInfoForMemberList, UpdateLeaderNameInGroupListPromise } from "../components/DatabaseFunctions";
+import { DeleteGroupIDPromise, DeleteUserFromGroupPromise, GetGroupInfoPromise, GetUserInfoForMemberList, UpdateLeaderIDInGroupListPromise } from "../components/DatabaseFunctions";
 import MemberBox from "../components/Groups/MemberBox";
 import Popup from "reactjs-popup";
 import MemberAdd from "../components/Groups/MemberAdd";
@@ -17,6 +17,7 @@ function GroupPage() {
     const { groupID } = useParams();
     const userID = localStorage.getItem("uid");
     const userDisplayName = localStorage.getItem("username");
+
 
     const [groupInfo, setGroupInfo] = useState<GroupInfo>();
     const defaultValue: MemberInfo[] = [];
@@ -66,12 +67,12 @@ function GroupPage() {
     }
 
     function HandleGroupLeaveClick(){
-        DeleteUserFromGroupPromise(userID!, groupID!).then(() => {
+        DeleteUserFromGroupPromise(userID!, groupID!).then(async () => {
             if(groupInfo?.members.length === 1){
                 DeleteGroupIDPromise(groupID!);
             }
-            else if(userDisplayName === groupInfo?.leaderName){
-                UpdateLeaderNameInGroupListPromise(groupID!, userNameInfo.at(1)!.displayName)
+            else if(userID === groupInfo?.leaderID){
+                await UpdateLeaderIDInGroupListPromise(groupID!, groupInfo.members.at(1)!)
             }
             navigate("/groups");
         })
@@ -120,7 +121,7 @@ function GroupPage() {
                             </div>
                             :
                             userNameInfo.map((_memberInfo, index) => (
-                                <MemberBox key={index} memberID={_memberInfo.userID} image={_memberInfo.image} memberName={_memberInfo.displayName} isLeader={_memberInfo.displayName === groupInfo?.leaderName ? true : false} />
+                                <MemberBox key={index} memberID={_memberInfo.userID} image={_memberInfo.image} memberName={_memberInfo.displayName} isLeader={_memberInfo.userID === groupInfo?.leaderID ? true : false} />
                             ))
                         }
                     </div>

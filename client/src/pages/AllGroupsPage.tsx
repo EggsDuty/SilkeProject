@@ -4,21 +4,18 @@ import Header from "../components/Header"
 import GroupCreation from "../components/Groups/GroupCreation"
 import { useEffect, useState } from "react"
 import firebase from "../firebase"
-import { useAuthState } from "react-firebase-hooks/auth"
-import { getAuth } from "firebase/auth"
 import { doc, getDoc } from "firebase/firestore"
 import { UserInfo, GroupInfo } from "../components/DatabaseTypes.ts"
 import GroupInvites from "../components/Groups/GroupInvites.tsx"
-
-const auth = getAuth(firebase.app);
+import { GetUserDisplayNamePromise } from "../components/DatabaseFunctions.ts"
 
 interface ExtendedGroupInfo extends GroupInfo {
-    groupID: string
+    groupID: string,
+    leaderName: string
 }
 
 function AllGroupsPage() {
 
-    const [user, loading] = useAuthState(auth);
     const defaultValue: ExtendedGroupInfo[] = [];
     const [groupInfo, setGroupInfo] = useState(defaultValue);
     const [doneGettingGroups, setDoneGettingGroups] = useState(false);
@@ -42,13 +39,14 @@ function AllGroupsPage() {
     }
 
     function addGroup(group: ExtendedGroupInfo) {
+        group.leaderName = localStorage.getItem("username")!;
         const newGroups = [...groupInfo];
         newGroups.splice(0, 0, group);
         setGroupInfo(newGroups);
     }
 
     async function getGroups() {
-        const userRef = doc(firebase.db, "users", user!.uid);
+        const userRef = doc(firebase.db, "users", localStorage.getItem("uid")!);
         const docUserSnap = await getDoc(userRef);
         if (docUserSnap.exists()) {
             const userData = docUserSnap.data() as UserInfo;
@@ -58,6 +56,7 @@ function AllGroupsPage() {
                 const docGroupSnap = await getDoc(groupRef);
                 if (docGroupSnap.exists()) {
                     const groupData = docGroupSnap.data() as ExtendedGroupInfo;
+                    groupData.leaderName = await GetUserDisplayNamePromise(groupData.leaderID);
                     groupData.groupID = groupID;
                     groupArray.push(groupData);
                 }
@@ -83,15 +82,12 @@ function AllGroupsPage() {
         }
     }
     useEffect(() => {
-        if (user === null) {
-            return
-        }
         if (doneGettingGroups) {
             return;
         }
         getGroups();
 
-    }, [loading, doneGettingGroups]);
+    }, [doneGettingGroups]);
 
     useEffect(() => {
         const tempFilteredGroupArray: ExtendedGroupInfo[] = [];
@@ -173,7 +169,7 @@ function AllGroupsPage() {
                         <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[40vw] min-w-[500px] m-auto h-[80vh] min-h-[600px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
                             <button onClick={close} className="text-3xl ml-2">X</button>
                             <h1 className="text-4xl text-center mt-10">Invites</h1>
-                            <GroupInvites uid={user ? user.uid : ""} setDoneGettingGroups={setDoneGettingGroups} />
+                            <GroupInvites uid={localStorage.getItem("uid")!} setDoneGettingGroups={setDoneGettingGroups} />
                         </div>
                     )}
                 </Popup>

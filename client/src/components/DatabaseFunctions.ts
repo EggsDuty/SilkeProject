@@ -121,10 +121,10 @@ export async function DeleteGroupIDPromise(groupID: string) {
     await deleteDoc(groupRef);
 }
 
-export async function UpdateLeaderNameInGroupListPromise(groupID: string, newName: string) {
+export async function UpdateLeaderIDInGroupListPromise(groupID: string, newLeaderID: string) {
     const groupRef = doc(firebase.db, "groups", groupID);
     await updateDoc(groupRef, {
-        leaderName: newName
+        leaderID: newLeaderID
     })
 }
 
