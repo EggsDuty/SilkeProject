@@ -116,6 +116,14 @@ export async function DeleteUserFromGroupPromise(uid: string, groupID: string) {
     });
 }
 
+export async function DeleteUserGroupIDPromise(uid: string, groupID: string) {
+    const userRef = doc(firebase.db, "users", uid);
+    await updateDoc(userRef, {
+        groups: arrayRemove(groupID)
+    });
+
+}
+
 export async function DeleteGroupIDPromise(groupID: string) {
     const groupRef = doc(firebase.db, "groups", groupID);
     await deleteDoc(groupRef);

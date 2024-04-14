@@ -18,6 +18,7 @@ import Background from "./components/Background.tsx";
 import ScientificCalculatorPage from "./pages/ScientificCalculatorPage.tsx";
 import StandardCalculatorPage from "./pages/StandardCalculatorPage.tsx";
 import * as dbf from '../src/components/DatabaseFunctions.ts';
+import GroupSettingsPage from "./pages/GroupSettingsPage.tsx";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="/profile/:uid" element={<ProfilePage />} />
           <Route path="/groups" element={<AllGroupsPage />} />
           <Route path="/group/:groupID" element={<GroupPage />} />
+          <Route path="/group/:groupID/settings" element={<GroupSettingsPage />} />
         </Routes>
       </BrowserRouter>
     </>
