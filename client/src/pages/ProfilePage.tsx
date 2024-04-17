@@ -5,7 +5,7 @@ import Header from '../components/Header.tsx';
 import ProfileInformation from '../components/Profile/ProfileInformation.tsx';
 import ProfileEditInformation from '../components/Profile/ProfileEditInformation.tsx';
 import MemberBox from '../components/Groups/MemberBox.tsx';
-import { AcceptFriendRequestPromise, DeleteUserFriendInvitePromise, GetFriendInvitesListOfUser, GetFriendsListOfUser, GetUserDataFromDocumentPromise, GetUserInfoForMemberList } from '../components/DatabaseFunctions.ts';
+import { AcceptFriendRequestPromise, DeleteUserFriendInvitePromise, GetFriendInvitesListOfUser, GetFriendsListOfUser, GetDataFromDocumentPromise, GetUserInfoForMemberList } from '../components/DatabaseFunctions.ts';
 
 interface Person {
     userID: string,
@@ -56,7 +56,7 @@ function ProfilePage() {
 
     useEffect(() => {
         if (uid !== null) {
-            GetUserDataFromDocumentPromise("users", uid).then((_data) => {
+            GetDataFromDocumentPromise("users", uid).then((_data) => {
                 const _convertedData = _data as UserInfo;
                 setData(_convertedData);
             });

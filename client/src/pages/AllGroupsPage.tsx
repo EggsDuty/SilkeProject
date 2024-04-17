@@ -3,11 +3,9 @@ import GroupBox from "../components/Groups/GroupBox"
 import Header from "../components/Header"
 import GroupCreation from "../components/Groups/GroupCreation"
 import { useEffect, useState } from "react"
-import firebase from "../firebase"
-import { doc, getDoc } from "firebase/firestore"
 import { UserInfo, GroupInfo } from "../components/DatabaseTypes.ts"
 import GroupInvites from "../components/Groups/GroupInvites.tsx"
-import { GetUserDisplayNamePromise } from "../components/DatabaseFunctions.ts"
+import { GetDataFromDocumentPromise, GetGroupInfoPromise, GetUserDisplayNamePromise } from "../components/DatabaseFunctions.ts"
 
 interface ExtendedGroupInfo extends GroupInfo {
     groupID: string,
@@ -46,40 +44,34 @@ function AllGroupsPage() {
     }
 
     async function getGroups() {
-        const userRef = doc(firebase.db, "users", localStorage.getItem("uid")!);
-        const docUserSnap = await getDoc(userRef);
-        if (docUserSnap.exists()) {
-            const userData = docUserSnap.data() as UserInfo;
-            const groupArray = [];
-            for (const groupID of userData.groups) {
-                const groupRef = doc(firebase.db, "groups", groupID);
-                const docGroupSnap = await getDoc(groupRef);
-                if (docGroupSnap.exists()) {
-                    const groupData = docGroupSnap.data() as ExtendedGroupInfo;
-                    groupData.leaderName = await GetUserDisplayNamePromise(groupData.leaderID);
-                    groupData.groupID = groupID;
-                    groupArray.push(groupData);
-                }
-            }
-            const sortedGroupArray: ExtendedGroupInfo[] = [];
-            while (groupArray.length > 0) {
-                let biggest = 0;
-                let biggestIndex = -1;
-                for (let i = 0; i < groupArray.length; i++) {
-                    if (groupArray.at(i)!.creationDate.seconds > biggest) {
-                        biggest = groupArray.at(i)!.creationDate.seconds;
-                        biggestIndex = i;
-                    }
-                }
-
-                sortedGroupArray.push(groupArray.at(biggestIndex)!);
-                groupArray.splice(biggestIndex, 1);
-            }
-
-            setGroupInfo(sortedGroupArray);
-            setDoneGettingGroups(true);
-            handleSearch();
+        const userData = await GetDataFromDocumentPromise("users", localStorage.getItem("uid")!) as UserInfo
+        const groupArray: ExtendedGroupInfo[] = [];
+        for (const groupID of userData.groups) {
+            const groupData = await GetGroupInfoPromise(groupID) as ExtendedGroupInfo;
+            groupData.leaderName = await GetUserDisplayNamePromise(groupData.leaderID);
+            groupData.groupID = groupID;
+            groupArray.push(groupData);
         }
+
+        const sortedGroupArray: ExtendedGroupInfo[] = [];
+        while (groupArray.length > 0) {
+            let biggest = 0;
+            let biggestIndex = -1;
+            for (let i = 0; i < groupArray.length; i++) {
+                if (groupArray.at(i)!.creationDate.seconds > biggest) {
+                    biggest = groupArray.at(i)!.creationDate.seconds;
+                    biggestIndex = i;
+                }
+            }
+
+            sortedGroupArray.push(groupArray.at(biggestIndex)!);
+            groupArray.splice(biggestIndex, 1);
+        }
+
+        setGroupInfo(sortedGroupArray);
+        setDoneGettingGroups(true);
+        handleSearch();
+        
     }
     useEffect(() => {
         if (doneGettingGroups) {
@@ -102,7 +94,7 @@ function AllGroupsPage() {
 
     return (
         <>
-            <div className="w-screen absolute bg-repeat-y">
+            <div className="w-screen absolute bg-repeat-y pb-20">
                 <Header />
                 <h1 className="text-left mt-24 text-4xl text-white w-max ml-[9vw] border-l-4 pl-5 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]" >Your groups:</h1>
 

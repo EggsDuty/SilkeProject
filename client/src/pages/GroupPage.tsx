@@ -15,7 +15,6 @@ interface MemberInfo {
 
 function GroupPage() {
     const { groupID } = useParams();
-    const userID = localStorage.getItem("uid");
 
     const [groupInfo, setGroupInfo] = useState<GroupInfo>();
     const defaultValue: MemberInfo[] = [];
@@ -77,7 +76,7 @@ function GroupPage() {
                     <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Members</h2>
                     <Popup
                         trigger={
-                            <img src="/member_add_picture.svg" className="cursor-pointer mt-[42px] ml-3 invert z-20 h-[31px] w-auto hover:contrast-[60%] mr-[250px] drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]" />
+                            <img alt="Add member" src="/member_add_picture.svg" className="cursor-pointer mt-[42px] ml-3 invert z-20 h-[31px] w-auto hover:contrast-[60%] mr-[250px] drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]" />
                         }
 
                         modal

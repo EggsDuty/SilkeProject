@@ -1,8 +1,8 @@
 import firebase from '../firebase.tsx';
-import { arrayRemove, arrayUnion, deleteDoc, collection, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, deleteDoc, collection, doc, getDoc, getDocs, query, updateDoc, where, addDoc } from 'firebase/firestore';
 import { GroupInfo, UserInfo } from './DatabaseTypes.ts';
 
-export async function GetUserDataFromDocumentPromise(collection: string, id: string) {
+export async function GetDataFromDocumentPromise(collection: string, id: string) {
     console.log("call");
     const ref = doc(firebase.db, collection, id);
     const retrievedDoc = await getDoc(ref);
@@ -15,12 +15,12 @@ export async function GetUserDataFromDocumentPromise(collection: string, id: str
 }
 
 export async function GetUserDisplayNamePromise(uid: string) {
-    const _data = await GetUserDataFromDocumentPromise("users", uid)
+    const _data = await GetDataFromDocumentPromise("users", uid)
     return (_data as UserInfo).displayName;
 }
 
 export async function GetUserEmailPromise(uid: string) {
-    const _data = await GetUserDataFromDocumentPromise("users", uid);
+    const _data = await GetDataFromDocumentPromise("users", uid);
     return (_data as UserInfo).email;
 }
 
@@ -32,7 +32,7 @@ export async function CreateGroupInvitePromise(uid: string, groupID: string, gro
 }
 
 export async function GetUserGroupInvitesPromise(uid: string) {
-    const _data = await GetUserDataFromDocumentPromise("users", uid);
+    const _data = await GetDataFromDocumentPromise("users", uid);
     return (_data as UserInfo).groupInvites;
 }
 
@@ -74,26 +74,26 @@ export async function DeleteUserFriendInvitePromise(uid: string, value: string) 
 
 
 export async function GetUserInfoForHeaderPromise(uid: string) {
-    const _data = await GetUserDataFromDocumentPromise("users", uid);
+    const _data = await GetDataFromDocumentPromise("users", uid);
     const userData = _data as UserInfo;
     return { displayName: userData.displayName, email: _data.email, image: userData.image };
 }
 
 export async function GetUserInfoForMemberList(uid: string) {
-    const _data = await GetUserDataFromDocumentPromise("users", uid);
+    const _data = await GetDataFromDocumentPromise("users", uid);
     const userData = _data as UserInfo;
     return { displayName: userData.displayName, image: userData.image, userID: uid };
 }
 
 
 export async function GetFriendInvitesListOfUser(uid: string) {
-    const _data = await GetUserDataFromDocumentPromise("users", uid);
+    const _data = await GetDataFromDocumentPromise("users", uid);
     const userData = _data as UserInfo;
     return userData.friendInvites;
 }
 
 export async function GetFriendsListOfUser(uid: string) {
-    const _data = await GetUserDataFromDocumentPromise("users", uid);
+    const _data = await GetDataFromDocumentPromise("users", uid);
     const userData = _data as UserInfo;
     return userData.friends;
 }
@@ -141,6 +141,15 @@ export async function UpdateUserDataPromise(uid: string, updateMap: {}) {
     await updateDoc(userRef, updateMap);
 }
 
+export async function CreateNewGroupPromise(groupInfo: GroupInfo, userID: string) {
+    const userRef = doc(firebase.db, "users", userID);
+    const groupRef = await addDoc(collection(firebase.db, "groups"), groupInfo);
+    await updateDoc(userRef, {
+        groups: arrayUnion(groupRef.id)
+    })
+    return groupRef.id;
+}
+
 export async function GetUsersWithDisplayNamePromise(name: string) {
     const usersRef = collection(firebase.db, "users");
     const _query = query(usersRef, where("displayName", "==", name));
@@ -156,7 +165,7 @@ export async function GetUsersWithDisplayNamePromise(name: string) {
 }
 
 export async function GetGroupInfoPromise(uid: string) {
-    const _data = await GetUserDataFromDocumentPromise("groups", uid);
+    const _data = await GetDataFromDocumentPromise("groups", uid);
     const groupData = _data as GroupInfo;
     return groupData;
 }

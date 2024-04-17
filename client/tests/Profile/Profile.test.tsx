@@ -38,7 +38,7 @@ vi.mock('../../src/components/DatabaseFunctions.ts', async (importOriginal) => {
     const mod = await importOriginal<typeof import('../../src/components/DatabaseFunctions.ts')>()
     return {
         ...mod,
-        GetUserDataFromDocumentPromise: async () => { return (info as UserInfo) },
+        GetDataFromDocumentPromise: async () => { return (info as UserInfo) },
         GetFriendInvitesListOfUser: async () => { return ["1"] },
         GetFriendsListOfUser: async () => { return ["1"] },
         GetUserInfoForMemberList: async () => { return { displayName: info.displayName, image: info.image, userID: info.uid } },

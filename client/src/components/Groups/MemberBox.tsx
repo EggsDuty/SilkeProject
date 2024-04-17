@@ -1,5 +1,5 @@
-import { Link, useNavigate, useParams } from "react-router-dom"
-import { CreateFriendInvitePromise, CreateGroupInvitePromise } from "../DatabaseFunctions"
+import { Link } from "react-router-dom"
+import { CreateGroupInvitePromise } from "../DatabaseFunctions"
 import { useState } from "react"
 import { GroupInfo } from "../DatabaseTypes"
 
@@ -38,9 +38,9 @@ function MemberBox(props: Props){
             <div className="absolute z-10 mt-[8px] ml-[76%] pointer-events-auto" onClick={() => HandleClick()}>
                 {
                 isButtonPressed ?
-                <img className="h-9 invert" src="/check_sign_picture.svg" />
+                <img alt="Check sign" className="h-9 invert" src="/check_sign_picture.svg" />
                 :
-                <img className="h-9 invert hover:contrast-[60%] cursor-pointer" src="/plus_sign_picture.svg" />
+                <img alt="Plus sign" className="h-9 invert hover:contrast-[60%] cursor-pointer" src="/plus_sign_picture.svg" />
                 }
 
             </div>

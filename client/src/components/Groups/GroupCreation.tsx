@@ -1,12 +1,9 @@
 import { FormEvent, useState } from "react";
 import Validator from "../Auth/Validator";
 import GroupField from "./GroupField";
-import { collection, addDoc, setDoc, doc, arrayUnion, Timestamp } from "firebase/firestore";
-import firebase from "../../firebase.tsx";
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { getAuth } from "firebase/auth";
-import { GetUserDisplayNamePromise } from "../DatabaseFunctions.ts";
+import { Timestamp } from "firebase/firestore";
 import { GroupInfo } from "../DatabaseTypes.ts";
+import { CreateNewGroupPromise } from "../DatabaseFunctions.ts";
 
 interface Props {
     closeFunction: any,
@@ -17,10 +14,9 @@ interface ExtendedGroupInfo extends GroupInfo {
     groupID?: string
 }
 
-const auth = getAuth(firebase.app);
 
 function GroupCreation(props: Props) {
-    const [user, loading] = useAuthState(auth);
+    const userID = localStorage.getItem("uid");
     const [groupName, setGroupName] = useState("");
     const [description, setDescription] = useState("");
 
@@ -42,17 +38,12 @@ function GroupCreation(props: Props) {
             name: trimmedGroupName,
             description: trimmedDescription,
             creationDate: Timestamp.now(),
-            members: [user!.uid],
-            leaderID: user!.uid
+            members: [userID!],
+            leaderID: userID!
         }
-
-        await addDoc(collection(firebase.db, "groups"), groupInfo).then((groupRef) => {
-            const userRef = doc(firebase.db, "users", user!.uid);
-            setDoc(userRef, { groups: arrayUnion(groupRef.id) }, { merge: true }).then(async () => {
-                groupInfo.groupID = groupRef.id;
-                props.addGroup(groupInfo)
-            });
-        })
+                
+        groupInfo.groupID = await CreateNewGroupPromise(groupInfo, userID!);
+        props.addGroup(groupInfo)
 
         props.closeFunction();
     }
