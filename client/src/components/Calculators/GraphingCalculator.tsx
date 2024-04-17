@@ -240,6 +240,68 @@ function GraphingCalculators() {
       Line: "polyline",
       color:"red"
     },
+    // Linear
+  {
+    Input1: "2 * x + 1",
+    type: "linear",
+    Points: [{ InputX: "0", InputY: "0" }],
+    Line: "polyline",
+    color: "blue",
+  },
+  // Implicit
+  {
+    Input1: "x^2 + y^2 -1",
+    type: "implicit",
+    Points: [{ InputX: "0", InputY: "0" }],
+    Line: "polyline",
+    color: "green",
+  },
+  // Polar
+  {
+    Input1: "r = 1 + sin(theta)",
+    type: "polar",
+    Points: [{ InputX: "0", InputY: "0" }],
+    Line: "polyline",
+    color: "purple",
+  },
+  // Parametric
+  {
+    Input1: "cos(t)",
+    Input2: "sin(t)",
+    type: "parametric",
+    Points: [{ InputX: "0", InputY: "0" }],
+    Line: "polyline",
+    color: "orange",
+  },
+  // Vector
+  {
+    Input1: "1",
+    Input2: "2",
+    Input3: "3",
+    Input4: "4",
+    type: "vector",
+    Points: [{ InputX: "0", InputY: "0" }],
+    Line: "polyline",
+    color: "yellow",
+  },
+  // Text
+  {
+    Input1: "Hello, world!",
+    Input2: "0",
+    Input3: "0",
+    type: "text",
+    Points: [{ InputX: "0", InputY: "0" }],
+    Line: "polyline",
+    color: "brown",
+  },
+  // Points
+  {
+    Input1: "",
+    type: "points",
+    Points: [{ InputX: "0", InputY: "0" }, { InputX: "1", InputY: "1" }],
+    Line: "polyline",
+    color: "teal",
+  },
   ]);
 
   //Graph

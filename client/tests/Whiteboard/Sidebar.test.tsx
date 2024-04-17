@@ -24,7 +24,7 @@ test("Add DraggableBox on click", async () => {
     await user.click(addStandardCalculator);
 
     totalCalculators = screen.getAllByText("Remove");
-    expect(totalCalculators.length).toBe(5);
+    expect(totalCalculators.length).toBe(14);
 });
 
 test("Add correct type of calculator on click", async () => {
@@ -67,13 +67,13 @@ test("Remove DraggableBox", async () => {
     await user.click(addStandardCalculator);
     await user.click(addGraphingCalculator);
 
-    expect(screen.queryAllByText("Remove").length).toBe(4)
+    expect(screen.queryAllByText("Remove").length).toBe(13)
     expect(screen.queryAllByText("Remove")[0]).toBeInTheDocument()
     await user.click(screen.getAllByText("Remove")[0])
-    expect(screen.queryAllByText("Remove").length).toBe(3)
+    expect(screen.queryAllByText("Remove").length).toBe(12)
     expect(screen.queryAllByText("Remove")[0]).toBeInTheDocument()
     await user.click(screen.getAllByText("Remove")[0])
-    expect(screen.queryAllByText("Remove").length).toBe(2)
+    expect(screen.queryAllByText("Remove").length).toBe(11)
     expect(screen.queryAllByText("Remove")[0]).toBeInTheDocument()
     await user.click(screen.getAllByText("Remove")[0])
     expect(screen.queryAllByText("Remove").length).toBe(0)

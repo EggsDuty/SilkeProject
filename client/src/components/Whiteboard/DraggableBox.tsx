@@ -81,7 +81,9 @@ const DraggableBox: React.FC<DraggableBoxProps> = ({ children, initialSize = { w
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
-      {children}
+      <div style={{ width: '100%', height: '100%', overflow: 'auto' }}>
+        {children}
+      </div>
     </div>
   );
 };
