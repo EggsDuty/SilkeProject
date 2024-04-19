@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Textfit } from "react-textfit";
-import { sqrt, square, divide, multiply, round, pi, mod, evaluate, string } from "mathjs";
+import { sqrt, square, divide, multiply, round, pi, mod, evaluate, factorial } from "mathjs";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 
 function ScientificCalculator() {
@@ -15,7 +15,6 @@ function ScientificCalculator() {
   const [did2nd, setDid2nd] = useState(false);
   const [didUpdateOperand, setDidUpdateOperand] = useState(false);
   const [didAdvanced, setDidAdvanced] = useState(false);
-  const [finalCalc, setFinalCalc] = useState("");
 
   const updateOperand = (value: string) => {
     setDidUpdateOperand(true);
@@ -56,7 +55,6 @@ function ScientificCalculator() {
       setPreviousOperation("");
       setPrevOperand("");
       setOperation("");
-      setFinalCalc("0");
       setChangedOperand(false);
       setDidUpdateOperand(false);
     } else {
@@ -69,7 +67,6 @@ function ScientificCalculator() {
   const clearCalculator = () => {
     setCurrentOperation("0");
     setCurrOperand("0");
-    setFinalCalc("0");
     setPreviousOperation("");
     setPrevOperand("");
     setOperation("");
@@ -129,6 +126,7 @@ function ScientificCalculator() {
     } else {
       if (!ops.some((op) => previousOperand.endsWith(op))) {
         setPreviousOperation(previousOperand + value);
+        setCurrOperand(currentOperation);
         setOperation(value);
         setChangedOperand(true);
         setDidCalculation(false);
@@ -235,17 +233,25 @@ function ScientificCalculator() {
     }
   };
 
-  const handleModulus = () => {
-    if (previousOperation === "") {
-      setPreviousOperation(currentOperand + " mod");
+  const handleModulo = () => {
+    if (didCalculation) {
+      setDidCalculation(false);
       setCurrentOperation("0");
       setCurrOperand("0");
       setDidAdvanced(true);
+      setPreviousOperation(result + " mod");
     } else {
-      setPreviousOperation(previousOperation + " " + currentOperand + " mod");
-      setCurrentOperation("0");
-      setCurrOperand("0");
-      setDidAdvanced(true);
+      if (previousOperation === "") {
+        setPreviousOperation(currentOperand + " mod");
+        setCurrentOperation("0");
+        setCurrOperand("0");
+        setDidAdvanced(true);
+      } else {
+        setPreviousOperation(previousOperation + " " + currentOperand + " mod");
+        setCurrentOperation("0");
+        setCurrOperand("0");
+        setDidAdvanced(true);
+      }
     }
   };
 
@@ -254,6 +260,23 @@ function ScientificCalculator() {
       setDid2nd(false);
     } else {
       setDid2nd(true);
+    }
+  };
+
+  const handleFactorial = () => {
+    let result;
+    result = evaluate(currentOperation + "!");
+    if (previousOperation === "") {
+      setPreviousOperation(currentOperation + "!");
+      setCurrentOperation(result);
+      setPrevOperand(result.toString());
+      setCurrOperand(result.toString());
+      setResult(result);
+      setDidCalculation(true);
+    } else {
+      setPreviousOperation(previousOperation + " " + currentOperation + "!");
+      setCurrentOperation(result);
+      setCurrOperand(result.toString());
     }
   };
 
@@ -298,7 +321,6 @@ function ScientificCalculator() {
     } else {
       let result;
       result = evaluate(previousOperation + " " + currentOperation);
-      console.log(result);
       setPrevOperand(result.toString());
       setPreviousOperation(previousOperation + " " + currentOperation + " =");
       setCurrentOperation(result);
@@ -372,7 +394,7 @@ function ScientificCalculator() {
             <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
               exp
             </button>
-            <button onClick={() => handleModulus()} className="btnScientificCalc-operation">
+            <button onClick={() => handleModulo()} className="btnScientificCalc-operation">
               mod
             </button>
             {did2nd ? (
@@ -390,7 +412,7 @@ function ScientificCalculator() {
             <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
               )
             </button>
-            <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
+            <button onClick={() => handleFactorial()} className="btnScientificCalc-operation">
               n!
             </button>
             <button onClick={() => swapOperand("/")} className="btnScientificCalc-operation">
