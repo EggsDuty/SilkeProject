@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Textfit } from "react-textfit";
-import { sqrt, square, divide, multiply, round, pi } from "mathjs";
+import { sqrt, square, divide, multiply, round, pi, mod, evaluate, string } from "mathjs";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 
 function ScientificCalculator() {
@@ -13,8 +13,12 @@ function ScientificCalculator() {
   const [changedOperand, setChangedOperand] = useState(false);
   const [didCalculation, setDidCalculation] = useState(false);
   const [did2nd, setDid2nd] = useState(false);
+  const [didUpdateOperand, setDidUpdateOperand] = useState(false);
+  const [didAdvanced, setDidAdvanced] = useState(false);
+  const [finalCalc, setFinalCalc] = useState("");
 
   const updateOperand = (value: string) => {
+    setDidUpdateOperand(true);
     if (!didCalculation) {
       if (currentOperand.includes(".") && value === ".") {
         return;
@@ -52,14 +56,20 @@ function ScientificCalculator() {
       setPreviousOperation("");
       setPrevOperand("");
       setOperation("");
+      setFinalCalc("0");
       setChangedOperand(false);
-    } else setCurrentOperation("0");
-    setCurrOperand("0");
+      setDidUpdateOperand(false);
+    } else {
+      setCurrentOperation("0");
+      setCurrOperand("0");
+      setDidUpdateOperand(false);
+    }
   };
 
   const clearCalculator = () => {
     setCurrentOperation("0");
     setCurrOperand("0");
+    setFinalCalc("0");
     setPreviousOperation("");
     setPrevOperand("");
     setOperation("");
@@ -110,7 +120,6 @@ function ScientificCalculator() {
         setChangedOperand(true);
         setDidCalculation(false);
       } else {
-        console.log(previousOperand);
         setPrevOperand(previousOperand.slice(0, previousOperand.length - 1) + value);
         setPreviousOperation(previousOperation.slice(0, previousOperation.length - 1) + value);
         setOperation(value);
@@ -124,7 +133,6 @@ function ScientificCalculator() {
         setChangedOperand(true);
         setDidCalculation(false);
       } else {
-        console.log(previousOperand);
         setPrevOperand(previousOperand.slice(0, previousOperand.length - 1) + value);
         setPreviousOperation(previousOperation.slice(0, previousOperation.length - 1) + value);
         setOperation(value);
@@ -143,11 +151,9 @@ function ScientificCalculator() {
           setCurrentOperation(calculation.toString());
           setPrevOperand(calculation.toString());
           setCurrOperand(calculation.toString());
-          console.log(calculation);
         } else {
           const currValue = parseFloat(currentOperand).toFixed(1);
           let calculation = sqrt(parseFloat(currValue));
-          console.log(calculation);
           if (didCalculation) {
             setPreviousOperation("sqrt(" + currentOperand + ")");
           } else {
@@ -175,7 +181,6 @@ function ScientificCalculator() {
           setPrevOperand(calculation.toString());
           setCurrOperand(calculation.toString());
         } else {
-          console.log(previousOperand);
           let calculation = round(square(parseFloat(currentOperand)), 3);
           setPreviousOperation(previousOperation + "sqr(" + currentOperand + ")");
           setCurrentOperation(calculation.toString());
@@ -184,7 +189,6 @@ function ScientificCalculator() {
         }
       }
     } else {
-      console.log(previousOperand);
       let calculation = round(square(parseFloat(result)), 1);
       setPreviousOperation("sqr(" + result + ")");
       setCurrentOperation(calculation.toString());
@@ -226,26 +230,22 @@ function ScientificCalculator() {
           setCurrentOperation(calculation.toString());
           setPrevOperand(calculation.toString());
           setCurrOperand(result);
-          console.log(calculation);
-          console.log(previousOperand);
         }
       }
     }
   };
 
-  const handlePercentage = () => {
-    if (previousOperand) {
-      const prevValue = parseFloat(previousOperand);
-      const currValue = parseFloat(currentOperand);
-      console.log(prevValue);
-      console.log(currentOperand);
-      const percentage = multiply(divide(currValue, 100), prevValue);
-      setCurrOperand(percentage.toString());
-      setPreviousOperation(previousOperand + percentage);
-      setCurrentOperation(percentage.toString());
-      setDidCalculation(true);
+  const handleModulus = () => {
+    if (previousOperation === "") {
+      setPreviousOperation(currentOperand + " mod");
+      setCurrentOperation("0");
+      setCurrOperand("0");
+      setDidAdvanced(true);
     } else {
-      clearCalculator();
+      setPreviousOperation(previousOperation + " " + currentOperand + " mod");
+      setCurrentOperation("0");
+      setCurrOperand("0");
+      setDidAdvanced(true);
     }
   };
 
@@ -258,41 +258,52 @@ function ScientificCalculator() {
   };
 
   const handleEquals = () => {
-    if (previousOperand && currentOperand) {
-      const prevValue = parseFloat(previousOperand);
-      const currValue = parseFloat(currentOperand);
-      setDidCalculation(true);
-      let result = 0;
-      switch (operation) {
-        case "+":
-          result = prevValue + currValue;
-          setPrevOperand(result.toString());
-          setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
-          setCurrentOperation(result.toString());
-          setResult(result.toString());
-          break;
-        case "-":
-          result = prevValue - currValue;
-          setPrevOperand(result.toString());
-          setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
-          setCurrentOperation(result.toString());
-          setResult(result.toString());
-          break;
-        case "*":
-          result = prevValue * currValue;
-          setPrevOperand(result.toString());
-          setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
-          setCurrentOperation(result.toString());
-          setResult(result.toString());
-          break;
-        case "/":
-          result = prevValue / currValue;
-          setPrevOperand(result.toString());
-          setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
-          setCurrentOperation(result.toString());
-          setResult(result.toString());
-          break;
+    if (!didAdvanced) {
+      if (previousOperand && currentOperand) {
+        const prevValue = parseFloat(previousOperand);
+        const currValue = parseFloat(currentOperand);
+        setDidCalculation(true);
+        let result = 0;
+        switch (operation) {
+          case "+":
+            result = prevValue + currValue;
+            setPrevOperand(result.toString());
+            setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
+            setCurrentOperation(result.toString());
+            setResult(result.toString());
+            break;
+          case "-":
+            result = prevValue - currValue;
+            setPrevOperand(result.toString());
+            setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
+            setCurrentOperation(result.toString());
+            setResult(result.toString());
+            break;
+          case "*":
+            result = prevValue * currValue;
+            setPrevOperand(result.toString());
+            setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
+            setCurrentOperation(result.toString());
+            setResult(result.toString());
+            break;
+          case "/":
+            result = prevValue / currValue;
+            setPrevOperand(result.toString());
+            setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
+            setCurrentOperation(result.toString());
+            setResult(result.toString());
+            break;
+        }
       }
+    } else {
+      let result;
+      result = evaluate(previousOperation + " " + currentOperation);
+      console.log(result);
+      setPrevOperand(result.toString());
+      setPreviousOperation(previousOperation + " " + currentOperation + " =");
+      setCurrentOperation(result);
+      setDidCalculation(true);
+      setDidAdvanced(false);
     }
   };
 
@@ -331,9 +342,15 @@ function ScientificCalculator() {
             <button onClick={() => clearCalculator()} className="btnScientificCalc-operation">
               e
             </button>
-            <button onClick={() => clearCurrentOperation()} className="btnScientificCalc-operation">
-              C
-            </button>
+            {didUpdateOperand ? (
+              <button onClick={() => clearCurrentOperation()} className="btnScientificCalc-operation">
+                CE
+              </button>
+            ) : (
+              <button onClick={() => clearCalculator()} className="btnScientificCalc-operation">
+                C
+              </button>
+            )}
             <button onClick={() => removeLastDigit()} className="btnScientificCalc-operation">
               &#8592;
             </button>
@@ -355,7 +372,7 @@ function ScientificCalculator() {
             <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
               exp
             </button>
-            <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
+            <button onClick={() => handleModulus()} className="btnScientificCalc-operation">
               mod
             </button>
             {did2nd ? (
@@ -469,5 +486,4 @@ function ScientificCalculator() {
     </>
   );
 }
-
 export default ScientificCalculator;
