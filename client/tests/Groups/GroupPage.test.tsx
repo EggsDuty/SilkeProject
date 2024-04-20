@@ -141,6 +141,8 @@ test("Member add to a group", async () => {
 
     await user.click(plusImage[0]);
 
+    expect(createGroupInviteMock).toHaveBeenCalledOnce();
+
     const checkImage2 = screen.getByAltText("Check sign");
     expect(checkImage2).toHaveAttribute('src', '/check_sign_picture.svg')
 
