@@ -85,7 +85,7 @@ function LoginPage() {
         <>
             <div className="h-screen w-screen absolute flex items-center">
                 <form onSubmit={(e) => handleSignUp(e)} className="bg-indigo-900 w-1/3 m-auto pt-5 pb-10 px-10 rounded-lg bg-opacity-70">
-                    <Link to="/" className="-ml-5 text-xl text-white hover:text-indigo-200">&larr; Back</Link>
+                    <div className="-ml-5 text-xl text-white hover:text-indigo-200 select-none cursor-pointer" onClick={() => window.history.back()}>&larr; Back</div>
                     <h1 className="text-3xl text-white mt-5">Sign Up</h1>
                     <hr className="mb-5 mt-3" />
                     <AuthField var={usernameField} validateFunction={Validator.ValidateUsername} setter={setUsernameField} name="Username:" type="text" placeholder="username" />

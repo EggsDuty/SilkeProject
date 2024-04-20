@@ -13,26 +13,26 @@ test("E-mail input error appears", async () => {
             <LoginPage />
         </BrowserRouter>
     )
-    const usernameTextBox = await screen.findByPlaceholderText("example@mail.com");
+    const emailTextBox = await screen.findByPlaceholderText("example@mail.com");
 
-    await user.type(usernameTextBox, "#")
+    await user.type(emailTextBox, "#")
     await new Promise(res => setTimeout(res, 1100));
     const formatError = screen.getByText("E-mail format is invalid.");
     expect(formatError).toBeInTheDocument();
 
-    await user.clear(usernameTextBox);
-    await user.type(usernameTextBox, "eggsduty@gmail.com");
+    await user.clear(emailTextBox);
+    await user.type(emailTextBox, "eggsduty@gmail.com");
     const beginningError = screen.queryByText(/beginning/i);
     expect(formatError).not.toBeInTheDocument();
     expect(beginningError).toBeNull();
 
-    await user.type(usernameTextBox, "#");
+    await user.type(emailTextBox, "#");
     await new Promise(res => setTimeout(res, 1100));
     const endingError = screen.getByText(/ending/i);
     expect(endingError).toBeInTheDocument();
 
-    await user.clear(usernameTextBox);
-    await user.type(usernameTextBox, "eggs-duty@gmail.com");
+    await user.clear(emailTextBox);
+    await user.type(emailTextBox, "eggs-duty@gmail.com");
     await new Promise(res => setTimeout(res, 1100));
     expect(screen.getByText(/beginning/i)).toBeInTheDocument();
 

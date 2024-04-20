@@ -24,14 +24,20 @@ export default function YjsExample() {
             <Sidebar />
 
             <div className="ml-32 mt-10" style={{ position: 'fixed', inset: 0 }}>
-                <Tldraw
-                    autoFocus
-                    store={store}
-                    components={{
-                        SharePanel: NameEditor,
-                    }}
-                />
-
+                {groupID && localStorage.getItem("uid") ? // Checking if user is a guest and NOT giving them a store (otherwise all guests would be drawing on the same whiteboard)
+                    <Tldraw
+                        autoFocus
+                        store={store}
+                        components={{
+                            SharePanel: NameEditor,
+                        }}
+                    /> :
+                    <Tldraw
+                        autoFocus
+                        components={{
+                            SharePanel: NameEditor,
+                        }}
+                    />}
             </div>
         </>
     );

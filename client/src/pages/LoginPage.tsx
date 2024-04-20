@@ -27,6 +27,8 @@ function LoginPage() {
         return <></>
     }
 
+    console.log(window.history);
+
     if (user) {
         return <Navigate to="/home" replace={true} />
     }
@@ -58,7 +60,7 @@ function LoginPage() {
         <>
             <div className="h-screen w-screen absolute flex items-center">
                 <form onSubmit={(e) => handleLogin(e)} className="bg-indigo-900 w-1/3 m-auto pt-5 pb-10 px-10 rounded-lg bg-opacity-70">
-                    <Link to="/" className="-ml-5 text-xl text-white hover:text-indigo-200">&larr; Back</Link>
+                    <div className="-ml-5 text-xl text-white hover:text-indigo-200 select-none cursor-pointer" onClick={() => window.history.back()}>&larr; Back</div>
                     <h1 className="text-3xl text-white mt-5">Login</h1>
                     <hr className="mb-5 mt-3" />
                     <AuthField var={emailField} validateFunction={Validator.ValidateEmail} setter={setEmailField} name="E-mail:" type="text" placeholder="example@mail.com" />
