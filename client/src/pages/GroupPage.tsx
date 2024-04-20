@@ -44,7 +44,12 @@ function GroupPage() {
         const membersInfo: MemberInfo[] = [];
 
         for (let i = 0; i < groupInfo?.members.length!; i++) {
-            membersInfo.push(await GetUserInfoForMemberList(groupInfo?.members.at(i)!));
+            if(groupInfo?.members.at(i) === groupInfo?.leaderID){
+                membersInfo.unshift(await GetUserInfoForMemberList(groupInfo?.members.at(i)!));
+            }
+            else{
+                membersInfo.push(await GetUserInfoForMemberList(groupInfo?.members.at(i)!));
+            }
         }
         return membersInfo;
     }
@@ -111,7 +116,7 @@ function GroupPage() {
                     </div>
 
                     <div className="bg-blue-400 min-w-[500px] rounded-lg bg-opacity-20 mt-3 ml-[1vw] min-h-[400px] overflow-x-hidden w-max">
-
+                        
                     </div>
                 </div>
 
