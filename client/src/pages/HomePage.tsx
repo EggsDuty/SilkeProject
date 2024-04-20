@@ -1,30 +1,8 @@
 import Header from "../components/Header"
 import Box from "../components/HomePage/Box";
-import firebase from '../firebase.tsx';
-
-import { Navigate } from "react-router-dom"
-
-import { getAuth } from 'firebase/auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
-
-const auth = getAuth(firebase.app);
 
 function HomePage() {
     const isFirstTime = true;
-
-    const [user, loading] = useAuthState(auth);
-
-    if (loading) {
-        return <></>
-    }
-
-    if (!user) {
-        return <Navigate to="/" replace={true} />
-    }
-
-    if (!user.emailVerified) {
-        return <Navigate to="/please-verify" replace={true} />
-    }
 
     return (
         <>
