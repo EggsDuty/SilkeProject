@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Textfit } from "react-textfit";
-import { sqrt, square, divide, multiply, round, pi, mod, evaluate, factorial } from "mathjs";
+import { sqrt, square, divide, round, pi, mod, evaluate, factorial, e, abs, exp, log, log10 } from "mathjs";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 
 function ScientificCalculator() {
@@ -263,6 +263,44 @@ function ScientificCalculator() {
     }
   };
 
+  const handleLn = () => {
+    if (currentOperation != "0") {
+      let result;
+      result = log(parseInt(currentOperation));
+      setCurrentOperation(result.toString());
+    } else {
+      setCurrentOperation("Invalid input");
+    }
+  };
+
+  const handleExp = () => {};
+
+  const handleLog = () => {
+    if (currentOperation != "0") {
+      let result;
+      result = log10(parseInt(currentOperation));
+      setCurrentOperation(result.toString());
+    } else {
+      setCurrentOperation("Invalid input");
+    }
+  };
+
+  const handleAbs = () => {
+    if (previousOperation === "") {
+      let result;
+      result = abs(parseInt(currentOperation));
+      setPreviousOperation("abs(" + currentOperation + ")");
+      setCurrentOperation(result.toString());
+      setCurrOperand(result.toString());
+    } else {
+      let result;
+      result = abs(parseInt(currentOperation));
+      setPreviousOperation(previousOperation + " abs(" + currentOperation + ") =");
+      setCurrentOperation(result.toString());
+      setCurrOperand(result.toString());
+    }
+  };
+
   const handleFactorial = () => {
     let result;
     result = evaluate(currentOperation + "!");
@@ -275,7 +313,7 @@ function ScientificCalculator() {
       setDidCalculation(true);
     } else {
       setPreviousOperation(previousOperation + " " + currentOperation + "!");
-      setCurrentOperation(result);
+      setCurrentOperation(result.toString());
       setCurrOperand(result.toString());
     }
   };
@@ -361,7 +399,7 @@ function ScientificCalculator() {
             <button onClick={() => updateOperand(pi.toString())} className="btnScientificCalc-operation">
               <MathJax>{"\\(\\pi\\)"}</MathJax>
             </button>
-            <button onClick={() => clearCalculator()} className="btnScientificCalc-operation">
+            <button onClick={() => updateOperand(e.toString())} className="btnScientificCalc-operation">
               e
             </button>
             {didUpdateOperand ? (
@@ -388,10 +426,10 @@ function ScientificCalculator() {
             <button onClick={() => handleOneDividedBy()} className="btnScientificCalc-operation">
               <MathJax>{"\\(\\frac{1}{x}\\)"}</MathJax>
             </button>
-            <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+            <button onClick={() => handleAbs()} className="btnScientificCalc-operation">
               <MathJax>{"\\(\\lvert x \\rvert\\)"}</MathJax>
             </button>
-            <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
+            <button onClick={() => handleExp()} className="btnScientificCalc-operation">
               exp
             </button>
             <button onClick={() => handleModulo()} className="btnScientificCalc-operation">
@@ -402,7 +440,7 @@ function ScientificCalculator() {
                 <MathJax>{"\\(\\sqrt[3]x\\)"}</MathJax>
               </button>
             ) : (
-              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              <button onClick={() => handleSquareRoot()} className="btnScientificCalc-operation">
                 <MathJax>{"\\(\\sqrt[2]x\\)"}</MathJax>
               </button>
             )}
@@ -465,7 +503,7 @@ function ScientificCalculator() {
                 <MathJax>{"\\(log_y x\\)"}</MathJax>
               </button>
             ) : (
-              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              <button onClick={() => handleLog()} className="btnScientificCalc-operation">
                 <MathJax>{"\\(log\\)"}</MathJax>
               </button>
             )}
@@ -486,7 +524,7 @@ function ScientificCalculator() {
                 <MathJax>{"\\(e^x\\)"}</MathJax>
               </button>
             ) : (
-              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              <button onClick={() => handleLn()} className="btnScientificCalc-operation">
                 <MathJax>{"\\(ln\\)"}</MathJax>
               </button>
             )}
