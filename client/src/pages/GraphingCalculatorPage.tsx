@@ -4,9 +4,9 @@ import Header from "../components/Header";
 export default function GraphingCalculatorPage(){
     return(
         <>
-        <div>
+        <div className="">
             <Header />
-            <div className="w-full h-full">
+            <div className="">
             <GraphingCalculators />
             </div>
         </div>

@@ -315,7 +315,7 @@ function GraphingCalculators() {
           target: rootEl.current,
           width: rootEl.current.clientWidth,
           height: rootEl.current.clientHeight,
-
+          
           grid: true,
           //Going through all inputs
           data: equations.map(
@@ -543,11 +543,10 @@ function GraphingCalculators() {
   return (
     
     //Layout
-    <div className=" absolute w-fit h-fit bg-primaryColor" >
-      <div className="w-fit">
-      </div>
-      <div className="flex h-fit">
-        <div className=" z-50">
+    <div className=" bg-primaryColor" >
+      
+      <div className="flex">
+        <div className="z-40 w-2/5">
           <Popup
             trigger={
               <button className="text-white md:font-bold italic underline">
@@ -644,7 +643,7 @@ function GraphingCalculators() {
             {}
           </Popup>
           {equations.map((equation, index) => (
-            <div className=" my-4 border-b-4 border-b-black" key={index}>
+            <div className=" my-4 border-b-4 border-b-black overflow-x-auto" key={index}>
               <label
                 className="text-white"
                 htmlFor={`equationInput-${index}`} /*Input label */
@@ -882,7 +881,7 @@ function GraphingCalculators() {
           </button>
         </div>
         <div
-          className="bg-gray-200 border border-black w-fit h-fit "
+          className="bg-gray-200 border border-black z-30 w-full text-black"
           ref={rootEl}
         ></div>
       </div>
