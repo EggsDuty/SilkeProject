@@ -165,6 +165,6 @@ test("User information is correctly updated to database in ProfileEditInformatio
 
     await user.click(saveButton);
 
-    expect(updateMock).toHaveBeenCalledWith(info.uid, { displayName: info.displayName + "1", description: info.description + "1" });
+    expect(updateMock).toHaveBeenCalledWith(info.uid, { displayName: info.displayName + "1", lowerCaseName: info.displayName.toLowerCase() + "1", description: info.description + "1" });
     updateMock.mockClear();
 });

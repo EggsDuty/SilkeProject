@@ -54,11 +54,12 @@ function ProfileEditInformation(props: Props) {
             return;
         }
 
-        const updateMap: { displayName?: string, description?: string, image?: string } = {};
+        const updateMap: { displayName?: string, lowerCaseName?: string, description?: string, image?: string } = {};
 
         if (props.displayName !== newDisplayName) {
 
             updateMap.displayName = newDisplayName;
+            updateMap.lowerCaseName = newDisplayName.toLowerCase();
         }
 
         if (props.description !== newDescription) {

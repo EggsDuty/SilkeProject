@@ -15,7 +15,7 @@ interface MemberInfo {
     image: string
 }
 
-function GroupSettingsPage(){
+function GroupSettingsPage() {
     const { groupID } = useParams();
     const userID = localStorage.getItem("uid");
 
@@ -65,10 +65,10 @@ function GroupSettingsPage(){
         const membersInfo: MemberInfo[] = [];
 
         for (let i = 0; i < groupInfo?.members.length!; i++) {
-            if(groupInfo?.members.at(i) === groupInfo?.leaderID){
+            if (groupInfo?.members.at(i) === groupInfo?.leaderID) {
                 membersInfo.unshift(await GetUserInfoForMemberList(groupInfo?.members.at(i)!));
             }
-            else{
+            else {
                 membersInfo.push(await GetUserInfoForMemberList(groupInfo?.members.at(i)!));
             }
         }
@@ -89,9 +89,9 @@ function GroupSettingsPage(){
         )
     }
 
-    function HandleGroupLeaveClick(){
+    function HandleGroupLeaveClick() {
         DeleteUserFromGroupPromise(userID!, groupID!).then(async () => {
-            if(groupInfo?.members.length === 1){
+            if (groupInfo?.members.length === 1) {
                 DeleteGroupIDPromise(groupID!);
             }
             else if(userID === groupInfo?.leaderID){
@@ -101,15 +101,15 @@ function GroupSettingsPage(){
         })
     }
 
-    async function HandleGroupDeleteClick(){
-        for(let i=0; i<groupInfo?.members.length!; i++){
+    async function HandleGroupDeleteClick() {
+        for (let i = 0; i < groupInfo?.members.length!; i++) {
             await DeleteUserGroupIDPromise(groupInfo?.members.at(i)!, groupID!);
         }
         await DeleteGroupIDPromise(groupID!);
         navigate("/groups");
     }
 
-    async function HandleMemberPromoteClick(newLeaderID: string){
+    async function HandleMemberPromoteClick(newLeaderID: string) {
         await UpdateLeaderIDInGroupListPromise(groupID!, newLeaderID);
         navigate("/group/"+groupID);
     }
@@ -170,16 +170,16 @@ function GroupSettingsPage(){
                                         >
                                             {/* @ts-ignore */}
                                             {(close) => (
-                                            <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[600px] m-auto h-[260px] bg-opacity-90 brightness-125 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
-                                                <button onClick={close} className="text-3xl ml-2">X</button>
-                                                <h1 className="text-2xl text-left mt-8 mx-[40px] text-gray-400">Are you sure you want to promote this member to a leader?</h1>
-                                                <h1 className="text-xl text-left mx-[40px] text-red-900">You will lose all of your leader perks</h1>
-                                                <div className="flex flex-row mt-8 ml-96">
-                                                    <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleMemberPromoteClick(_memberInfo.userID)}>Yes</button>
-                                                    <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
+                                                <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[600px] m-auto h-[260px] bg-opacity-90 brightness-125 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                                                    <button onClick={close} className="text-3xl ml-2">X</button>
+                                                    <h1 className="text-2xl text-left mt-8 mx-[40px] text-gray-400">Are you sure you want to promote this member to a leader?</h1>
+                                                    <h1 className="text-xl text-left mx-[40px] text-red-900">You will lose all of your leader perks</h1>
+                                                    <div className="flex flex-row mt-8 ml-96">
+                                                        <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleMemberPromoteClick(_memberInfo.userID)}>Yes</button>
+                                                        <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                                )}
+                                            )}
 
                                         </Popup>
 
@@ -215,10 +215,10 @@ function GroupSettingsPage(){
                 <div className="flex flex-row">
                     <Popup
                         trigger={
-                        <div className="relative cursor-pointer mb-20">
-                            <img src="/leave_group_picture.svg" className="invert absolute z-20 pl-4 mt-[21px] h-8 w-auto peer" />
-                            <p className="w-max text-white py-2 pl-14 pr-4 mt-4 rounded-lg bg-red-950 border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Leave group</p>
-                        </div>
+                            <div className="relative cursor-pointer mb-20">
+                                <img src="/leave_group_picture.svg" className="invert absolute z-20 pl-4 mt-[21px] h-8 w-auto peer" />
+                                <p className="w-max text-white py-2 pl-14 pr-4 mt-4 rounded-lg bg-red-950 border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Leave group</p>
+                            </div>
                         }
                         modal
                         nested
@@ -226,15 +226,15 @@ function GroupSettingsPage(){
                     >
                         {/* @ts-ignore */}
                         {(close) => (
-                        <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[600px] m-auto h-[230px] bg-opacity-90 brightness-125 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
-                            <button onClick={close} className="text-3xl ml-2">X</button>
-                            <h1 className="text-2xl text-center mt-10">Are you sure you want to leave this group?</h1>
-                            <div className="flex flex-row mt-10 ml-96">
-                                <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleGroupLeaveClick()}>Yes</button>
-                                <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
+                            <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[600px] m-auto h-[230px] bg-opacity-90 brightness-125 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                                <button onClick={close} className="text-3xl ml-2">X</button>
+                                <h1 className="text-2xl text-center mt-10">Are you sure you want to leave this group?</h1>
+                                <div className="flex flex-row mt-10 ml-96">
+                                    <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleGroupLeaveClick()}>Yes</button>
+                                    <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
+                                </div>
                             </div>
-                        </div>
-                            )}
+                        )}
 
                     </Popup>
 

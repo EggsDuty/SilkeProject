@@ -3,7 +3,7 @@ import { FirebaseError } from '@firebase/util';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 
 import { FormEvent, ReactElement, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import Validator from '../components/Auth/Validator.ts';
 import AuthField from '../components/Auth/AuthField.tsx';
@@ -68,6 +68,7 @@ function LoginPage() {
                 await sendEmailVerification(auth.currentUser);
                 await setDoc(doc(firebase.db, "users", auth.currentUser.uid), {
                     displayName: usernameField,
+                    lowerCaseName: usernameField.toLowerCase(),
                     image: "/placeholder.jpg",
                     description: "",
                     email: auth.currentUser.email,

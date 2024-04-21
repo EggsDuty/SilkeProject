@@ -1,7 +1,8 @@
-import { FieldValue, Timestamp } from "firebase/firestore"
+import { Timestamp } from "firebase/firestore"
 
 export interface UserInfo {
     displayName: string,
+    lowerCaseName: string,
     email: string,
     image: string,
     description: string,
