@@ -1,9 +1,9 @@
-.screen {
+.screenP {
     height: 100px;
     width: 100%;
     margin-bottom: 10px;
     padding: 0 10px;
-    background-color: #531774d3;
+    background-color: rgba(98, 25, 137);
     border-radius: 10px;
     display: flex;
     align-items: center;

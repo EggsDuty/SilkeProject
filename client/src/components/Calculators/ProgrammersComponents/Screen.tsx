@@ -9,7 +9,7 @@ interface ScreenProps {
 
 const Screen = ({ children, value }: ScreenProps) => {
     return (
-        <Textfit className="screen" mode="single" max={70}>
+        <Textfit className="screenP" mode="single" max={70}>
             {value}
             {children}
         </Textfit>);

@@ -6,15 +6,16 @@ button {
     font-weight: bold;
     cursor: pointer;
     border-radius: 10px;
-    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add soft outline */
+
   }
   
   button:hover {
-    background-color: #531774d3;
+    background-color: rgba(98, 25, 137, 0.627);
   }
   
   .equals {
-    grid-column: 3 / 5;
+    grid-column: 4 / span 2;
     background-color: rgba(173, 182, 94, 0.853);
   }
   
