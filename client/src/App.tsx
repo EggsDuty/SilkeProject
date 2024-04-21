@@ -6,6 +6,7 @@ import LandingPage from "./pages/LandingPage.tsx";
 import WhiteBoard from "./pages/WhiteBoard.tsx";
 import CalculatorsPage from "./pages/CalculatorsPage.tsx";
 import GraphingCalculators from "./pages/GraphingCalculatorPage.tsx";
+import ProgrammersCalculator from "./pages/ProgrammersCalculator.tsx";
 import AuthHandler from "./pages/AuthPages/AuthHandler.tsx";
 import PleaseVerifyPage from "./pages/AuthPages/PleaseVerifyPage.tsx";
 import VerifyEmailPage from "./pages/AuthPages/VerifyEmailPage.tsx";
@@ -55,6 +56,7 @@ function App() {
                   <Route path="/standard-calculator" element={<StandardCalculatorPage />} />
                   <Route path="/scientific-calculator" element={<ScientificCalculatorPage />} />
                   <Route path="/graphing-calculator" element={<GraphingCalculators />} />
+                  <Route path="/programmers-calculator" element={<ProgrammersCalculator />} />
                   <Route path="/profile/:uid" element={<ProfilePage />} />
                   <Route path="/groups" element={<AllGroupsPage />} />
                   <Route path="/group/:groupID" element={<GroupPage />} />
@@ -88,6 +90,7 @@ function App() {
                 <Route path="/standard-calculator" element={<StandardCalculatorPage />} />
                 <Route path="/scientific-calculator" element={<ScientificCalculatorPage />} />
                 <Route path="/graphing-calculator" element={<GraphingCalculators />} />
+                <Route path="/programmers-calculator" element={<ProgrammersCalculator />} />
 
                 <Route path="*" element={<NoRoute guest={true} />} />
               </>
