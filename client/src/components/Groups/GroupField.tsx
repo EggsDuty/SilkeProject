@@ -6,7 +6,9 @@ interface Props {
     placeholder: string,
     validateFunction: Function,
     var: string,
-    setter: Dispatch<SetStateAction<string>>
+    setter: Dispatch<SetStateAction<string>>,
+    isDescription?: boolean,
+    defaultValue?: string
 }
 
 const errorMap: { [id: string]: ReactElement } = {
@@ -39,7 +41,11 @@ function GroupField(props: Props) {
     return (
         <div className="flex flex-col mb-5 w-full m-auto transition-transform mt-10">
             <label className="text-2xl text-white mb-3">{props.name}</label>
-            <input onChange={(e) => props.setter(e.target.value)} type={props.type} placeholder={props.placeholder} className="bg-blue-950 border-indigo-300 focus:border-white outline-none border h-12 rounded-lg text-xl px-2 py-4 text-white placeholder:text-lg "></input>
+            {props.isDescription ? 
+                <textarea onChange={(e) => props.setter(e.target.value)} rows={4} placeholder={props.placeholder} defaultValue={props.defaultValue} className="bg-blue-950 border-indigo-300 focus:border-white outline-none border h-36 rounded-lg text-xl px-2 py-4 text-white placeholder:text-lg resize-none"></textarea>
+                :
+                <input onChange={(e) => props.setter(e.target.value)} type={props.type} placeholder={props.placeholder} defaultValue={props.defaultValue} className="bg-blue-950 border-indigo-300 focus:border-white outline-none border h-12 rounded-lg text-xl px-2 py-4 text-white placeholder:text-lg "></input>
+            }
             {errors.map((item) => (
                 <div key={item} className="mt-2 ml-2">
                     <p className="text-red-400">{errorMap[item]}</p>

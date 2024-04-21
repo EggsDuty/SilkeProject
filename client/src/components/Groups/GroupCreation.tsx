@@ -51,7 +51,7 @@ function GroupCreation(props: Props) {
     return (
         <form onSubmit={(e) => handleGroupCreation(e)} className="mx-16">
             <GroupField name="Group name:" placeholder="Your group name..." type="text" validateFunction={Validator.ValidateGroupName} var={trimmedGroupName} setter={setGroupName} />
-            <GroupField name="Description (optional):" placeholder="Your group description..." type="text" validateFunction={Validator.ValidateGroupDescription} var={trimmedDescription} setter={setDescription} />
+            <GroupField isDescription={true} name="Description (optional):" placeholder="Your group description..." type="text" validateFunction={Validator.ValidateGroupDescription} var={trimmedDescription} setter={setDescription} />
             <button type="submit" className={`mt-6 py-2 px-6 text-white rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white ${hasErrors ? "cursor-not-allowed" : ""}`}>Create</button>
         </form>
 

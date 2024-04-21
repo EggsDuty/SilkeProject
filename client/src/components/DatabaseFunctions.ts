@@ -150,6 +150,15 @@ export async function CreateNewGroupPromise(groupInfo: GroupInfo, userID: string
     return groupRef.id;
 }
 
+export async function UpdateGroupInfoPromise(groupID: string, newGroupName: string, newDescription: string) {
+    const groupRef = doc(firebase.db, "groups", groupID);
+ 
+    await updateDoc(groupRef, {
+        name: newGroupName,
+        description: newDescription
+    })
+}
+
 export async function GetUsersWithDisplayNamePromise(name: string) {
     const usersRef = collection(firebase.db, "users");
     const _query = query(usersRef, where("displayName", "==", name));

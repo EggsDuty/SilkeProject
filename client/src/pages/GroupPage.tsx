@@ -2,7 +2,7 @@ import { useNavigate, Link, useParams } from "react-router-dom"
 import Header from "../components/Header"
 import { GroupInfo } from "../components/DatabaseTypes";
 import { useEffect, useState } from "react";
-import { GetGroupInfoPromise, GetUserInfoForMemberList } from "../components/DatabaseFunctions";
+import { DeleteGroupIDPromise, DeleteUserFromGroupPromise, GetGroupInfoPromise, GetUserInfoForMemberList } from "../components/DatabaseFunctions";
 import MemberBox from "../components/Groups/MemberBox";
 import Popup from "reactjs-popup";
 import MemberAdd from "../components/Groups/MemberAdd";
@@ -15,6 +15,7 @@ interface MemberInfo {
 
 function GroupPage() {
     const { groupID } = useParams();
+    const userID = localStorage.getItem("uid");
 
     const [groupInfo, setGroupInfo] = useState<GroupInfo>();
     const defaultValue: MemberInfo[] = [];
@@ -52,6 +53,15 @@ function GroupPage() {
             }
         }
         return membersInfo;
+    }
+
+    function HandleGroupLeaveClick(){
+        DeleteUserFromGroupPromise(userID!, groupID!).then(async () => {
+            if(groupInfo?.members.length === 1){
+                DeleteGroupIDPromise(groupID!);
+            }
+            navigate("/groups");
+        })
     }
 
     if (isLoading) {
@@ -120,10 +130,37 @@ function GroupPage() {
                     </div>
                 </div>
 
+                {groupInfo?.leaderID === userID ?
                 <div className="relative cursor-pointer mb-20 ml-[270px]" onClick={() => navigate("/group/"+groupID+"/settings")}>
                     <img src="/group_settings_picture.svg" className="invert absolute z-20 ml-[9vw] pl-3 mt-[2px] h-[30px] w-auto peer" />
                     <p className="w-max text-white py-1 pl-12 pr-4 mt-4 ml-[9vw] rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Settings</p>
                 </div>
+                :
+                <Popup
+                    trigger={
+                    <div className="relative cursor-pointer mb-20 ml-[230px]">
+                        <img src="/leave_group_picture.svg" className="invert absolute z-20 ml-[9vw] pl-3 mt-[4px] h-7 w-auto peer" />
+                        <p className="w-max text-white py-1 pl-12 pr-4 mt-4 ml-[9vw] rounded-lg bg-red-950 border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Leave group</p>
+                    </div>
+                    }
+                    modal
+                    nested
+                    closeOnDocumentClick={false}
+                >
+                    {/* @ts-ignore */}
+                    {(close) => (
+                    <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[600px] m-auto h-[230px] bg-opacity-90 brightness-125 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                        <button onClick={close} className="text-3xl ml-2">X</button>
+                        <h1 className="text-2xl text-center mt-10">Are you sure you want to leave this group?</h1>
+                        <div className="flex flex-row mt-10 ml-96">
+                            <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleGroupLeaveClick()}>Yes</button>
+                            <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
+                        </div>
+                    </div>
+                        )}
+
+                </Popup>
+                }
 
                 <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Chat (not yet functional)</h2>
                 <div className="bg-blue-400 min-w-[800px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] min-h-[500px] overflow-x-hidden w-max mb-20">
