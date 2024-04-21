@@ -26,6 +26,16 @@ function GroupPage() {
 
     useEffect(() => {
         GetGroupInfoPromise(groupID!).then((_groupInfo) => {
+            let isPartOfGroup = false;
+            for(let i=0; i<_groupInfo.members.length; i++){
+                if(_groupInfo.members.at(i) === userID){
+                    isPartOfGroup = true;
+                    break;
+                }
+            }
+            if(!isPartOfGroup){
+                navigate("/groups");
+            }
             setGroupInfo(_groupInfo);
             setIsLoading(false);
         })
@@ -57,9 +67,6 @@ function GroupPage() {
 
     function HandleGroupLeaveClick(){
         DeleteUserFromGroupPromise(userID!, groupID!).then(async () => {
-            if(groupInfo?.members.length === 1){
-                DeleteGroupIDPromise(groupID!);
-            }
             navigate("/groups");
         })
     }
