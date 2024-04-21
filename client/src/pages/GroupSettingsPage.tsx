@@ -75,7 +75,7 @@ function GroupSettingsPage() {
                 DeleteGroupIDPromise(groupID!);
             }
             else if (userID === groupInfo?.leaderID) {
-                await UpdateLeaderIDInGroupListPromise(groupID!, groupInfo.members.at(1)!)
+                await UpdateLeaderIDInGroupListPromise(groupID!, userNameInfo.at(1)?.userID!)
             }
             navigate("/groups");
         })

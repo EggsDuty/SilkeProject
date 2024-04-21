@@ -6,6 +6,8 @@ import ProfileInformation from '../components/Profile/ProfileInformation.tsx';
 import ProfileEditInformation from '../components/Profile/ProfileEditInformation.tsx';
 import MemberBox from '../components/Groups/MemberBox.tsx';
 import { AcceptFriendRequestPromise, DeleteUserFriendInvitePromise, GetFriendInvitesListOfUser, GetFriendsListOfUser, GetDataFromDocumentPromise, GetUserInfoForMemberList } from '../components/DatabaseFunctions.ts';
+import Popup from 'reactjs-popup';
+import FriendInvite from '../components/Profile/FriendInvite.tsx';
 
 interface Person {
     userID: string,
@@ -60,14 +62,12 @@ function ProfilePage() {
                 const _convertedData = _data as UserInfo;
                 setData(_convertedData);
             });
-            if (!gottenFriends) {
-                GetFriendsListOfUser(uid).then((_friendIDs: string[]) => {
-                    getAllFriendInfo(_friendIDs).then((_friendsInfo) => {
-                        setGottenFriends(true);
-                        setFriendList(_friendsInfo);
-                    });
+            GetFriendsListOfUser(uid).then((_friendIDs: string[]) => {
+                getAllFriendInfo(_friendIDs).then((_friendsInfo) => {
+                    setGottenFriends(true);
+                    setFriendList(_friendsInfo);
                 });
-            }
+            });
         }
     }, [uid, gottenFriends]);
 
@@ -87,13 +87,13 @@ function ProfilePage() {
             <Header />
             {gottenFriends ?
                 <div className="flex flex-row justify-evenly mt-28 mb-20">
-                    <div className="bg-extraColor1 rounded-lg bg-opacity-80 w-1/2 p-10 drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                    <div className="bg-extraColor1 rounded-lg bg-opacity-80 min-w-[900px] w-[900px] p-10 drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
                         {!editMode ?
                             <ProfileInformation own={localStorage.getItem("uid") === uid} info={data!} setEditMode={setEditMode} /> :
                             <ProfileEditInformation uid={localStorage.getItem("uid")!} displayName={data!.displayName} description={data!.description} setEditMode={setEditMode} />
                         }
                     </div>
-                    <div className="bg-extraColor1 flex flex-col rounded-lg bg-opacity-80 w-1/4 h-[600px] pt-10 px-10 pb-5 drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)] group">
+                    <div className="bg-extraColor1 flex flex-col rounded-lg bg-opacity-80 min-w-[500px] w-[500px] h-[600px] pt-10 px-10 pb-5 drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)] group">
                         <div className="flex flex-row justify-evenly border-2 border-white relative">
                             <div className={`w-1/2 text-center border-r-2 border-white py-1 ${toggledFriendAndInvites ? "bg-extraColor1 hover:bg-[#151445]  cursor-pointer" : ""}`} onClick={() => toggledFriendAndInvites ? setToggledFriendAndInvites(!toggledFriendAndInvites) : ""}>
                                 <h1 className="text-2xl text-white font-bold mb-2 select-none">Friends</h1>
@@ -124,7 +124,27 @@ function ProfilePage() {
                                         <MemberBox key={_index} memberID={_friend.userID} image={_friend.image} memberName={_friend.displayName} isLeader={false} />
                                     )) :
                                     <h1 className="text-2xl text-gray-500 font-bold mt-6 ml-6">{gottenFriends ? "No friends..." : "Loading..."}</h1>)}
+
                         </div>
+                        <Popup
+                            trigger={
+                                <div className="flex flex-row cursor-pointer items-center w-max bg-blue-950 px-2 py-1 mt-3 border-2 border-white border-opacity-0 hover:border-opacity-100 rounded-lg">
+                                    <img src="/plus_sign_picture.svg" className="invert h-9 w-auto" />
+                                    <p className="w-max ml-2 text-white rounded-lg">Add Friend</p>
+                                </div>
+                            }
+                            modal
+                            nested
+                            closeOnDocumentClick={false}>
+                            {/* @ts-ignore */}
+                            {(close) => (
+                                <div className="animate-anvil text-white bg-extraColor1 rounded-lg m-auto h-[600px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                                    <button onClick={close} className="text-3xl ml-2">X</button>
+                                    <h1 className="text-4xl text-center mt-10">Add a friend</h1>
+                                    <FriendInvite />
+                                </div>
+                            )}
+                        </Popup>
                     </div>
                 </div> :
                 <div className="w-screen h-screen absolute flex items-center">

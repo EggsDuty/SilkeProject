@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { AcceptUserIntoGroupPromise, DeleteUserGroupInvitePromise, GetUserGroupInvitesPromise } from '../DatabaseFunctions.ts';
+import { AcceptUserIntoGroupPromise, DeleteUserGroupInvitePromise, GetUserDisplayNamePromise, GetUserGroupInvitesPromise } from '../DatabaseFunctions.ts';
 
 interface Props {
     uid: string,
@@ -34,12 +34,13 @@ function GroupInvites(props: Props) {
 
     useEffect(() => {
         if (props.uid) {
-            GetUserGroupInvitesPromise(props.uid).then((_invites) => {
+            GetUserGroupInvitesPromise(props.uid).then(async (_invites) => {
                 if (_invites) {
                     const parsedInvites: Invite[] = [];
                     for (const invite of _invites) {
                         const parts = invite.split(";");
-                        parsedInvites.push({ originalForm: invite, groupID: parts[0], groupName: parts[1], groupLeader: parts[2] });
+                        const groupLeaderName = await GetUserDisplayNamePromise(parts[2]);
+                        parsedInvites.push({ originalForm: invite, groupID: parts[0], groupName: parts[1], groupLeader: groupLeaderName });
                     }
                     setInviteArray(parsedInvites);
                     setLoading(false);

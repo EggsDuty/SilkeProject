@@ -21,6 +21,7 @@ import { getAuth } from "firebase/auth";
 import firebase from "./firebase.tsx";
 import { useAuthState } from "react-firebase-hooks/auth";
 import NoRoute from "./pages/NoRoute.tsx";
+import GroupSettingsPage from "./pages/GroupSettingsPage.tsx";
 
 const auth = getAuth(firebase.app);
 
@@ -57,6 +58,7 @@ function App() {
                   <Route path="/profile/:uid" element={<ProfilePage />} />
                   <Route path="/groups" element={<AllGroupsPage />} />
                   <Route path="/group/:groupID" element={<GroupPage />} />
+                  <Route path="/group/:groupID/settings" element={<GroupSettingsPage />} />
 
                   <Route path="*" element={<NoRoute guest={false} />} />
                 </> :

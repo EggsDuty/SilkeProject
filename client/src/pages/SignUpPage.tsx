@@ -68,6 +68,7 @@ function LoginPage() {
                 await sendEmailVerification(auth.currentUser);
                 await setDoc(doc(firebase.db, "users", auth.currentUser.uid), {
                     displayName: usernameField,
+                    lowerCaseName: usernameField.toLowerCase(),
                     image: "/placeholder.jpg",
                     description: "",
                     email: auth.currentUser.email,

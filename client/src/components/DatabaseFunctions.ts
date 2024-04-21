@@ -152,16 +152,23 @@ export async function CreateNewGroupPromise(groupInfo: GroupInfo, userID: string
 
 export async function GetUsersWithDisplayNamePromise(name: string) {
     const usersRef = collection(firebase.db, "users");
-    const _query = query(usersRef, where("displayName", "==", name));
+    const _query = query(usersRef, where("lowerCaseName", "==", name.toLowerCase()));
     const snapshot = await getDocs(_query);
 
-    const displayNames: string[] = [];
+    interface Person {
+        userID: string,
+        displayName: string,
+        image: string
+    }
+
+    const users: Person[] = [];
 
     snapshot.forEach((_doc) => {
-        displayNames.push(_doc.data().displayName);
+        const _data = _doc.data();
+        users.push({ userID: _doc.id, displayName: _data.displayName, image: _data.image })
     });
 
-    return displayNames;
+    return users;
 }
 
 export async function GetGroupInfoPromise(uid: string) {
