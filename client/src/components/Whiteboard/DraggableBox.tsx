@@ -15,23 +15,43 @@ const DraggableBox: React.FC<DraggableBoxProps> = ({ children, initialSize = { w
 
   useEffect(() => {
     const handleMouseMoveDocument = (e: MouseEvent) => {
+      if (isDragging) {
+        const dx = e.clientX - dragStart.x;
+        const dy = e.clientY - dragStart.y;
+        setPosition({ x: position.x + dx, y: position.y + dy });
+        setDragStart({ x: e.clientX, y: e.clientY });
+      }
       if (isResizing) {
         const dw = e.clientX - resizeStart.x;
         const dh = e.clientY - resizeStart.y;
-        const maxD=Math.max(dw, dh)
-        setBoxSize({ width: boxSize.width + maxD, height: boxSize.height + maxD });
+        
+        // Get the absolute values of dw and dh
+        const abs_dw = Math.abs(dw);
+        const abs_dh = Math.abs(dh);
+  
+        // Check which absolute value is higher
+        if (abs_dw > abs_dh) {
+          setBoxSize({ width: boxSize.width + dw, height: boxSize.height + dw });
+        } else {
+          setBoxSize({ width: boxSize.width + dh, height: boxSize.height + dh });
+        }
+        
         setResizeStart({ x: e.clientX, y: e.clientY });
       }
     };
 
     const handleMouseUpDocument = () => {
+      if (isDragging) {
+        setIsDragging(false);
+        document.body.style.cursor = "auto";
+      }
       if (isResizing) {
         setIsResizing(false);
         document.body.style.cursor = "auto";
       }
     };
 
-    if (isResizing) {
+    if (isDragging || isResizing) {
       document.addEventListener('mousemove', handleMouseMoveDocument);
       document.addEventListener('mouseup', handleMouseUpDocument);
     }
@@ -40,11 +60,11 @@ const DraggableBox: React.FC<DraggableBoxProps> = ({ children, initialSize = { w
       document.removeEventListener('mousemove', handleMouseMoveDocument);
       document.removeEventListener('mouseup', handleMouseUpDocument);
     };
-  }, [isResizing, boxSize, resizeStart]);
+  }, [isDragging, isResizing, boxSize, position, resizeStart, dragStart]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (
-      e.clientX >= position.x + boxSize.width - 30 && // 10 is the margin for clicking for resizing
+      e.clientX >= position.x + boxSize.width - 30 &&
       e.clientY >= position.y + boxSize.height - 30
     ) {
       setIsResizing(true);
@@ -54,15 +74,6 @@ const DraggableBox: React.FC<DraggableBoxProps> = ({ children, initialSize = { w
       setIsDragging(true);
       setDragStart({ x: e.clientX, y: e.clientY });
       document.body.style.cursor = "grabbing";
-    }
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isDragging) {
-      const dx = e.clientX - dragStart.x;
-      const dy = e.clientY - dragStart.y;
-      setPosition({ x: position.x + dx, y: position.y + dy });
-      setDragStart({ x: e.clientX, y: e.clientY });
     }
   };
 
@@ -78,7 +89,6 @@ const DraggableBox: React.FC<DraggableBoxProps> = ({ children, initialSize = { w
       className='absolute z-50 border-black border-8 bg-secondaryColor'
       style={{ left: position.x, top: position.y, width: boxSize.width, height: boxSize.height }}
       onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
       <div style={{ width: '100%', height: '100%', overflow: 'auto' }}>
