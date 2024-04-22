@@ -6,6 +6,7 @@ import { DeleteGroupIDPromise, DeleteUserFromGroupPromise, GetGroupInfoPromise, 
 import MemberBox from "../components/Groups/MemberBox";
 import Popup from "reactjs-popup";
 import MemberAdd from "../components/Groups/MemberAdd";
+import MyCalendar from "../components/Groups/MyCalendar";
 
 interface MemberInfo {
     userID: string,
@@ -132,22 +133,22 @@ function GroupPage() {
                         }
                     </div>
 
-                    <div className="bg-blue-400 min-w-[500px] rounded-lg bg-opacity-20 mt-3 ml-[1vw] min-h-[400px] overflow-x-hidden w-max">
-                        
+                    <div className="bg-blue-400 min-w-[600px] rounded-lg bg-opacity-20 mt-3 ml-[1vw] min-h-[400px] overflow-x-hidden w-max drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                        <MyCalendar />
                     </div>
                 </div>
 
                 {groupInfo?.leaderID === userID ?
-                <div className="relative cursor-pointer mb-20 ml-[270px]" onClick={() => navigate("/group/"+groupID+"/settings")}>
-                    <img src="/group_settings_picture.svg" className="invert absolute z-20 ml-[9vw] pl-3 mt-[2px] h-[30px] w-auto peer" />
-                    <p className="w-max text-white py-1 pl-12 pr-4 mt-4 ml-[9vw] rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Settings</p>
+                <div className="relative w-max cursor-pointer mb-20 ml-[calc(270px+9vw)]" onClick={() => navigate("/group/"+groupID+"/settings")}>
+                    <img src="/group_settings_picture.svg" className="invert absolute z-20 pl-3 mt-[2px] h-[30px] w-auto peer" />
+                    <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Settings</p>
                 </div>
                 :
                 <Popup
                     trigger={
-                    <div className="relative cursor-pointer mb-20 ml-[230px]">
-                        <img src="/leave_group_picture.svg" className="invert absolute z-20 ml-[9vw] pl-3 mt-[4px] h-7 w-auto peer" />
-                        <p className="w-max text-white py-1 pl-12 pr-4 mt-4 ml-[9vw] rounded-lg bg-red-950 border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Leave group</p>
+                    <div className="relative w-max cursor-pointer mb-20 ml-[calc(230px+9vw)]">
+                        <img src="/leave_group_picture.svg" className="invert absolute z-20 pl-3 mt-[4px] h-7 w-auto peer" />
+                        <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-red-950 border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Leave group</p>
                     </div>
                     }
                     modal
