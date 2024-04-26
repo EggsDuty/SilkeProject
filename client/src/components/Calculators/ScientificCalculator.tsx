@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Textfit } from "react-textfit";
-import { sqrt, square, divide, round, pi, mod, evaluate, factorial, e, abs, exp, log, log10 } from "mathjs";
+import { sqrt, square, divide, round, pi, evaluate, e, abs, log, log10, cube, nthRoot } from "mathjs";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 
 function ScientificCalculator() {
@@ -15,6 +15,8 @@ function ScientificCalculator() {
   const [did2nd, setDid2nd] = useState(false);
   const [didUpdateOperand, setDidUpdateOperand] = useState(false);
   const [didAdvanced, setDidAdvanced] = useState(false);
+  const [didXPowerY, setDidXPowerY] = useState(false);
+  const [didNthRoot, setDidNthRoot] = useState(false);
 
   const updateOperand = (value: string) => {
     setDidUpdateOperand(true);
@@ -71,6 +73,8 @@ function ScientificCalculator() {
     setPrevOperand("");
     setOperation("");
     setChangedOperand(false);
+    setDidXPowerY(false);
+    setDidNthRoot(false);
   };
 
   const removeLastDigit = () => {
@@ -169,6 +173,35 @@ function ScientificCalculator() {
     }
   };
 
+  const handleCubeRoot = () => {
+    if (currentOperand != "0") {
+      if (!currentOperand.startsWith("-")) {
+        if (!previousOperand) {
+          let calculation = round(nthRoot(parseFloat(currentOperand), 3), 3);
+          setPreviousOperation("cuberoot(" + currentOperand + ")");
+          setCurrentOperation(calculation.toString());
+          setPrevOperand(calculation.toString());
+          setCurrOperand(calculation.toString());
+        } else {
+          const currValue = parseFloat(currentOperand).toFixed(1);
+          let calculation = nthRoot(parseFloat(currValue), 3);
+          if (didCalculation) {
+            setPreviousOperation("cuberoot(" + currentOperand + ")");
+          } else {
+            setPreviousOperation(previousOperation + "cuberoot(" + currentOperand + ")");
+          }
+          setCurrentOperation(calculation.toString());
+          setPrevOperand(previousOperand);
+          setCurrOperand(calculation.toString());
+        }
+      } else {
+        setPreviousOperation("cuberoot(" + currentOperand + ")");
+        setCurrentOperation("Invalid input");
+        setDidCalculation(true);
+      }
+    }
+  };
+
   const handleSquare = () => {
     if (!didCalculation) {
       if (currentOperand) {
@@ -192,6 +225,35 @@ function ScientificCalculator() {
       setCurrentOperation(calculation.toString());
       setPrevOperand(previousOperand);
       setCurrOperand(calculation.toString());
+    }
+  };
+
+  const handleCube = () => {
+    if (!didCalculation) {
+      if (currentOperand) {
+        if (!previousOperand) {
+          let calculation = round(cube(parseFloat(currentOperand)), 3);
+          setPreviousOperation("cube(" + currentOperand + ")");
+          setCurrentOperation(calculation.toString());
+          setPrevOperand(calculation.toString());
+          setCurrOperand(calculation.toString());
+          setDid2nd(false);
+        } else {
+          let calculation = round(cube(parseFloat(currentOperand)), 3);
+          setPreviousOperation(previousOperation + "cube(" + currentOperand + ")");
+          setCurrentOperation(calculation.toString());
+          setPrevOperand(previousOperand);
+          setCurrOperand(calculation.toString());
+          setDid2nd(false);
+        }
+      }
+    } else {
+      let calculation = round(square(parseFloat(result)), 1);
+      setPreviousOperation("sqr(" + result + ")");
+      setCurrentOperation(calculation.toString());
+      setPrevOperand(previousOperand);
+      setCurrOperand(calculation.toString());
+      setDid2nd(false);
     }
   };
 
@@ -276,10 +338,48 @@ function ScientificCalculator() {
   const handleExp = () => {};
 
   const handleLog = () => {
+    if (!didNthRoot) {
+      if (previousOperation === "") {
+        setPreviousOperation("nthRoot(" + currentOperation);
+        setCurrentOperation("0");
+        setCurrOperand("0");
+        setDidNthRoot(true);
+        setDidAdvanced(true);
+        setDid2nd(false);
+      } else {
+        setPreviousOperation(previousOperation + "nthRoot(" + currentOperation);
+        setCurrentOperation("0");
+        setCurrOperand("0");
+        setDidNthRoot(true);
+        setDidAdvanced(true);
+        setDid2nd(false);
+      }
+    } else {
+      return;
+    }
+  };
+
+  const handleLogYX = () => {
     if (currentOperation != "0") {
-      let result;
-      result = log10(parseInt(currentOperation));
-      setCurrentOperation(result.toString());
+      if (!didNthRoot) {
+        if (previousOperation === "") {
+          setPreviousOperation("log(" + currentOperation);
+          setCurrentOperation("0");
+          setCurrOperand("0");
+          setDidNthRoot(true);
+          setDidAdvanced(true);
+          setDid2nd(false);
+        } else {
+          setPreviousOperation(previousOperation + "log(" + currentOperation);
+          setCurrentOperation("0");
+          setCurrOperand("0");
+          setDidNthRoot(true);
+          setDidAdvanced(true);
+          setDid2nd(false);
+        }
+      } else {
+        return;
+      }
     } else {
       setCurrentOperation("Invalid input");
     }
@@ -310,11 +410,105 @@ function ScientificCalculator() {
       setPrevOperand(result.toString());
       setCurrOperand(result.toString());
       setResult(result);
-      setDidCalculation(true);
     } else {
       setPreviousOperation(previousOperation + " " + currentOperation + "!");
       setCurrentOperation(result.toString());
       setCurrOperand(result.toString());
+    }
+  };
+
+  const handle10Power = () => {
+    let result;
+    result = evaluate(10 + "^" + currentOperation);
+    if (previousOperation === "") {
+      setPreviousOperation("10^" + "(" + currentOperation + ")");
+      setCurrentOperation(result);
+      setPrevOperand(result.toString());
+      setCurrOperand(result.toString());
+      setResult(result);
+    } else {
+      setPreviousOperation(previousOperation + " " + " 10^" + "(" + currentOperation + ")");
+      setCurrentOperation(result.toString());
+      setCurrOperand(result.toString());
+    }
+  };
+
+  const handle2Power = () => {
+    let result;
+    result = evaluate(2 + "^" + currentOperation);
+    if (previousOperation === "") {
+      setPreviousOperation("2^" + "(" + currentOperation + ")");
+      setCurrentOperation(result);
+      setPrevOperand(result.toString());
+      setCurrOperand(result.toString());
+      setResult(result);
+      setDid2nd(false);
+    } else {
+      setPreviousOperation(previousOperation + " " + " 2^" + "(" + currentOperation + ")");
+      setCurrentOperation(result.toString());
+      setCurrOperand(result.toString());
+      setDid2nd(false);
+    }
+  };
+
+  const handleEPowerX = () => {
+    let result;
+    result = evaluate(e + "^" + currentOperation);
+    if (previousOperation === "") {
+      setPreviousOperation("e^" + "(" + currentOperation + ")");
+      setCurrentOperation(result);
+      setPrevOperand(result.toString());
+      setCurrOperand(result.toString());
+      setResult(result);
+      setDid2nd(false);
+    } else {
+      setPreviousOperation(previousOperation + " " + " e^" + "(" + currentOperation + ")");
+      setCurrentOperation(result.toString());
+      setCurrOperand(result.toString());
+      setDid2nd(false);
+    }
+  };
+
+  const handleXPowerY = () => {
+    let result;
+    if (!didXPowerY) {
+      if (previousOperation === "") {
+        setPreviousOperation(currentOperation + " ^");
+        setCurrentOperation("0");
+        setCurrOperand("0");
+        setDidXPowerY(true);
+        setDidAdvanced(true);
+      } else {
+        setPreviousOperation(previousOperation + currentOperation + " ^");
+        setCurrentOperation("0");
+        setCurrOperand("0");
+        setDidXPowerY(true);
+        setDidAdvanced(true);
+      }
+    } else {
+      return;
+    }
+  };
+
+  const handleNthRoot = () => {
+    if (!didNthRoot) {
+      if (previousOperation === "") {
+        setPreviousOperation("nthRoot(" + currentOperation);
+        setCurrentOperation("0");
+        setCurrOperand("0");
+        setDidNthRoot(true);
+        setDidAdvanced(true);
+        setDid2nd(false);
+      } else {
+        setPreviousOperation(previousOperation + "nthRoot(" + currentOperation);
+        setCurrentOperation("0");
+        setCurrOperand("0");
+        setDidNthRoot(true);
+        setDidAdvanced(true);
+        setDid2nd(false);
+      }
+    } else {
+      return;
     }
   };
 
@@ -357,13 +551,23 @@ function ScientificCalculator() {
         }
       }
     } else {
-      let result;
-      result = evaluate(previousOperation + " " + currentOperation);
-      setPrevOperand(result.toString());
-      setPreviousOperation(previousOperation + " " + currentOperation + " =");
-      setCurrentOperation(result);
-      setDidCalculation(true);
-      setDidAdvanced(false);
+      if (didNthRoot) {
+        let result;
+        result = evaluate(previousOperation + "," + currentOperation + ")");
+        setPrevOperand(result.toString());
+        setPreviousOperation(previousOperation + "," + currentOperation + ") =");
+        setCurrentOperation(result.toString());
+        setDidCalculation(true);
+        setDidAdvanced(false);
+      } else {
+        let result;
+        result = evaluate(previousOperation + " " + currentOperation);
+        setPrevOperand(result.toString());
+        setPreviousOperation(previousOperation + " " + currentOperation + " =");
+        setCurrentOperation(result.toString());
+        setDidCalculation(true);
+        setDidAdvanced(false);
+      }
     }
   };
 
@@ -415,7 +619,7 @@ function ScientificCalculator() {
               &#8592;
             </button>
             {did2nd ? (
-              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              <button onClick={() => handleCube()} className="btnScientificCalc-operation">
                 <MathJax>{"\\(x^3\\)"}</MathJax>
               </button>
             ) : (
@@ -436,7 +640,7 @@ function ScientificCalculator() {
               mod
             </button>
             {did2nd ? (
-              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              <button onClick={() => handleCubeRoot()} className="btnScientificCalc-operation">
                 <MathJax>{"\\(\\sqrt[3]x\\)"}</MathJax>
               </button>
             ) : (
@@ -457,11 +661,11 @@ function ScientificCalculator() {
               /
             </button>
             {did2nd ? (
-              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              <button onClick={() => handleNthRoot()} className="btnScientificCalc-operation">
                 <MathJax>{"\\(\\sqrt[y]x\\)"}</MathJax>
               </button>
             ) : (
-              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              <button onClick={() => handleXPowerY()} className="btnScientificCalc-operation">
                 <MathJax>{"\\(x^y\\)"}</MathJax>
               </button>
             )}
@@ -478,11 +682,11 @@ function ScientificCalculator() {
               &#215;
             </button>
             {did2nd ? (
-              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              <button onClick={() => handle2Power()} className="btnScientificCalc-operation">
                 <MathJax>{"\\(2^x\\)"}</MathJax>
               </button>
             ) : (
-              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              <button onClick={() => handle10Power()} className="btnScientificCalc-operation">
                 <MathJax>{"\\(10^x\\)"}</MathJax>
               </button>
             )}
@@ -499,7 +703,7 @@ function ScientificCalculator() {
               &#8722;
             </button>
             {did2nd ? (
-              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              <button onClick={() => handleLogYX()} className="btnScientificCalc-operation">
                 <MathJax>{"\\(log_y x\\)"}</MathJax>
               </button>
             ) : (
@@ -520,7 +724,7 @@ function ScientificCalculator() {
               &#43;
             </button>
             {did2nd ? (
-              <button onClick={() => handleSquare()} className="btnScientificCalc-operation">
+              <button onClick={() => handleEPowerX()} className="btnScientificCalc-operation">
                 <MathJax>{"\\(e^x\\)"}</MathJax>
               </button>
             ) : (
