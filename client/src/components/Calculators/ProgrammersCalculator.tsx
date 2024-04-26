@@ -17,7 +17,7 @@ const toLocaleString = (num: number) =>
 
 const removeSpaces = (num: number) => num.toString().replace(/\s/g, "");
 
-function ProgrammersCalculator() {
+function ProgrammersCalculator() { // calc - current // setCalc - updates
   let [calc, setCalc] = useState({
     sign: "",
     num: 0,
@@ -152,7 +152,20 @@ function ProgrammersCalculator() {
     calc.num ? calc.num.toString() : calc.res.toString()
   );
 
-  const convertToBinaryHandler = () => {};
+  const convertToBinaryHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    console.log("CTB clicked"); 
+    const value = parseFloat(calc.num.toString()); // string to numb, if nothing - nan
+
+      if (!isNaN(value)) {
+      const binNumb = (value >>> 0).toString(2);
+      setCalc({
+        ...calc,
+        sign: "",
+        res: Number(binNumb),
+        num: calc.num === 0 ? 0 : Number(calc.num.toString(2)), // yeah...
+      });
+    }
+  };
 
   return (
     <div className="ml-32 mt-10" style={{ position: "fixed", inset: 0 }}>
