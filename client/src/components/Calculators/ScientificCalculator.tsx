@@ -335,7 +335,21 @@ function ScientificCalculator() {
     }
   };
 
-  const handleExp = () => {};
+  const handleExp = () => {
+    if (previousOperation === "") {
+      setPreviousOperation(currentOperation + " * 10 ^");
+      setCurrentOperation("0");
+      setCurrOperand("0");
+      setDidAdvanced(true);
+      setDid2nd(false);
+    } else {
+      setPreviousOperation(previousOperation + currentOperation + "* 10 ^");
+      setCurrentOperation("0");
+      setCurrOperand("0");
+      setDidAdvanced(true);
+      setDid2nd(false);
+    }
+  };
 
   const handleLog = () => {
     if (!didNthRoot) {
