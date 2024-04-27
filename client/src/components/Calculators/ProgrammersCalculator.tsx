@@ -17,7 +17,7 @@ const toLocaleString = (num: number) =>
 
 const removeSpaces = (num: number) => num.toString().replace(/\s/g, "");
 
-function ProgrammersCalculator() {
+function ProgrammersCalculator() { // calc - current // setCalc - updates
   let [calc, setCalc] = useState({
     sign: "",
     num: 0,
@@ -152,7 +152,37 @@ function ProgrammersCalculator() {
     calc.num ? calc.num.toString() : calc.res.toString()
   );
 
-  const convertToBinaryHandler = () => {};
+  const convertToBinaryHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    console.log("CTB clicked"); 
+    const value = parseFloat(calc.num.toString());
+
+      if (!isNaN(value)) {
+      const binNum = (value >>> 0).toString(2);
+      setCalc({
+        ...calc,
+        sign: "",
+        res: Number(binNum),
+        num: calc.num === 0 ? 0 : Number(binNum), 
+      });
+    }
+  };
+
+  const convertToDecimalHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    console.log("CTD clicked"); 
+    const value = calc.num.toString();
+    const decNum = parseInt(value, 2);
+
+    if (!isNaN(decNum)) {
+      setCalc({
+        ...calc,
+        sign: "",
+        res: Number(decNum),
+        num: calc.num === 0 ? 0 : decNum, 
+      });
+    }
+    
+  }
+  
 
   return (
     <div className="ml-32 mt-10" style={{ position: "fixed", inset: 0 }}>
@@ -168,6 +198,8 @@ function ProgrammersCalculator() {
                 onClick={
                   btn === "CTB"
                     ? convertToBinaryHandler
+                    : btn === "CTD"
+                    ? convertToDecimalHandler
                     : btn === "C"
                     ? resetClickHandler
                     : btn === "+-"
