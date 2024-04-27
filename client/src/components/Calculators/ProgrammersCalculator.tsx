@@ -154,18 +154,35 @@ function ProgrammersCalculator() { // calc - current // setCalc - updates
 
   const convertToBinaryHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     console.log("CTB clicked"); 
-    const value = parseFloat(calc.num.toString()); // string to numb, if nothing - nan
+    const value = parseFloat(calc.num.toString());
 
       if (!isNaN(value)) {
-      const binNumb = (value >>> 0).toString(2);
+      const binNum = (value >>> 0).toString(2);
       setCalc({
         ...calc,
         sign: "",
-        res: Number(binNumb),
-        num: calc.num === 0 ? 0 : Number(calc.num.toString(2)), // yeah...
+        res: Number(binNum),
+        num: calc.num === 0 ? 0 : Number(binNum), 
       });
     }
   };
+
+  const convertToDecimalHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    console.log("CTD clicked"); 
+    const value = calc.num.toString();
+    const decNum = parseInt(value, 2);
+
+    if (!isNaN(decNum)) {
+      setCalc({
+        ...calc,
+        sign: "",
+        res: Number(decNum),
+        num: calc.num === 0 ? 0 : decNum, 
+      });
+    }
+    
+  }
+  
 
   return (
     <div className="ml-32 mt-10" style={{ position: "fixed", inset: 0 }}>
@@ -181,6 +198,8 @@ function ProgrammersCalculator() { // calc - current // setCalc - updates
                 onClick={
                   btn === "CTB"
                     ? convertToBinaryHandler
+                    : btn === "CTD"
+                    ? convertToDecimalHandler
                     : btn === "C"
                     ? resetClickHandler
                     : btn === "+-"
