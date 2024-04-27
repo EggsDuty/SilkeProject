@@ -19,7 +19,7 @@ export default function YjsExample() {
     });
 
     return (
-        <>
+        <div className="absolute h-screen w-screen overflow-hidden">
             <Header transparent={false} />
             <Sidebar />
 
@@ -39,7 +39,7 @@ export default function YjsExample() {
                         }}
                     />}
             </div>
-        </>
+        </div>
     );
 }
 
