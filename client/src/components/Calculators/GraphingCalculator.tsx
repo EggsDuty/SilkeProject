@@ -241,7 +241,7 @@ function GraphingCalculators() {
       color:"red"
     },
     // Linear
-  {
+  /*{
     Input1: "2 * x + 1",
     type: "linear",
     Points: [{ InputX: "0", InputY: "0" }],
@@ -301,7 +301,7 @@ function GraphingCalculators() {
     Points: [{ InputX: "0", InputY: "0" }, { InputX: "1", InputY: "1" }],
     Line: "polyline",
     color: "teal",
-  },
+  },*/
   ]);
 
   //Graph

@@ -75,8 +75,8 @@ const DraggableBox: React.FC<DraggableBoxProps> = ({ children, initialSize = { w
   };
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (
-      e.clientX >= position.x + boxSize.width - 10 ||
-      e.clientY >= position.y + boxSize.height - 10
+      e.clientX >= position.x + boxSize.width - 30 &&
+      e.clientY >= position.y + boxSize.height +20
     ) {
       setIsResizing(true);
       setResizeStart({ x: e.clientX, y: e.clientY });
@@ -90,8 +90,8 @@ const DraggableBox: React.FC<DraggableBoxProps> = ({ children, initialSize = { w
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (
-      e.clientX >= position.x + boxSize.width - 10 ||
-      e.clientY >= position.y + boxSize.height - 10
+      e.clientX >= position.x + boxSize.width - 30 &&
+      e.clientY >= position.y + boxSize.height +20
     ) {
       
       document.body.style.cursor = "se-resize";
@@ -104,7 +104,7 @@ const DraggableBox: React.FC<DraggableBoxProps> = ({ children, initialSize = { w
 
   return (
     <div
-      className='absolute z-50 border-r-purple-800 border-b-purple-800 border-t-black border-l-black border-8 bg-secondaryColor'
+      className='absolute z-50 border-r-purple-800 border-b-purple-800 border-t-black border-l-black border-8 bg-secondaryColor rounded-t-3xl rounded-bl-3xl'
       style={{ left: position.x, top: position.y, width: boxSize.width, height: boxSize.height }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
