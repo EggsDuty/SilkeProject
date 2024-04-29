@@ -38,14 +38,11 @@ function FriendInvite() {
         GetUsersWithDisplayNamePromise(userNameToFind).then((_users) => {
             const _foundUsers: Person[] = [];
             for (let i = 0; i < _users.length; i++) {
-                const _user = _users.at(i);
-
-                if (!_user) continue;
+                const _user = _users[i];
 
                 let alreadyFriends = false;
                 for (let j = 0; j < userFriends.length; j++) {
-                    const friendID = userFriends.at(j);
-                    if (!friendID) continue;
+                    const friendID = userFriends[j];
                     if (_user.userID === friendID || _user.userID === localStorage.getItem("uid")!) {
                         alreadyFriends = true;
                         break;

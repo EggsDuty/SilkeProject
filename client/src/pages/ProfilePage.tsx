@@ -37,7 +37,7 @@ function ProfilePage() {
         const friends: Person[] = [];
 
         for (let i = 0; i < uids.length; i++) {
-            friends.push(await GetUserInfoForMemberList(uids.at(i)!));
+            friends.push(await GetUserInfoForMemberList(uids[i]));
         }
 
         return friends;
