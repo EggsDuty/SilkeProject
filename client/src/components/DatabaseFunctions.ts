@@ -92,7 +92,7 @@ export async function GetFriendInvitesListOfUser(uid: string) {
     return userData.friendInvites;
 }
 
-export async function GetFriendsListOfUser(uid: string) {
+export async function GetFriendIDListOfUser(uid: string) {
     const _data = await GetDataFromDocumentPromise("users", uid);
     const userData = _data as UserInfo;
     return userData.friends;
@@ -102,6 +102,18 @@ export async function CreateFriendInvitePromise(uid: string, friendID: string) {
     const userRef = doc(firebase.db, "users", friendID);
     await updateDoc(userRef, {
         friendInvites: arrayUnion(uid)
+    });
+}
+
+export async function DeleteFriendPromise(uid: string, friendID: string) {
+    const userRef = doc(firebase.db, "users", uid);
+    const friendRef = doc(firebase.db, "users", friendID);
+
+    await updateDoc(userRef, {
+        friends: arrayRemove(friendID)
+    });
+    await updateDoc(friendRef, {
+        friends: arrayRemove(uid)
     });
 }
 
@@ -152,7 +164,7 @@ export async function CreateNewGroupPromise(groupInfo: GroupInfo, userID: string
 
 export async function UpdateGroupInfoPromise(groupID: string, newGroupName: string, newDescription: string) {
     const groupRef = doc(firebase.db, "groups", groupID);
- 
+
     await updateDoc(groupRef, {
         name: newGroupName,
         description: newDescription

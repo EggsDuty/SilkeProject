@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import MemberBox from "../Groups/MemberBox";
-import { CreateFriendInvitePromise, GetFriendsListOfUser, GetUsersWithDisplayNamePromise } from "../DatabaseFunctions";
+import { CreateFriendInvitePromise, GetFriendIDListOfUser, GetUsersWithDisplayNamePromise } from "../DatabaseFunctions";
 
 interface Person {
     userID: string,
@@ -22,7 +22,7 @@ function FriendInvite() {
         if (!uid) {
             return;
         }
-        GetFriendsListOfUser(uid).then((_friendIDs) => {
+        GetFriendIDListOfUser(uid).then((_friendIDs) => {
             setUserFriends(_friendIDs);
         });
     }, []);
