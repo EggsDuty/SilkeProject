@@ -1,4 +1,4 @@
-buttonP {
+.buttonP {
     border: none;
     background-color: rgb(80, 60, 209);
     font-size: 24px;
@@ -9,15 +9,26 @@ buttonP {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add soft outline */
   }
   
-  buttonP:hover {
+  .buttonP:hover {
     background-color: rgba(98, 25, 137, 0.627);
   }
   
   .equals {
     grid-column: 4 / span 2;
-    background-color: rgba(173, 182, 94, 0.853);
+    background-color: rgba(135, 89, 160, 0.627);
   }
   
   .equals:hover {
     background-color: rgba(99, 174, 23, 0.908);
+  }
+
+  .buttonPClicked {
+    background-color: rgba(213, 199, 43, 0.9);
+    
+  }
+
+  .disabledButtonP {
+    background-color: rgb(231, 154, 154);
+    opacity: 0.5; 
+    cursor: not-allowed; 
   }

@@ -4,28 +4,41 @@ import ButtonBox from "./ProgrammersComponents/ButtonBox";
 import Button from "./ProgrammersComponents/Button";
 import { useState } from "react";
 
-const btnValues = [
-  ["⸜(｡˃ ᵕ ˂ )⸝♡", "C", "+-", "%", "/"],
-  ["CTB", 7, 8, 9, "X"],
-  ["CTH", 4, 5, 6, "-"],
-  ["CTO", 1, 2, 3, "+"],
-  ["CTD", 0, ".", "="],
-];
+/*const btnValues = [
+  ["", "C", "+-", "%", "/"],
+  ["CTB", { value: 7, disabled: false }, { value: 8, disabled: false }, { value: 9, disabled: false }, "X"],
+  ["CTH", { value: 4, disabled: false }, { value: 5, disabled: false }, { value: 6, disabled: false }, "-"],
+  ["CTO", { value: 1, disabled: false }, { value: 2, disabled: false }, { value: 3, disabled: false }, "+"],
+  ["CTD", { value: 0, disabled: false }, ".", "="],
+];*/
 
 const toLocaleString = (num: number) =>
   String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
 
 const removeSpaces = (num: number) => num.toString().replace(/\s/g, "");
 
-function ProgrammersCalculator() { // calc - current // setCalc - updates
+function ProgrammersCalculator() {
+
+  const [btnValues, setBtnValues] = useState([
+    ["", "C", "+-", "%", "/"],
+    ["CTB", { value: 7, disabled: false }, { value: 8, disabled: false }, { value: 9, disabled: false }, "X"],
+    ["CTH", { value: 4, disabled: false }, { value: 5, disabled: false }, { value: 6, disabled: false }, "-"],
+    ["CTO", { value: 1, disabled: false }, { value: 2, disabled: false }, { value: 3, disabled: false }, "+"],
+    ["CTD", { value: 0, disabled: false }, ".", "="],
+  ]);
+  // calc - current // setCalc - updates
   let [calc, setCalc] = useState({
     sign: "",
     num: 0,
     res: 0,
   });
 
+  const [CTBClicked, setCTBClicked] = useState(false); // State to track CTB button click
+  const [CTDClicked, setCTDClicked] = useState(false); // State to track CTD button click
+
+
   const equalsClickHandler = () => {
-    console.log("Equals button clicked"); 
+    console.log("Equals button clicked");
 
     if (calc.sign && calc.num) {
       const math = (a: number, b: number, sign: string) =>
@@ -62,7 +75,7 @@ function ProgrammersCalculator() { // calc - current // setCalc - updates
   ) => {
     e.preventDefault();
     const value = e.currentTarget.innerHTML;
-    console.log("Sign button clicked"); 
+    console.log("Sign button clicked");
 
     setCalc({
       ...calc,
@@ -77,7 +90,7 @@ function ProgrammersCalculator() { // calc - current // setCalc - updates
   ) => {
     e.preventDefault();
     const value = e.currentTarget.innerHTML;
-    console.log("Number button clicked"); 
+    console.log("Number button clicked");
 
     if (String(calc.num).length < 16) {
       setCalc({
@@ -98,7 +111,7 @@ function ProgrammersCalculator() { // calc - current // setCalc - updates
   ) => {
     e.preventDefault();
     const value = e.currentTarget.innerHTML;
-    //console.log("Comma button clicked"); 
+    console.log("Comma button clicked");
 
     setCalc({
       ...calc,
@@ -109,7 +122,7 @@ function ProgrammersCalculator() { // calc - current // setCalc - updates
   };
 
   const invertClickHandler = () => {
-    //console.log("Invert button clicked"); 
+    console.log("Invert button clicked");
 
     setCalc({
       ...calc,
@@ -124,7 +137,7 @@ function ProgrammersCalculator() { // calc - current // setCalc - updates
   };
 
   const percentClickHandler = () => {
-    //console.log("Percent button clicked"); 
+    console.log("Percent button clicked");
 
     let num = calc.num ? parseFloat(removeSpaces(calc.num)) : 0;
     let res = calc.res ? parseFloat(removeSpaces(calc.res)) : 0;
@@ -138,7 +151,7 @@ function ProgrammersCalculator() { // calc - current // setCalc - updates
   };
 
   const resetClickHandler = () => {
-    console.log("Reset button clicked"); 
+    console.log("Reset button clicked");
 
     setCalc({
       ...calc,
@@ -152,37 +165,79 @@ function ProgrammersCalculator() { // calc - current // setCalc - updates
     calc.num ? calc.num.toString() : calc.res.toString()
   );
 
-  const convertToBinaryHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log("CTB clicked"); 
+  const convertToBinaryHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    /*console.log("CTB clicked");
     const value = parseFloat(calc.num.toString());
 
+    if (CTBClicked === false) {
+      setCTBClicked(true);
       if (!isNaN(value)) {
+        const binNum = (value >>> 0).toString(2);
+        setCalc({
+          ...calc,
+          sign: "",
+          res: Number(binNum),
+          num: calc.num === 0 ? 0 : Number(binNum),
+        });
+      }
+    } */
+  console.log("CTB clicked");
+  const value = parseFloat(calc.num.toString());
+
+  if (CTBClicked === false) {
+    setCTBClicked(true);
+    setCTDClicked(false);
+
+    if (!isNaN(value)) {
       const binNum = (value >>> 0).toString(2);
+      const updatedBtnValues = btnValues.map(row =>
+        row.map(btn =>
+          typeof btn === 'object' && btn.value !== undefined &&
+          (btn.value !== 0 && btn.value !== 1) // check if value is not 0 or 1
+            ? { ...btn, disabled: true } // disable button
+            : btn
+        )
+      );
+      setBtnValues(updatedBtnValues); // update button values
+
       setCalc({
         ...calc,
         sign: "",
         res: Number(binNum),
-        num: calc.num === 0 ? 0 : Number(binNum), 
+        num: calc.num === 0 ? 0 : Number(binNum),
       });
     }
+  }
+   
+    
+    // prevClicked = CTBClicked, current state
+    // set to opposite
+    //setCTBClicked((prevClicked) => !prevClicked);
   };
 
-  const convertToDecimalHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log("CTD clicked"); 
+  const convertToDecimalHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    console.log("CTD clicked");
     const value = calc.num.toString();
     const decNum = parseInt(value, 2);
 
-    if (!isNaN(decNum)) {
-      setCalc({
-        ...calc,
-        sign: "",
-        res: Number(decNum),
-        num: calc.num === 0 ? 0 : decNum, 
-      });
+      if (CTDClicked === false) {
+        setCTDClicked(true);
+        setCTBClicked(false);
+
+        if (!isNaN(decNum)) {
+          setCalc({
+            ...calc,
+            sign: "",
+            res: Number(decNum),
+            num: calc.num === 0 ? 0 : decNum,
+          });
+       }
     }
-    
-  }
-  
+  };
 
   return (
     <div className="ml-32 mt-10" style={{ position: "fixed", inset: 0 }}>
@@ -193,8 +248,20 @@ function ProgrammersCalculator() { // calc - current // setCalc - updates
             return (
               <Button
                 key={i}
-                className={btn === "=" ? "equals" : ""}
-                value={String(btn)}
+                className={
+                  btn === "="
+                    ? "equals"
+                    : btn === "CTB" && CTBClicked
+                    ? "buttonPClicked"
+                    : btn === "CTD" && CTDClicked
+                    ? "buttonPClicked"
+                    : ""
+                }
+
+                disabled={typeof btn === "object" && btn.disabled && CTBClicked}
+                value={typeof btn === "object" ? String(btn.value) : String(btn)}
+
+               //value={String(btn)}
                 onClick={
                   btn === "CTB"
                     ? convertToBinaryHandler
