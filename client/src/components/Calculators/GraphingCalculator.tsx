@@ -543,7 +543,7 @@ function GraphingCalculators() {
   return (
     
     //Layout
-    <div className=" bg-primaryColor" >
+    <div className=" bg-primaryColor pl-8 pt-4 pr-4 pb-4" >
       
       <div className="flex">
         <div className="z-40 w-2/5">

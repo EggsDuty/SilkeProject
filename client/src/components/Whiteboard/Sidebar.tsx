@@ -30,7 +30,7 @@ function Sidebar() {
       <p className="text-gray-400 font-bold border-b-2 mx-3 pb-2 border-gray-400">Drag your calculators</p>
       <div className="border-2 mx-3 rounded-lg hover:cursor-pointer py-1 bg-secondaryColor bg-opacity-40" onClick={() => addCalculator(<div><p className="text-black">Standard calculator</p><StandardCalculator /></div>, { width: 341, height: 522 })}>Standard Calculator</div>
       <div className="border-2 mx-3 rounded-lg hover:cursor-pointer py-1 bg-secondaryColor bg-opacity-40" onClick={() => addCalculator(<div><p className="text-black">Scientific calculator</p><ScientificCalculator /></div>, { width: 341, height: 466 })}>Scientific Calculator</div>
-      <div className="border-2 mx-3 rounded-lg hover:cursor-pointer py-1 bg-secondaryColor bg-opacity-40" onClick={() => addCalculator(<div style={{ width: '100%', height: '100%', overflow: 'auto' }}><p className="text-black">Graphing calculator</p><GraphingCalculators /></div>, { width: 920, height: 324.5 })}>Graphing Calculator</div>
+      <div className="border-2 mx-3 rounded-lg hover:cursor-pointer py-1 bg-secondaryColor bg-opacity-40" onClick={() => addCalculator(<div style={{ width: '100%', height: '100%', overflow: 'auto' }}><p className="text-black">Graphing calculator</p><GraphingCalculators /></div>, { width: 920, height: 356.5 })}>Graphing Calculator</div>
 
       {calculators.map((id) => (
         
