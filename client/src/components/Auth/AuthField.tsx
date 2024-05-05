@@ -25,9 +25,7 @@ const errorMap: { [id: string]: ReactElement } = {
     "PasswordsNotSame": <>Your passwords should match.</>
 }
 
-
-
-function AuthField(props: Props) {
+function AuthField(props: Readonly<Props>) {
     const defaultValue: string[] = [];
     const [errors, setErrors] = useState(defaultValue);
 

@@ -1,53 +1,73 @@
+function HasOneAtSign(email: string): boolean {
+    const regex = /@/;
+    const match = regex.exec(email);
+    if (match) {
+        if (match.length === 1) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function HasValidFormat(email: string): boolean {
+    const regex = /.+@.+\..+/;
+    const match = regex.exec(email);
+    if (match != null) {
+        if (match[0] === email) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function GetTLD(email: string): string | null {
+    const fromAtSign = /(?<=@).+/.exec(email);
+    if (fromAtSign === null) {
+        return null;
+    }
+
+    const tld = /(?<=\.).+/.exec(fromAtSign[0]);
+    if (tld === null) {
+        return null;
+    }
+
+    return tld[0];
+}
+
 function ValidateEmail(email: string): string[] {
     const errors: string[] = [];
 
-    let validFormat = false;
-    const atSign = email.match(/@/)
+    if (!HasOneAtSign(email) || !HasValidFormat(email)) {
+        errors.push("EmailInvalidFormat");
+        return errors.sort((a, b) => a.localeCompare(b));
+    }
 
-    if (atSign != null) {
-        if (atSign.length == 1) {
-            const match = email.match(/.+@.+\..+/)
-            if (match != null) {
-                if (match[0] == email) {
-                    validFormat = true;
+    const beginning = /.+(?=@)/.exec(email);
+    if (beginning != null) {
+        if (/[^a-zA-Z\d.]/.exec(beginning[0]) != null) {
+            errors.push("EmailBeginningInvalid");
+        }
+    }
 
-                    const beginning = email.match(/.+(?=@)/);
-                    if (beginning != null) {
-                        if (beginning[0].match(/[^a-zA-Z\d\.]/) != null) {
-                            errors.push("EmailBeginningInvalid");
-                        }
-                    }
+    const domain = /(?<=@).+(?=\.)/.exec(email);
+    if (domain != null) {
+        if (/[^a-zA-Z\d.-]/.exec(domain[0]) != null) {
+            errors.push("EmailDomainInvalid");
+        }
+    }
 
-                    const domain = email.match(/(?<=@).+(?=\.)/);
-                    if (domain != null) {
-                        if (domain[0].match(/[^a-zA-Z\d\.\-]/) != null) {
-                            if (!errors.includes("EmailDomainInvalid")) {
-                                errors.push("EmailDomainInvalid");
-                            }
-                        }
-                    }
-
-                    const fromAtSign = email.match(/(?<=@).+/);
-                    if (fromAtSign != null) {
-                        const tld = fromAtSign[0].match(/(?<=\.).+/);
-                        if (tld != null) {
-                            if (tld[0].match("[^a-zA-Z]") != null) {
-                                if (!errors.includes("EmailDomainInvalid")) {
-                                    errors.push("EmailDomainInvalid");
-                                }
-                            }
-                        }
-                    }
-                }
+    const tld = GetTLD(email);
+    if (tld != null) {
+        if (/[^a-zA-Z]/.exec(tld) != null) {
+            if (!errors.includes("EmailDomainInvalid")) {
+                errors.push("EmailDomainInvalid");
             }
         }
     }
 
-    if (!validFormat) {
-        errors.push("EmailInvalidFormat");
-    }
-
-    return errors.sort()
+    return errors.sort((a, b) => a.localeCompare(b));
 }
 
 function ValidatePassword(password: string): string[] {
@@ -56,25 +76,25 @@ function ValidatePassword(password: string): string[] {
     if (password.length < 6) {
         errors.push("PasswordTooShort");
     }
-    if (password.match(/\s+/) != null) {
+    if (/\s+/.exec(password) != null) {
         errors.push("PasswordHasSpaces");
     }
-    if (password.match(/[A-Z]/) == null) {
+    if (/[A-Z]/.exec(password) == null) {
         errors.push("PasswordHasNoCapitals");
     }
-    if (password.match(/[a-z]/) == null) {
+    if (/[a-z]/.exec(password) == null) {
         errors.push("PasswordHasNoRegularLetters");
     }
-    if (password.match(/\d/) == null) {
+    if (/\d/.exec(password) == null) {
         errors.push("PasswordHasNoNumbers");
     }
 
     // This finds if a string has special symbols like č, 大 or ` but not those found in passwords like _ or ?
-    if (password.match(/[^a-z\d\!\@\#\$\%\^&\*\(\)\_\-\+=\{\[\}\]\|\\\:\;\"\'\<\,\>\.\?\/\s]/i) != null) {
-        errors.push("PasswordHasSpecialSymbols")
+    if (/[^a-z\d!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/\s]/i.exec(password) != null) {
+        errors.push("PasswordHasSpecialSymbols");
     }
 
-    return errors.sort()
+    return errors.sort((a, b) => a.localeCompare(b));
 }
 
 function ValidateUsername(username: string): string[] {
@@ -86,11 +106,11 @@ function ValidateUsername(username: string): string[] {
     if (username.length > 20) {
         errors.push("UsernameTooLong");
     }
-    if (username.match(/[^\w]/) != null) {
+    if (/[^\w]/.exec(username) != null) {
         errors.push("UsernameHasInvalidSymbols");
     }
 
-    return errors.sort()
+    return errors.sort((a, b) => a.localeCompare(b));
 }
 
 function ValidateRepeatPassword(password: string, repeatPassword: string) {
@@ -100,7 +120,7 @@ function ValidateRepeatPassword(password: string, repeatPassword: string) {
         errors.push("PasswordsNotSame");
     }
 
-    return errors.sort();
+    return errors.sort((a, b) => a.localeCompare(b));
 }
 
 function ValidateDescription(description: string) {
@@ -110,12 +130,12 @@ function ValidateDescription(description: string) {
         errors.push("DescriptionTooLong");
     }
 
-    return errors.sort();
+    return errors.sort((a, b) => a.localeCompare(b));
 }
 
 function ValidateGroupName(name: string): string[] {
     const errors: string[] = [];
-    name=name.trim();
+    name = name.trim();
 
     if (name.length < 4) {
         errors.push("GroupNameTooShort");
@@ -124,59 +144,59 @@ function ValidateGroupName(name: string): string[] {
         errors.push("GroupNameTooLong");
     }
 
-    return errors.sort()
+    return errors.sort((a, b) => a.localeCompare(b));
 }
 
 function ValidateGroupDescription(description: string): string[] {
     const errors: string[] = [];
-    description=description.trim();
+    description = description.trim();
 
-    if(description.length > 255){
+    if (description.length > 255) {
         errors.push("DescriptionTooLong");
     }
-    
-    return errors.sort()   
+
+    return errors.sort((a, b) => a.localeCompare(b));
 }
 
 function ValidateEventTitle(title: string): string[] {
     const errors: string[] = [];
-    title=title.trim();
+    title = title.trim();
 
     if (title.length < 4) {
         errors.push("TitleTooShort");
     }
-    if(title.length > 60){
+    if (title.length > 60) {
         errors.push("TitleTooLong");
     }
-    if (title.match(/;/) != null) {
+    if (/;/.exec(title) != null) {
         errors.push("TitleHasSemicolon");
     }
-    
-    return errors.sort()   
+
+    return errors.sort((a, b) => a.localeCompare(b));
 }
 
 function ValidateEventDate(startDate: string, endDate: string): string[] {
     const errors: string[] = [];
 
-    if(startDate > endDate){
+    if (startDate > endDate) {
         errors.push("DateInvalid");
     }
-    
-    return errors.sort()   
+
+    return errors.sort((a, b) => a.localeCompare(b));
 }
 
 function ValidateEventDescription(description: string): string[] {
     const errors: string[] = [];
-    description=description.trim();
+    description = description.trim();
 
-    if(description.length > 255){
+    if (description.length > 255) {
         errors.push("DescriptionTooLong");
     }
-    if (description.match(/;/) != null) {
+    if (/;/.exec(description) != null) {
         errors.push("DescriptionHasSemicolon");
     }
-    
-    return errors.sort()   
+
+    return errors.sort((a, b) => a.localeCompare(b));
 }
 
 
