@@ -126,7 +126,7 @@ function GroupPage() {
                             )}
 
                     </Popup>
-                    <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Calendar (not yet functional)</h2>
+                    <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Calendar</h2>
                 </div>
 
                 <div className="flex flex-row w-max overflow-x-hidden">
@@ -153,6 +153,9 @@ function GroupPage() {
                 </div>
 
                 <div className="flex flex-row mb-20 overflow-x-hidden">
+
+                    <Link className="absolute ml-[calc(9vw+8px)] mt-[13px] text-gray-300 bg-gradient-to-br from-purple-800 to-blue-700 hover:bg-gradient-to-bl rounded-lg py-[5px] text-center w-[160px] h-[38px] drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)] text-nowrap font-bold border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" to={"/whiteboard/" + groupID}>Go to whiteboard</Link>
+                    
                     {groupInfo?.leaderID === userID ?
                     <div className="relative w-max cursor-pointer ml-[calc(270px+9vw)]" onClick={() => navigate("/group/"+groupID+"/settings")}>
                         <img src="/group_settings_picture.svg" className="invert absolute z-20 pl-3 mt-[18px] h-[30px] w-auto peer" />
@@ -161,7 +164,7 @@ function GroupPage() {
                     :
                     <Popup
                         trigger={
-                        <div className="relative w-max cursor-pointer ml-[calc(230px+9vw)]">
+                        <div className="relative w-max cursor-pointer ml-[calc(240px+9vw)]">
                             <img src="/leave_group_picture.svg" className="invert absolute z-20 pl-3 mt-[19px] h-7 w-auto peer" />
                             <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-red-950 border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Leave group</p>
                         </div>
@@ -187,7 +190,7 @@ function GroupPage() {
                     <Popup
                         trigger={
                         <div className="relative w-max cursor-pointer ml-[calc(480px+9vw)]">
-                            <img src="/plus_sign_picture.svg" className="invert absolute z-20 pl-3 mt-[19px] h-7 w-auto peer" />
+                            <img src="/plus_sign_picture.svg" className="invert absolute z-20 pl-3 mt-[20px] h-7 w-auto peer" />
                             <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Add event</p>
                         </div>
                         }
@@ -211,7 +214,7 @@ function GroupPage() {
                 <div className="bg-blue-400 min-w-[800px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] min-h-[500px] overflow-x-hidden w-max mb-20">
 
                 </div>
-                <Link className="text-white" to={"/whiteboard/" + groupID}>Go to whiteboard</Link>
+                
             </div>
         </>
     )
