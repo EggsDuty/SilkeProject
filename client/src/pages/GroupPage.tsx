@@ -7,6 +7,7 @@ import MemberBox from "../components/Groups/MemberBox";
 import Popup from "reactjs-popup";
 import MemberAdd from "../components/Groups/MemberAdd";
 import MyCalendar from "../components/Groups/MyCalendar";
+import EventCreation from "../components/Groups/EventCreation";
 
 interface MemberInfo {
     userID: string,
@@ -20,9 +21,10 @@ function GroupPage() {
 
     const [groupInfo, setGroupInfo] = useState<GroupInfo>();
     const defaultValue: MemberInfo[] = [];
-    const [userNameInfo, setUserNameInfo] = useState(defaultValue)
+    const [userNameInfo, setUserNameInfo] = useState(defaultValue);
     const [isLoading, setIsLoading] = useState(true);
     const [isLoadingMembers, setIsLoadingMembers] = useState(true);
+    const [isLoadingEvents, setIsLoadingEvents] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -39,8 +41,9 @@ function GroupPage() {
             }
             setGroupInfo(_groupInfo);
             setIsLoading(false);
+            setIsLoadingEvents(false);
         })
-    }, [])
+    }, [isLoadingEvents])
 
     useEffect(() => {
         if (isLoading) {
@@ -70,6 +73,16 @@ function GroupPage() {
         DeleteUserFromGroupPromise(userID!, groupID!).then(async () => {
             navigate("/groups");
         })
+    }
+
+    function AddEvent(eventInfo: string){
+      //  const newGroupInfo = structuredClone(groupInfo);
+      //if(groupInfo?.events === undefined && groupInfo){
+       // groupInfo.events=[];
+     //}
+       // groupInfo?.events.push(eventInfo);
+      //  setGroupInfo(groupInfo);
+       // setIsLoadingEvents(true);
     }
 
     if (isLoading) {
@@ -134,41 +147,68 @@ function GroupPage() {
                     </div>
 
                     <div className="bg-blue-400 min-w-[600px] rounded-lg bg-opacity-20 mt-3 ml-[1vw] min-h-[400px] overflow-x-hidden w-max drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
-                        <MyCalendar />
+                        {groupInfo?.events === undefined ? 
+                            <MyCalendar events={[]} />
+                            :
+                            <MyCalendar events={groupInfo?.events!} key={groupInfo?.events.length} />
+                        }
                     </div>
                 </div>
 
-                {groupInfo?.leaderID === userID ?
-                <div className="relative w-max cursor-pointer mb-20 ml-[calc(270px+9vw)]" onClick={() => navigate("/group/"+groupID+"/settings")}>
-                    <img src="/group_settings_picture.svg" className="invert absolute z-20 pl-3 mt-[2px] h-[30px] w-auto peer" />
-                    <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Settings</p>
-                </div>
-                :
-                <Popup
-                    trigger={
-                    <div className="relative w-max cursor-pointer mb-20 ml-[calc(230px+9vw)]">
-                        <img src="/leave_group_picture.svg" className="invert absolute z-20 pl-3 mt-[4px] h-7 w-auto peer" />
-                        <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-red-950 border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Leave group</p>
+                <div className="flex flex-row mb-20 overflow-x-hidden">
+                    {groupInfo?.leaderID === userID ?
+                    <div className="relative w-max cursor-pointer ml-[calc(270px+9vw)]" onClick={() => navigate("/group/"+groupID+"/settings")}>
+                        <img src="/group_settings_picture.svg" className="invert absolute z-20 pl-3 mt-[18px] h-[30px] w-auto peer" />
+                        <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Settings</p>
                     </div>
-                    }
-                    modal
-                    nested
-                    closeOnDocumentClick={false}
-                >
-                    {/* @ts-ignore */}
-                    {(close) => (
-                    <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[600px] m-auto h-[230px] bg-opacity-90 brightness-125 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
-                        <button onClick={close} className="text-3xl ml-2">X</button>
-                        <h1 className="text-2xl text-center mt-10">Are you sure you want to leave this group?</h1>
-                        <div className="flex flex-row mt-10 ml-96">
-                            <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleGroupLeaveClick()}>Yes</button>
-                            <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
+                    :
+                    <Popup
+                        trigger={
+                        <div className="relative w-max cursor-pointer ml-[calc(230px+9vw)]">
+                            <img src="/leave_group_picture.svg" className="invert absolute z-20 pl-3 mt-[19px] h-7 w-auto peer" />
+                            <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-red-950 border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Leave group</p>
                         </div>
-                    </div>
-                        )}
+                        }
+                        modal
+                        nested
+                        closeOnDocumentClick={false}
+                    >
+                        {/* @ts-ignore */}
+                        {(close) => (
+                        <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[600px] m-auto h-[230px] bg-opacity-90 brightness-125 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                            <button onClick={close} className="text-3xl ml-2">X</button>
+                            <h1 className="text-2xl text-center mt-10">Are you sure you want to leave this group?</h1>
+                            <div className="flex flex-row mt-10 ml-96">
+                                <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleGroupLeaveClick()}>Yes</button>
+                                <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
+                            </div>
+                        </div>
+                            )}
 
-                </Popup>
-                }
+                    </Popup>
+                    }
+                    <Popup
+                        trigger={
+                        <div className="relative w-max cursor-pointer ml-[calc(480px+9vw)]">
+                            <img src="/plus_sign_picture.svg" className="invert absolute z-20 pl-3 mt-[19px] h-7 w-auto peer" />
+                            <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Add event</p>
+                        </div>
+                        }
+                        modal
+                        nested
+                        closeOnDocumentClick={false}
+                    >
+                        {/* @ts-ignore */}
+                        {(close) => (
+                        <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[40vw] min-w-[500px] m-auto overflow-y-scroll h-[80vh] min-h-[620px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                            <button onClick={close} className="text-3xl ml-2">X</button>
+                            <h1 className="text-4xl text-center mt-10">Create an event</h1>
+                            <EventCreation closeFunction={close} addEvent={AddEvent}/>
+                        </div>
+                            )}
+
+                    </Popup>
+                </div>
 
                 <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Chat (not yet functional)</h2>
                 <div className="bg-blue-400 min-w-[800px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] min-h-[500px] overflow-x-hidden w-max mb-20">

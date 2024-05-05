@@ -197,3 +197,12 @@ export async function GetGroupInfoPromise(uid: string) {
     const groupData = _data as GroupInfo;
     return groupData;
 }
+
+export async function CreateNewEventPromise(groupID: string, eventInfo: String) {
+    const groupRef = doc(firebase.db, "groups", groupID);
+
+    await updateDoc(groupRef, {
+        events: arrayUnion(eventInfo)
+    })
+}
+

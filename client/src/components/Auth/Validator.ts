@@ -138,5 +138,29 @@ function ValidateGroupDescription(description: string): string[] {
     return errors.sort()   
 }
 
+function ValidateEventTitle(title: string): string[] {
+    const errors: string[] = [];
+    title=title.trim();
 
-export default { ValidateEmail, ValidatePassword, ValidateUsername, ValidateRepeatPassword, ValidateDescription, ValidateGroupName, ValidateGroupDescription };
+    if (title.length < 4) {
+        errors.push("TitleTooShort");
+    }
+    if(title.length > 80){
+        errors.push("TitleTooLong");
+    }
+    
+    return errors.sort()   
+}
+
+function ValidateEventDate(startDate: string, endDate: string): string[] {
+    const errors: string[] = [];
+
+    if(startDate > endDate){
+        errors.push("DateInvalid");
+    }
+    
+    return errors.sort()   
+}
+
+
+export default { ValidateEmail, ValidatePassword, ValidateUsername, ValidateRepeatPassword, ValidateDescription, ValidateGroupName, ValidateGroupDescription, ValidateEventTitle, ValidateEventDate };

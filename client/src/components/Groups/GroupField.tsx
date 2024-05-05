@@ -14,7 +14,10 @@ interface Props {
 const errorMap: { [id: string]: ReactElement } = {
     "GroupNameTooShort": <>Group name should be at least 4 characters</>,
     "GroupNameTooLong": <>Group name can't have more than 20 characters</>,
-    "DescriptionTooLong": <>Description is too long</>
+    "DescriptionTooLong": <>Description is too long</>,
+    "TitleTooLong": <>Title can't have more than 80 characters</>,
+    "DateInvalid": <>The end date cannot be before the start date</>,
+    "TitleTooShort": <>Title should be at least 4 characters</>
 }
 
 
