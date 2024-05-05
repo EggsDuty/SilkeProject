@@ -15,9 +15,11 @@ const errorMap: { [id: string]: ReactElement } = {
     "GroupNameTooShort": <>Group name should be at least 4 characters</>,
     "GroupNameTooLong": <>Group name can't have more than 20 characters</>,
     "DescriptionTooLong": <>Description is too long</>,
-    "TitleTooLong": <>Title can't have more than 80 characters</>,
+    "TitleTooLong": <>Title can't have more than 60 characters</>,
     "DateInvalid": <>The end date cannot be before the start date</>,
-    "TitleTooShort": <>Title should be at least 4 characters</>
+    "TitleTooShort": <>Title should be at least 4 characters</>,
+    "TitleHasSemicolon": <>Title can't have semicolons</>,
+    "DescriptionHasSemicolon": <>Description can't have semicolons</>
 }
 
 

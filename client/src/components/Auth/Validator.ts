@@ -145,8 +145,11 @@ function ValidateEventTitle(title: string): string[] {
     if (title.length < 4) {
         errors.push("TitleTooShort");
     }
-    if(title.length > 80){
+    if(title.length > 60){
         errors.push("TitleTooLong");
+    }
+    if (title.match(/;/) != null) {
+        errors.push("TitleHasSemicolon");
     }
     
     return errors.sort()   
@@ -162,5 +165,19 @@ function ValidateEventDate(startDate: string, endDate: string): string[] {
     return errors.sort()   
 }
 
+function ValidateEventDescription(description: string): string[] {
+    const errors: string[] = [];
+    description=description.trim();
 
-export default { ValidateEmail, ValidatePassword, ValidateUsername, ValidateRepeatPassword, ValidateDescription, ValidateGroupName, ValidateGroupDescription, ValidateEventTitle, ValidateEventDate };
+    if(description.length > 255){
+        errors.push("DescriptionTooLong");
+    }
+    if (description.match(/;/) != null) {
+        errors.push("DescriptionHasSemicolon");
+    }
+    
+    return errors.sort()   
+}
+
+
+export default { ValidateEmail, ValidatePassword, ValidateUsername, ValidateRepeatPassword, ValidateDescription, ValidateGroupName, ValidateGroupDescription, ValidateEventTitle, ValidateEventDate, ValidateEventDescription };
