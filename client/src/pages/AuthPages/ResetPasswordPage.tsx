@@ -55,10 +55,9 @@ function ResetPassword() {
                 failed = true;
                 setResetError(error.code);
             }
-        } finally {
-            if (failed) {
-                return <Navigate to="/home" replace={true} />
-            }
+        }
+        if (failed) {
+            return <Navigate to="/home" replace={true} />
         }
     }
 

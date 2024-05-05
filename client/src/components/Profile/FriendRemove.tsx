@@ -71,6 +71,7 @@ function FriendRemove() {
             return;
         }
         DeleteFriendPromise(uid, friendID).then(() => {
+            setFirstTime(true);
             setUserFriends([]);
             setSearchedFriends([]);
             setIsGettingUsers(true);

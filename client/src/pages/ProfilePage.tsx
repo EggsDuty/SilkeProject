@@ -1,6 +1,6 @@
 import { UserInfo } from '../components/DatabaseTypes.ts';
 import { useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../components/Header.tsx';
 import ProfileInformation from '../components/Profile/ProfileInformation.tsx';
 import ProfileEditInformation from '../components/Profile/ProfileEditInformation.tsx';
@@ -17,7 +17,7 @@ interface Person {
 }
 
 function ProfilePage() {
-
+    const navigate = useNavigate();
     const { uid } = useParams();
     const [data, setData] = useState<UserInfo>();
 
@@ -29,10 +29,6 @@ function ProfilePage() {
 
     const [gottenFriends, setGottenFriends] = useState(false);
     const [gottenInvites, setGottenInvites] = useState(false);
-
-    if (!uid) {
-        return <Navigate to="/" replace={true} />
-    }
 
     async function getAllFriendInfo(uids: string[]) {
         const friends: Person[] = [];
@@ -46,19 +42,24 @@ function ProfilePage() {
 
     function handleDecline(valueToRemove: string) {
         DeleteUserFriendInvitePromise(uid!, valueToRemove).then(() => {
+            setInviteList([]);
             setGottenInvites(false);
         });
     }
 
     function handleAccept(friendID: string) {
         AcceptFriendRequestPromise(uid!, friendID).then(() => {
-            setGottenFriends(false);
-            handleDecline(friendID);
+            DeleteUserFriendInvitePromise(uid!, friendID).then(() => {
+                setFriendList([]);
+                setInviteList([]);
+                setGottenInvites(false);
+                setGottenFriends(false);
+            });
         });
     }
 
     useEffect(() => {
-        if (uid !== null) {
+        if (uid) {
             GetDataFromDocumentPromise("users", uid).then((_data) => {
                 const _convertedData = _data as UserInfo;
                 setData(_convertedData);
@@ -69,10 +70,17 @@ function ProfilePage() {
                     setFriendList(_friendsInfo);
                 });
             });
+        } else {
+            navigate("/home");
+            return;
         }
     }, [uid, gottenFriends]);
 
     useEffect(() => {
+        if (!uid) {
+            navigate("/home");
+            return;
+        }
         if (!gottenInvites) {
             GetFriendInvitesListOfUser(uid).then((_inviteIDs: string[]) => {
                 getAllFriendInfo(_inviteIDs).then((_personInfo) => {
@@ -131,7 +139,7 @@ function ProfilePage() {
                             <Popup
                                 trigger={
                                     <div className="flex flex-row cursor-pointer items-center w-max bg-blue-950 px-2 py-1 mt-3 border-2 border-white border-opacity-0 hover:border-opacity-100 rounded-lg">
-                                        <img src="/plus_sign_picture.svg" className="invert h-9 w-auto" />
+                                        <img alt="Add a friend" src="/plus_sign_picture.svg" className="invert h-9 w-auto" />
                                         <p className="w-max ml-2 text-white rounded-lg">Add Friend</p>
                                     </div>
                                 }
@@ -150,7 +158,7 @@ function ProfilePage() {
                             <Popup
                                 trigger={
                                     <div className="flex flex-row cursor-pointer items-center w-max bg-blue-950 px-2 py-1 ml-5 mt-3 border-2 border-white border-opacity-0 hover:border-opacity-100 rounded-lg">
-                                        <img src="/group_delete_picture.svg" className="invert h-9 w-auto" />
+                                        <img alt="Remove a friend" src="/group_delete_picture.svg" className="invert h-9 w-auto" />
                                         <p className="w-max ml-2 text-white rounded-lg">Remove friend</p>
                                     </div>
                                 }
