@@ -17,5 +17,6 @@ export interface GroupInfo {
     description: string,
     creationDate: Timestamp,
     members: string[],
-    leaderID: string
+    leaderID: string,
+    events: string[]
 }
