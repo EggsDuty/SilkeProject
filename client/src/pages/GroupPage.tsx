@@ -28,6 +28,9 @@ function GroupPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if(!isLoadingEvents) {
+            return;
+        }
         GetGroupInfoPromise(groupID!).then((_groupInfo) => {
             let isPartOfGroup = false;
             for(let i=0; i<_groupInfo.members.length; i++){
@@ -75,14 +78,8 @@ function GroupPage() {
         })
     }
 
-    function AddEvent(eventInfo: string){
-      //  const newGroupInfo = structuredClone(groupInfo);
-      //if(groupInfo?.events === undefined && groupInfo){
-       // groupInfo.events=[];
-     //}
-       // groupInfo?.events.push(eventInfo);
-      //  setGroupInfo(groupInfo);
-       // setIsLoadingEvents(true);
+    function AddEvent(){
+        setIsLoadingEvents(true);
     }
 
     if (isLoading) {

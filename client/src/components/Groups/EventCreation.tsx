@@ -38,7 +38,7 @@ function EventCreation(props: Props) {
         console.log(groupID);
         console.log(eventInfo);
         await CreateNewEventPromise(groupID!, eventInfo);
-        props.addEvent(eventInfo);
+        props.addEvent();
 
         props.closeFunction();
     }
