@@ -33,8 +33,8 @@ function ProfilePage() {
     async function getAllFriendInfo(uids: string[]) {
         const friends: Person[] = [];
 
-        for (let i = 0; i < uids.length; i++) {
-            friends.push(await GetUserInfoForMemberList(uids[i]));
+        for (let id of uids) {
+            friends.push(await GetUserInfoForMemberList(id));
         }
 
         return friends;
@@ -72,7 +72,6 @@ function ProfilePage() {
             });
         } else {
             navigate("/home");
-            return;
         }
     }, [uid, gottenFriends]);
 
@@ -117,7 +116,7 @@ function ProfilePage() {
                             {toggledFriendAndInvites ?
                                 (inviteList.length > 0 ?
                                     inviteList.map((_person, _index) => (
-                                        <div key={_index} className="flex flex-row relative">
+                                        <div key={_person.userID} className="flex flex-row relative">
                                             <div className="cursor-pointer" onClick={() => handleAccept(_person.userID)}>
                                                 <img src={"/invite_accept_picture.svg"} alt="accept" className="absolute h-10 w-10 right-[5rem] translate-y-[15%]" />
                                             </div>
@@ -130,7 +129,7 @@ function ProfilePage() {
                                     <h1 className="text-2xl text-gray-500 font-bold mt-6 ml-6">{gottenInvites ? "No invites..." : "Loading..."}</h1>) :
                                 (friendList.length > 0 ?
                                     friendList.map((_friend, _index) => (
-                                        <MemberBox key={_index} memberID={_friend.userID} image={_friend.image} memberName={_friend.displayName} isLeader={false} />
+                                        <MemberBox key={_friend.userID} memberID={_friend.userID} image={_friend.image} memberName={_friend.displayName} isLeader={false} />
                                     )) :
                                     <h1 className="text-2xl text-gray-500 font-bold mt-6 ml-6">{gottenFriends ? "No friends..." : "Loading..."}</h1>)}
 

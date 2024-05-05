@@ -12,12 +12,12 @@ interface Props {
 }
 
 function toBase64(file: File, onLoadCallback: ((this: FileReader, ev: ProgressEvent<FileReader>) => any) | null) {
-    var reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = onLoadCallback;
 }
 
-function ProfileEditInformation(props: Props) {
+function ProfileEditInformation(props: Readonly<Props>) {
     const [image, setImage] = useState<File | null>(null);
     const [newDisplayName, setNewDisplayName] = useState(props.displayName);
     const [newDescription, setNewDescription] = useState(props.description);
@@ -94,15 +94,15 @@ function ProfileEditInformation(props: Props) {
             {image !== null ?
                 <>
                     <p className="text-2xl text-white my-3">Preview:</p>
-                    <img alt="Uploaded picture" src={URL.createObjectURL(image)} className="h-32 w-32 rounded-full" />
+                    <img alt="New upload" src={URL.createObjectURL(image)} className="h-32 w-32 rounded-full" />
                 </> :
                 ""}
 
             <h2 className="text-4xl text-white text-left mt-10">Username</h2>
-            <ProfileEditField defaultText={props.displayName} validateFunction={Validator.ValidateUsername} var={newDisplayName} setter={setNewDisplayName} textarea={false} />
+            <ProfileEditField defaultText={props.displayName} validateFunction={Validator.ValidateUsername} variable={newDisplayName} setter={setNewDisplayName} textarea={false} />
 
             <h2 className="text-4xl text-white text-left mt-10">Description</h2>
-            <ProfileEditField defaultText={props.description} validateFunction={Validator.ValidateDescription} var={newDescription} setter={setNewDescription} textarea={true} />
+            <ProfileEditField defaultText={props.description} validateFunction={Validator.ValidateDescription} variable={newDescription} setter={setNewDescription} textarea={true} />
 
             <div className="flex flex-row mt-10">
                 <button onClick={() => props.setEditMode(false)} className="py-2 px-6 rounded-lg text-purple-200 bg-blue-950 border border-indigo-300 hover:border-white hover:bg-indigo-200 hover:text-secondaryColor">Cancel</button>

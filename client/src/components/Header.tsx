@@ -2,7 +2,7 @@ import firebase from '../firebase.tsx';
 import { getAuth, signOut } from "firebase/auth";
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { GetUserInfoForHeaderPromise } from './DatabaseFunctions.ts';
 import { Tooltip } from 'react-tooltip'
 
@@ -13,9 +13,9 @@ interface Props {
 
 const auth = getAuth(firebase.app);
 
-function Header(props: Props) {
+function Header(props: Readonly<Props>) {
     const navigate = useNavigate();
-    const pathMatch = window.location.href.match(/(?<=\/)[\w-]+$/);
+    const pathMatch = /(?<=\/)[\w-]+$/.exec(window.location.href);
     let pageName = "";
     if (pathMatch !== null) {
         pageName = pathMatch[0];
@@ -83,37 +83,35 @@ function Header(props: Props) {
     }
 
     return (
-        <>
-            <div className={`flex flex-row min-h-10 ${props.transparent || props.transparent == null ? "bg-black bg-opacity-70 backdrop-blur-sm" : "bg-[#100524]"} sticky top-0 z-50`}>
-                <img alt="Fish" className="mx-6 h-9 w-auto cursor-pointer" src="/fish1.png" onClick={() => navigate("/")} />
-                <Link to='/home' className={`text-white ml-32 leading-9 px-10 border-x-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "home" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : ""}`}>Home</Link>
-                <Link to='/calculators' className={`text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "calculators" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : ""}`}>Calculators</Link>
-                <Link to='/whiteboard' className={`text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "whiteboard" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : ""}`}>Whiteboard</Link>
-                {!guest ?
-                    <Link to='/groups' className={`text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "groups" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : ""}`}>Groups</Link> :
-                    <>
-                        <p className="button-group-disabled text-neutral-400 leading-9 px-10 border-r-2 cursor-help">Groups</p>
-                        <Tooltip anchorSelect={".button-group-disabled"} place="bottom" delayShow={300}>
-                            Create an account to create a group!
-                        </Tooltip>
-                    </>
-                }
-                {!guest ?
-                    <div className="flex flex-row ml-auto mr-4 group w-16 hover:w-52">
-                        <img alt="Profile picture" src={image} className="rounded-full h-8 w-8 mt-[2px] ml-auto mr-4" />
-                        <div className="mt-10 bg-[#100524] rounded-sm w-[12%] right-3 fixed flex flex-col invisible hover:visible group-hover:visible p-2 text-white text-left bg-opacity-90">
-                            <p className="text-lg text-white">{username}</p>
-                            <p className="text-sm mb-3 text-neutral-300">{email}</p>
-                            <Link to={`/profile/${uid}`} className="mb-5 text-lg text-center text-indigo-200 hover:text-indigo-100">View Profile</Link>
-                            <button onClick={handleLogout} className="text-red-300 hover:text-red-200">Sign Out</button>
-                        </div>
-                    </div> :
-                    <div className="flex flex-row items-center ml-auto mr-4 space-x-5">
-                        <Link className="text-white hover:underline" to="/login">Login</Link>
-                        <Link className="text-white border-secondaryColor border-2 px-2 py-1 rounded-lg hover:underline" to="/signup">Sign up</Link>
-                    </div>}
-            </div>
-        </>
+        <div className={`flex flex-row min-h-10 ${props.transparent || props.transparent == null ? "bg-black bg-opacity-70 backdrop-blur-sm" : "bg-[#100524]"} sticky top-0 z-50`}>
+            <img alt="Fish" className="mx-6 h-9 w-auto cursor-pointer" src="/fish1.png" onClick={() => navigate("/")} />
+            <Link to='/home' className={`text-white ml-32 leading-9 px-10 border-x-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "home" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : ""}`}>Home</Link>
+            <Link to='/calculators' className={`text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "calculators" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : ""}`}>Calculators</Link>
+            <Link to='/whiteboard' className={`text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "whiteboard" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : ""}`}>Whiteboard</Link>
+            {!guest ?
+                <Link to='/groups' className={`text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "groups" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : ""}`}>Groups</Link> :
+                <>
+                    <p className="button-group-disabled text-neutral-400 leading-9 px-10 border-r-2 cursor-help">Groups</p>
+                    <Tooltip anchorSelect={".button-group-disabled"} place="bottom" delayShow={300}>
+                        Create an account to create a group!
+                    </Tooltip>
+                </>
+            }
+            {!guest ?
+                <div className="flex flex-row ml-auto mr-4 group w-16 hover:w-52">
+                    <img alt="Profile" src={image} className="rounded-full h-8 w-8 mt-[2px] ml-auto mr-4" />
+                    <div className="mt-10 bg-[#100524] rounded-sm w-[12%] right-3 fixed flex flex-col invisible hover:visible group-hover:visible p-2 text-white text-left bg-opacity-90">
+                        <p className="text-lg text-white">{username}</p>
+                        <p className="text-sm mb-3 text-neutral-300">{email}</p>
+                        <Link to={`/profile/${uid}`} className="mb-5 text-lg text-center text-indigo-200 hover:text-indigo-100">View Profile</Link>
+                        <button onClick={handleLogout} className="text-red-300 hover:text-red-200">Sign Out</button>
+                    </div>
+                </div> :
+                <div className="flex flex-row items-center ml-auto mr-4 space-x-5">
+                    <Link className="text-white hover:underline" to="/login">Login</Link>
+                    <Link className="text-white border-secondaryColor border-2 px-2 py-1 rounded-lg hover:underline" to="/signup">Sign up</Link>
+                </div>}
+        </div>
     )
 }
 

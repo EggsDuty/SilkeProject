@@ -37,13 +37,10 @@ function FriendInvite() {
         const userNameToFind = searchBox.value;
         GetUsersWithDisplayNamePromise(userNameToFind).then((_users) => {
             const _foundUsers: Person[] = [];
-            for (let i = 0; i < _users.length; i++) {
-                const _user = _users[i];
-
+            for (let _user of _users) {
                 let alreadyFriends = false;
-                for (let j = 0; j < userFriends.length; j++) {
-                    const friendID = userFriends[j];
-                    if (_user.userID === friendID || _user.userID === localStorage.getItem("uid")!) {
+                for (let _friendID of userFriends) {
+                    if (_user.userID === _friendID || _user.userID === localStorage.getItem("uid")!) {
                         alreadyFriends = true;
                         break;
                     }
@@ -83,7 +80,7 @@ function FriendInvite() {
             <div className="mt-10 h-full overflow-y-auto overflow-x-hidden border-2 border-white">
                 {foundUsers.length > 0 ?
                     foundUsers.map((_person, _index) => (
-                        <div key={_index} className="relative">
+                        <div key={_person.userID} className="relative">
                             <MemberBox memberID={_person.userID} image={_person.image} memberName={_person.displayName} isLeader={false} />
                             <img alt="Invite" src="/plus_sign_picture.svg" className="absolute top-0 right-5 translate-y-[25%] invert hover:contrast-[20%] h-9 w-auto" onClick={() => handleInviteSend(_index, _person.userID)} />
                         </div>

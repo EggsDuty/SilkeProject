@@ -7,7 +7,7 @@ const auth = getAuth(firebase.app);
 
 function VerifyEmail() {
     const navigate = useNavigate();
-    const [triedToVerify, setTryToVerify] = useState(false);
+    const [triedToVerify, setTriedToVerify] = useState(false);
     const params = new URLSearchParams(window.location.search);
     const code = params.get('oobCode')!;
 
@@ -15,7 +15,7 @@ function VerifyEmail() {
         try {
             await applyActionCode(auth, code);
         } catch {
-            setTryToVerify(true);
+            setTriedToVerify(true);
         }
     }
 
@@ -25,7 +25,7 @@ function VerifyEmail() {
             return;
         }
         tryVerifyEmail().then(() => {
-            setTryToVerify(true);
+            setTriedToVerify(true);
         });
     }, [])
 

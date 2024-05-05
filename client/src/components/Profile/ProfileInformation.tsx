@@ -8,11 +8,11 @@ interface Props {
     setEditMode: Dispatch<SetStateAction<boolean>>
 }
 
-function ProfileInformation(props: Props) {
+function ProfileInformation(props: Readonly<Props>) {
     return (
         <div className="text-center">
             <div className="flex flex-row relative">
-                <img alt="Profile picture" src={props.info.image} className="rounded-full h-64 w-64 m-auto" />
+                <img alt="Profile" src={props.info.image} className="rounded-full h-64 w-64 m-auto" />
                 {props.own ?
                     <div onClick={() => props.setEditMode(true)} className="flex flex-row items-center absolute right-0 bg-blue-950 bg-opacity-70 p-3 rounded-md h-10 cursor-pointer">
                         <img alt="Edit" src="/edit.svg" className="invert h-6" />

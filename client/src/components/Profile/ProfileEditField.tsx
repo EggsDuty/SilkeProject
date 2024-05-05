@@ -3,7 +3,7 @@ import { Dispatch, ReactElement, SetStateAction, useEffect, useState } from "rea
 interface Props {
     defaultText: string,
     validateFunction: Function,
-    var: string,
+    variable: string,
     setter: Dispatch<SetStateAction<string>>,
     textarea: boolean
 }
@@ -17,13 +17,13 @@ const errorMap: { [id: string]: ReactElement } = {
 
 
 
-function ProfileEditField(props: Props) {
+function ProfileEditField(props: Readonly<Props>) {
     const defaultValue: string[] = [];
     const [errors, setErrors] = useState(defaultValue);
 
     useEffect(() => {
-        const _errors = props.validateFunction(props.var);
-        if (_errors.length === 0 || props.var.length === 0) {
+        const _errors = props.validateFunction(props.variable);
+        if (_errors.length === 0 || props.variable.length === 0) {
             setErrors([]);
             return;
         }
@@ -33,7 +33,7 @@ function ProfileEditField(props: Props) {
         }, 1000)
 
         return () => clearTimeout(debounce);
-    }, [props.var]);
+    }, [props.variable]);
 
     return (
         <div className="flex flex-col mb-5 w-full m-auto transition-transform">

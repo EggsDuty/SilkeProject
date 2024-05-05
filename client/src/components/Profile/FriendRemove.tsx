@@ -28,8 +28,8 @@ function FriendRemove() {
         }
         GetFriendIDListOfUser(uid).then(async (_friendIDs) => {
             const _friendInfo: Friend[] = []
-            for (let i = 0; i < _friendIDs.length; i++) {
-                const _info = await GetUserInfoForMemberList(_friendIDs[i]);
+            for (let _friendID of _friendIDs) {
+                const _info = await GetUserInfoForMemberList(_friendID);
                 _friendInfo.push(_info);
             }
 
@@ -56,7 +56,7 @@ function FriendRemove() {
 
         for (let i = 0; i < userFriends.length; i++) {
             const _friend = userFriends[i];
-            if (_friend.displayName.match(new RegExp(searchBox.value, "i")) === null) {
+            if (new RegExp(searchBox.value, "i").exec(_friend.displayName) === null) {
                 newFriendList.splice(i, 1);
                 //i--;
             }
@@ -88,7 +88,7 @@ function FriendRemove() {
             <div className="mt-10 h-full overflow-y-auto overflow-x-hidden border-2 border-white">
                 {searchedFriends.length > 0 ?
                     searchedFriends.map((_friend, _index) => (
-                        <div key={_index} className="relative">
+                        <div key={_friend.userID} className="relative">
                             <MemberBox memberID={_friend.userID} image={_friend.image} memberName={_friend.displayName} isLeader={false} />
                             <img alt="Remove friend" src="/group_delete_picture.svg" className="absolute top-0 right-5 translate-y-[25%] invert hover:contrast-[20%] h-9 w-auto" onClick={() => handleDeleteFriend(_friend.userID)} />
                         </div>
