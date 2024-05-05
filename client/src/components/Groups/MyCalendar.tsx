@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Calendar, dateFnsLocalizer, Event } from 'react-big-calendar'
 import format from 'date-fns/format'
 import parse from 'date-fns/parse'
@@ -10,15 +10,32 @@ import startOfHour from 'date-fns/startOfHour'
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 
-function MyCalendar() {
-  const [events, setEvents] = useState<Event[]>([
-    {
-      title: 'Learn cool stuff',
-      start,
-      end,
-      allDay: true
-    },
-  ])
+interface Props {
+  events: string[]
+}
+
+
+function MyCalendar(props: Props) {
+  const [events, setEvents] = useState<Event[]>([]);
+
+  useEffect(() => {
+    
+    const eventsInfo: Event[] = [];
+    /* if(props.events === undefined){
+      return;
+    } */
+    for(let i = 0; i < props.events.length; i++){
+      const eventParts = props.events[i].split(";");
+      const event: Event = {
+        title: eventParts[0],
+        start: new Date(eventParts[1]),
+        end: new Date(eventParts[2])
+      }
+      eventsInfo.push(event);
+    }
+  
+    setEvents(eventsInfo);
+}, [])
 
   return (
     <Calendar

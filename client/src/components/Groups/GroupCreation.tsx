@@ -39,7 +39,8 @@ function GroupCreation(props: Props) {
             description: trimmedDescription,
             creationDate: Timestamp.now(),
             members: [userID!],
-            leaderID: userID!
+            leaderID: userID!,
+            events: []
         }
                 
         groupInfo.groupID = await CreateNewGroupPromise(groupInfo, userID!);
