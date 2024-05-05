@@ -2,7 +2,7 @@ interface Props {
     guest: boolean
 }
 
-function NoRoute(props: Props) {
+function NoRoute(props: Readonly<Props>) {
     return (
         <div className="absolute w-screen h-screen flex flex-col justify-center items-center">
             <div className="text-center">

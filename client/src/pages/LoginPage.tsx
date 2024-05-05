@@ -57,26 +57,24 @@ function LoginPage() {
     }
 
     return (
-        <>
-            <div className="h-screen w-screen absolute flex items-center">
-                <form onSubmit={(e) => handleLogin(e)} className="bg-indigo-900 w-1/3 m-auto pt-5 pb-10 px-10 rounded-lg bg-opacity-70">
-                    <div className="-ml-5 text-xl text-white hover:text-indigo-200 select-none cursor-pointer" onClick={() => window.history.back()}>&larr; Back</div>
-                    <h1 className="text-3xl text-white mt-5">Login</h1>
-                    <hr className="mb-5 mt-3" />
-                    <AuthField var={emailField} validateFunction={Validator.ValidateEmail} setter={setEmailField} name="E-mail:" type="text" placeholder="example@mail.com" />
-                    <AuthField var={passwordField} validateFunction={Validator.ValidatePassword} setter={setPasswordField} name="Password:" type="password" placeholder="Must contain a letter, capital letter and digit" />
-                    <button type="submit" className="py-2 px-6 my-5 rounded-lg text-purple-200 bg-secondaryColor border border-indigo-300 hover:border-white hover:bg-indigo-200 hover:text-secondaryColor">Login</button>
-                    <br />
-                    <Link to="/forgot-password" className="text-purple-200 underline">Forgot password?</Link>
-                    {loginError !== "" ?
-                        <div className="bg-indigo-900 my-3 p-3 pl-1 mt-10 rounded-sm text-left border-2 border-red-600">
-                            <p className="text-white text-2xl">{errorMap[loginError]}</p>
-                        </div> :
-                        ""
-                    }
-                </form>
-            </div>
-        </>
+        <div className="h-screen w-screen absolute flex items-center">
+            <form onSubmit={(e) => handleLogin(e)} className="bg-indigo-900 w-1/3 m-auto pt-5 pb-10 px-10 rounded-lg bg-opacity-70">
+                <div className="-ml-5 text-xl text-white hover:text-indigo-200 select-none cursor-pointer" onClick={() => window.history.back()}>&larr; Back</div>
+                <h1 className="text-3xl text-white mt-5">Login</h1>
+                <hr className="mb-5 mt-3" />
+                <AuthField var={emailField} validateFunction={Validator.ValidateEmail} setter={setEmailField} name="E-mail:" type="text" placeholder="example@mail.com" />
+                <AuthField var={passwordField} validateFunction={Validator.ValidatePassword} setter={setPasswordField} name="Password:" type="password" placeholder="Must contain a letter, capital letter and digit" />
+                <button type="submit" className="py-2 px-6 my-5 rounded-lg text-purple-200 bg-secondaryColor border border-indigo-300 hover:border-white hover:bg-indigo-200 hover:text-secondaryColor">Login</button>
+                <br />
+                <Link to="/forgot-password" className="text-purple-200 underline">Forgot password?</Link>
+                {loginError !== "" ?
+                    <div className="bg-indigo-900 my-3 p-3 pl-1 mt-10 rounded-sm text-left border-2 border-red-600">
+                        <p className="text-white text-2xl">{errorMap[loginError]}</p>
+                    </div> :
+                    ""
+                }
+            </form>
+        </div>
     );
 }
 

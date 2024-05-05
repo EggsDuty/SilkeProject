@@ -27,22 +27,20 @@ function PleaseVerify() {
     }
 
     return (
-        <>
-            <div className="h-screen w-screen absolute flex items-center">
-                <div className="bg-indigo-900 my-3 p-3 pl-1 mt-10 rounded-md text-center mx-auto">
-                    <p className="text-white text-4xl mb-3">Please verify your e-mail.</p>
-                    <p className="text-neutral-300 text-xl mb-5">You should have received an e-mail from us with further instructions.</p>
-                    <p className="text-sky-200 text-xl mb-5">If you've verified, try refreshing this page. It can take some time to update.</p>
-                    {!clicked ?
-                        <>
-                            <p className="text-neutral-300">Didn't get one?</p>
-                            <button onClick={sendAgainClicked} className="text-purple-200 underline">Click here to get a new one</button>
-                        </> :
-                        <p className="text-neutral-300">Sent! Try checking again.</p>
-                    }
-                </div>
+        <div className="h-screen w-screen absolute flex items-center">
+            <div className="bg-indigo-900 my-3 p-3 pl-1 mt-10 rounded-md text-center mx-auto">
+                <p className="text-white text-4xl mb-3">Please verify your e-mail.</p>
+                <p className="text-neutral-300 text-xl mb-5">You should have received an e-mail from us with further instructions.</p>
+                <p className="text-sky-200 text-xl mb-5">If you've verified, try refreshing this page. It can take some time to update.</p>
+                {!clicked ?
+                    <>
+                        <p className="text-neutral-300">Didn't get one?</p>
+                        <button onClick={sendAgainClicked} className="text-purple-200 underline">Click here to get a new one</button>
+                    </> :
+                    <p className="text-neutral-300">Sent! Try checking again.</p>
+                }
             </div>
-        </>
+        </div>
     );
 }
 
