@@ -94,7 +94,7 @@ function ProfileEditInformation(props: Props) {
             {image !== null ?
                 <>
                     <p className="text-2xl text-white my-3">Preview:</p>
-                    <img src={URL.createObjectURL(image)} className="h-32 w-32 rounded-full" />
+                    <img alt="Uploaded picture" src={URL.createObjectURL(image)} className="h-32 w-32 rounded-full" />
                 </> :
                 ""}
 

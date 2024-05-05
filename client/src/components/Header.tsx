@@ -17,7 +17,7 @@ function Header(props: Props) {
     const navigate = useNavigate();
     const pathMatch = window.location.href.match(/(?<=\/)[\w-]+$/);
     let pageName = "";
-    if(pathMatch !== null){
+    if (pathMatch !== null) {
         pageName = pathMatch[0];
     }
 
@@ -85,12 +85,12 @@ function Header(props: Props) {
     return (
         <>
             <div className={`flex flex-row min-h-10 ${props.transparent || props.transparent == null ? "bg-black bg-opacity-70 backdrop-blur-sm" : "bg-[#100524]"} sticky top-0 z-50`}>
-                <img className="mx-6 h-9 w-auto cursor-pointer" src="/fish1.png" onClick={() => navigate("/")} />
-                <Link to='/home' className={`text-white ml-32 leading-9 px-10 border-x-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "home" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : "" }`}>Home</Link>
-                <Link to='/calculators' className={`text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "calculators" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : "" }`}>Calculators</Link>
-                <Link to='/whiteboard' className={`text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "whiteboard" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : "" }`}>Whiteboard</Link>
+                <img alt="Fish" className="mx-6 h-9 w-auto cursor-pointer" src="/fish1.png" onClick={() => navigate("/")} />
+                <Link to='/home' className={`text-white ml-32 leading-9 px-10 border-x-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "home" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : ""}`}>Home</Link>
+                <Link to='/calculators' className={`text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "calculators" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : ""}`}>Calculators</Link>
+                <Link to='/whiteboard' className={`text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "whiteboard" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : ""}`}>Whiteboard</Link>
                 {!guest ?
-                    <Link to='/groups' className={`text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "groups" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : "" }`}>Groups</Link> :
+                    <Link to='/groups' className={`text-white leading-9 px-10 border-r-2 transition-all duration-1000 hover:bg-gradient-to-t hover:from-gray-400 hover:to-50% hover:to-transparent ${pageName === "groups" ? "bg-gradient-to-t from-gray-400 to-50% to-transparent" : ""}`}>Groups</Link> :
                     <>
                         <p className="button-group-disabled text-neutral-400 leading-9 px-10 border-r-2 cursor-help">Groups</p>
                         <Tooltip anchorSelect={".button-group-disabled"} place="bottom" delayShow={300}>
@@ -100,7 +100,7 @@ function Header(props: Props) {
                 }
                 {!guest ?
                     <div className="flex flex-row ml-auto mr-4 group w-16 hover:w-52">
-                        <img src={image} className="rounded-full h-8 w-8 mt-[2px] ml-auto mr-4" />
+                        <img alt="Profile picture" src={image} className="rounded-full h-8 w-8 mt-[2px] ml-auto mr-4" />
                         <div className="mt-10 bg-[#100524] rounded-sm w-[12%] right-3 fixed flex flex-col invisible hover:visible group-hover:visible p-2 text-white text-left bg-opacity-90">
                             <p className="text-lg text-white">{username}</p>
                             <p className="text-sm mb-3 text-neutral-300">{email}</p>
