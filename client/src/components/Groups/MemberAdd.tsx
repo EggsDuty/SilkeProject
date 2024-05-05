@@ -1,30 +1,30 @@
 import { useEffect, useState } from "react";
-import { GetFriendsListOfUser, GetUserInfoForMemberList } from "../DatabaseFunctions";
+import { GetFriendIDListOfUser, GetUserInfoForMemberList } from "../DatabaseFunctions";
 import MemberBox from "./MemberBox";
 import { GroupInfo } from "../DatabaseTypes";
 
-interface FriendInfo{
+interface FriendInfo {
     userID: string,
     displayName: string,
     image: string
 }
 
-interface Props{
+interface Props {
     groupInfo: GroupInfo,
     groupID: string
 }
 
 
-function MemberAdd(props: Props){
+function MemberAdd(props: Props) {
     const userID = localStorage.getItem("uid");
 
     const [friendsInfo, setFriendInfo] = useState<FriendInfo[]>([])
     const [filteredFriendsInfo, setFilteredFriendInfo] = useState<FriendInfo[]>([])
     const [isLoadingFriends, setisLoadingFriends] = useState(true)
     const [friendSearchBarValue, setFriendSearchBarValue] = useState(" ")
-    
+
     useEffect(() => {
-        GetFriendsListOfUser(userID!).then((_friends) => {
+        GetFriendIDListOfUser(userID!).then((_friends) => {
             GetFriendInfo(_friends).then((_friendsList) => {
                 setFriendInfo(_friendsList);
                 setisLoadingFriends(false);
@@ -34,7 +34,7 @@ function MemberAdd(props: Props){
     }, [])
 
     useEffect(() => {
-        if(friendsInfo.length > 0){
+        if (friendsInfo.length > 0) {
             const tempFilteredFriends: FriendInfo[] = [];
             for (let i = 0; i < friendsInfo.length; i++) {
                 if (friendsInfo.at(i)?.displayName.match(new RegExp(friendSearchBarValue, "i")) !== null) {
@@ -43,25 +43,25 @@ function MemberAdd(props: Props){
             }
             setFilteredFriendInfo(tempFilteredFriends);
         }
-        else{
+        else {
             return;
         }
-    }, [friendSearchBarValue, ])
+    }, [friendSearchBarValue,])
 
-    async function GetFriendInfo(friendsIDs: string[]){
+    async function GetFriendInfo(friendsIDs: string[]) {
         const tempFriendsInfo: FriendInfo[] = [];
 
-        for(let i=0; i<friendsIDs.length; i++){
+        for (let i = 0; i < friendsIDs.length; i++) {
             const friendID = friendsIDs.at(i);
             let flag = false;
 
-            for(let j=0; j<props.groupInfo.members.length; j++){
-                if(friendID === props.groupInfo.members.at(j)){
+            for (let j = 0; j < props.groupInfo.members.length; j++) {
+                if (friendID === props.groupInfo.members.at(j)) {
                     flag = true;
                     break;
                 }
             }
-            if(!flag){
+            if (!flag) {
                 tempFriendsInfo.push(await GetUserInfoForMemberList(friendID!));
             }
         }
@@ -78,34 +78,34 @@ function MemberAdd(props: Props){
         <>
             <div className="flex flex-row mb-5 w-full m-auto transition-transform mt-10">
 
-                    <label className="text-2xl text-white mb-3 ml-[50px] min-w-[200px]">Select a friend</label>
-                    <div className="absolute z-10 mt-[3px] ml-[396px] pointer-events-auto">
-                        <img className="h-7 invert contrast-[20%]" src="/search_picture.svg" />
-                    </div>
-                    <input id="find-member-search-bar" onChange={handleFriendSearch} type="text" placeholder="Your friend name..." className="ml-[140px] w-[250px] bg-blue-950 border-indigo-300 focus:border-white outline-none border h-9 rounded-lg pl-10 pr-2 py-4 text-white placeholder:text-lg "></input>
+                <label className="text-2xl text-white mb-3 ml-[50px] min-w-[200px]">Select a friend</label>
+                <div className="absolute z-10 mt-[3px] ml-[396px] pointer-events-auto">
+                    <img className="h-7 invert contrast-[20%]" src="/search_picture.svg" />
+                </div>
+                <input id="find-member-search-bar" onChange={handleFriendSearch} type="text" placeholder="Your friend name..." className="ml-[140px] w-[250px] bg-blue-950 border-indigo-300 focus:border-white outline-none border h-9 rounded-lg pl-10 pr-2 py-4 text-white placeholder:text-lg "></input>
             </div>
 
             <div className="bg-blue-400 w-[590px] min-w-[400px] rounded-lg bg-opacity-20 mt-3 ml-[50px] min-h-[280px] h-[48vh] mb-[30px] overflow-auto">
-                {isLoadingFriends ? 
-                <div className="flex flex-row  mt-6 ml-6 align-middle">
-                    <img src="/loading_picture.svg" className="animate-spin invert h-10"/>
-                    <p className="text-gray-500 text-2xl font-bold ml-2">Loading...</p>
-                </div> 
-                :
-                friendsInfo.length < 1 ?
-                <h2 className="text-gray-500 text-2xl font-bold mt-6 ml-6">No friends...</h2>
-                :
-                filteredFriendsInfo.length < 1 ?
-                <h2 className="text-gray-500 text-2xl font-bold mt-6 ml-6">No results...</h2>
-                :
-                filteredFriendsInfo.map((_friendInfo) => (
-                    <MemberBox key={_friendInfo.userID} memberID={_friendInfo.userID} image={_friendInfo.image} memberName={_friendInfo.displayName} isLeader={false} addFunction={true} groupID={props.groupID} groupInfo={props.groupInfo}/>
-                ))
+                {isLoadingFriends ?
+                    <div className="flex flex-row  mt-6 ml-6 align-middle">
+                        <img src="/loading_picture.svg" className="animate-spin invert h-10" />
+                        <p className="text-gray-500 text-2xl font-bold ml-2">Loading...</p>
+                    </div>
+                    :
+                    friendsInfo.length < 1 ?
+                        <h2 className="text-gray-500 text-2xl font-bold mt-6 ml-6">No friends...</h2>
+                        :
+                        filteredFriendsInfo.length < 1 ?
+                            <h2 className="text-gray-500 text-2xl font-bold mt-6 ml-6">No results...</h2>
+                            :
+                            filteredFriendsInfo.map((_friendInfo) => (
+                                <MemberBox key={_friendInfo.userID} memberID={_friendInfo.userID} image={_friendInfo.image} memberName={_friendInfo.displayName} isLeader={false} addFunction={true} groupID={props.groupID} groupInfo={props.groupInfo} />
+                            ))
                 }
             </div>
 
         </>
-       
+
     )
 }
 

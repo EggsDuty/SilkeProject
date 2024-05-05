@@ -5,9 +5,10 @@ import Header from '../components/Header.tsx';
 import ProfileInformation from '../components/Profile/ProfileInformation.tsx';
 import ProfileEditInformation from '../components/Profile/ProfileEditInformation.tsx';
 import MemberBox from '../components/Groups/MemberBox.tsx';
-import { AcceptFriendRequestPromise, DeleteUserFriendInvitePromise, GetFriendInvitesListOfUser, GetFriendsListOfUser, GetDataFromDocumentPromise, GetUserInfoForMemberList } from '../components/DatabaseFunctions.ts';
+import { AcceptFriendRequestPromise, DeleteUserFriendInvitePromise, GetFriendInvitesListOfUser, GetFriendIDListOfUser, GetDataFromDocumentPromise, GetUserInfoForMemberList } from '../components/DatabaseFunctions.ts';
 import Popup from 'reactjs-popup';
 import FriendInvite from '../components/Profile/FriendInvite.tsx';
+import FriendRemove from '../components/Profile/FriendRemove.tsx';
 
 interface Person {
     userID: string,
@@ -37,7 +38,7 @@ function ProfilePage() {
         const friends: Person[] = [];
 
         for (let i = 0; i < uids.length; i++) {
-            friends.push(await GetUserInfoForMemberList(uids.at(i)!));
+            friends.push(await GetUserInfoForMemberList(uids[i]));
         }
 
         return friends;
@@ -62,7 +63,7 @@ function ProfilePage() {
                 const _convertedData = _data as UserInfo;
                 setData(_convertedData);
             });
-            GetFriendsListOfUser(uid).then((_friendIDs: string[]) => {
+            GetFriendIDListOfUser(uid).then((_friendIDs: string[]) => {
                 getAllFriendInfo(_friendIDs).then((_friendsInfo) => {
                     setGottenFriends(true);
                     setFriendList(_friendsInfo);
@@ -126,25 +127,46 @@ function ProfilePage() {
                                     <h1 className="text-2xl text-gray-500 font-bold mt-6 ml-6">{gottenFriends ? "No friends..." : "Loading..."}</h1>)}
 
                         </div>
-                        <Popup
-                            trigger={
-                                <div className="flex flex-row cursor-pointer items-center w-max bg-blue-950 px-2 py-1 mt-3 border-2 border-white border-opacity-0 hover:border-opacity-100 rounded-lg">
-                                    <img src="/plus_sign_picture.svg" className="invert h-9 w-auto" />
-                                    <p className="w-max ml-2 text-white rounded-lg">Add Friend</p>
-                                </div>
-                            }
-                            modal
-                            nested
-                            closeOnDocumentClick={false}>
-                            {/* @ts-ignore */}
-                            {(close) => (
-                                <div className="animate-anvil text-white bg-extraColor1 rounded-lg m-auto h-[600px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
-                                    <button onClick={close} className="text-3xl ml-2">X</button>
-                                    <h1 className="text-4xl text-center mt-10">Add a friend</h1>
-                                    <FriendInvite />
-                                </div>
-                            )}
-                        </Popup>
+                        <div className="flex flex-row">
+                            <Popup
+                                trigger={
+                                    <div className="flex flex-row cursor-pointer items-center w-max bg-blue-950 px-2 py-1 mt-3 border-2 border-white border-opacity-0 hover:border-opacity-100 rounded-lg">
+                                        <img src="/plus_sign_picture.svg" className="invert h-9 w-auto" />
+                                        <p className="w-max ml-2 text-white rounded-lg">Add Friend</p>
+                                    </div>
+                                }
+                                modal
+                                nested
+                                closeOnDocumentClick={false}>
+                                {/* @ts-ignore */}
+                                {(close) => (
+                                    <div className="animate-anvil text-white bg-extraColor1 rounded-lg m-auto h-[600px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                                        <button onClick={close} className="text-3xl ml-2">X</button>
+                                        <h1 className="text-4xl text-center mt-10">Add a friend</h1>
+                                        <FriendInvite />
+                                    </div>
+                                )}
+                            </Popup>
+                            <Popup
+                                trigger={
+                                    <div className="flex flex-row cursor-pointer items-center w-max bg-blue-950 px-2 py-1 ml-5 mt-3 border-2 border-white border-opacity-0 hover:border-opacity-100 rounded-lg">
+                                        <img src="/group_delete_picture.svg" className="invert h-9 w-auto" />
+                                        <p className="w-max ml-2 text-white rounded-lg">Remove friend</p>
+                                    </div>
+                                }
+                                modal
+                                nested
+                                closeOnDocumentClick={false}>
+                                {/* @ts-ignore */}
+                                {(close) => (
+                                    <div className="animate-anvil text-white bg-extraColor1 rounded-lg m-auto h-[600px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                                        <button onClick={close} className="text-3xl ml-2">X</button>
+                                        <h1 className="text-4xl text-center mt-10">Remove friend</h1>
+                                        <FriendRemove />
+                                    </div>
+                                )}
+                            </Popup>
+                        </div>
                     </div>
                 </div> :
                 <div className="w-screen h-screen absolute flex items-center">

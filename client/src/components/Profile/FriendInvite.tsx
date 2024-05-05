@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import MemberBox from "../Groups/MemberBox";
-import { CreateFriendInvitePromise, GetFriendsListOfUser, GetUsersWithDisplayNamePromise } from "../DatabaseFunctions";
+import { CreateFriendInvitePromise, GetFriendIDListOfUser, GetUsersWithDisplayNamePromise } from "../DatabaseFunctions";
 
 interface Person {
     userID: string,
@@ -22,7 +22,7 @@ function FriendInvite() {
         if (!uid) {
             return;
         }
-        GetFriendsListOfUser(uid).then((_friendIDs) => {
+        GetFriendIDListOfUser(uid).then((_friendIDs) => {
             setUserFriends(_friendIDs);
         });
     }, []);
@@ -38,14 +38,11 @@ function FriendInvite() {
         GetUsersWithDisplayNamePromise(userNameToFind).then((_users) => {
             const _foundUsers: Person[] = [];
             for (let i = 0; i < _users.length; i++) {
-                const _user = _users.at(i);
-
-                if (!_user) continue;
+                const _user = _users[i];
 
                 let alreadyFriends = false;
                 for (let j = 0; j < userFriends.length; j++) {
-                    const friendID = userFriends.at(j);
-                    if (!friendID) continue;
+                    const friendID = userFriends[j];
                     if (_user.userID === friendID || _user.userID === localStorage.getItem("uid")!) {
                         alreadyFriends = true;
                         break;
