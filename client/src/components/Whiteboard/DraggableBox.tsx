@@ -31,15 +31,18 @@ const DraggableBox: React.FC<DraggableBoxProps> = ({ children, initialSize = { w
         // Get the absolute values of dw and dh
         const abs_dw = Math.abs(dw);
         const abs_dh = Math.abs(dh);
+        let dif = 0
   
         // Check which absolute value is higher
         if (abs_dw > abs_dh) {
-          if(boxSize.width+dw >= Minimal_width && boxSize.height+dw >= Minimal_height)
-          setBoxSize({ width: boxSize.width + dw, height: boxSize.height + dw });
+          dif = dw
+          
         } else {
-          if(boxSize.width+dh >= Minimal_width && boxSize.height+dh >= Minimal_height)
-          setBoxSize({ width: boxSize.width + dh, height: boxSize.height + dh });
+          dif = dh
+         
         }
+        if(boxSize.width+dif >= Minimal_width && boxSize.height+dif >= Minimal_height)
+          setBoxSize({ width: boxSize.width + dif, height: boxSize.height + dif });
         
         setResizeStart({ x: e.clientX, y: e.clientY });
       }
@@ -109,6 +112,7 @@ const DraggableBox: React.FC<DraggableBoxProps> = ({ children, initialSize = { w
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
+      role="none"
     >
       <div style={{ width: '100%', height: '100%', overflow: 'auto' }}>
         {children}
