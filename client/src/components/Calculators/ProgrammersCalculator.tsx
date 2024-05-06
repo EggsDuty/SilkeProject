@@ -166,24 +166,23 @@ function ProgrammersCalculator() {
     console.log("Sign button clicked");
     
       const subResBin = 
-      value === "+" || calc.binaryRes === "0" 
+      calc.sign === "+" || calc.binaryRes === "0" 
         ? Number(binaryAddition(calc.binaryRes, calc.num.toString()))
-        : value === "-" 
+        : calc.sign === "-" 
         ? Number(binarySubtraction(calc.binaryRes, calc.num.toString()))
-        : value === "X"
+        : calc.sign === "X"
         ? Number(binaryMultiplication(calc.binaryRes, calc.num.toString()))
         : Number(binaryDivision(calc.binaryRes, calc.num.toString()));
 
       console.log("calc.res: " + calc.res);
       console.log("calc.num: " + calc.num);
 
-      // here is a bug
       const subResDec = 
-      value === "+" 
+      calc.sign === "+" 
         ? calc.res + calc.num
-        : value === "-"
+        : calc.sign === "-"
         ? calc.res - calc.num
-        : value === "X"
+        : calc.sign === "X"
         ? calc.res * calc.num
         : calc.res / calc.num;
   
