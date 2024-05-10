@@ -362,7 +362,7 @@ function ProgrammersCalculator() {
   };
 
   return (
-    <div className="ml-32 mt-10" style={{ position: "fixed", inset: 0 }}>
+    <div className="" style={{ position: "relative", inset: 0 }}>
       <Wrapper>
       <Screen value={calc.num ? calc.num.toString() : calc.res.toString()} />
         <ButtonBox>
