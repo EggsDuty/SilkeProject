@@ -3,6 +3,7 @@ import DraggableBox from "./DraggableBox";
 import StandardCalculator from "../Calculators/StandardCalculator";
 import ScientificCalculator from "../Calculators/ScientificCalculator";
 import GraphingCalculators from "../Calculators/GraphingCalculator";
+import ProgrammersCalculator from "../Calculators/ProgrammersCalculator";
 
 function Sidebar() {
   const [calculators, setCalculators] = useState<string[]>([]);
@@ -31,6 +32,7 @@ function Sidebar() {
       <div className="border-2 mx-3 rounded-lg hover:cursor-pointer py-1 bg-secondaryColor bg-opacity-40" role= "none" onClick={() => addCalculator(<div><p className="text-black">Standard calculator</p><StandardCalculator /></div>, { width: 341, height: 522 })}>Standard Calculator</div>
       <div className="border-2 mx-3 rounded-lg hover:cursor-pointer py-1 bg-secondaryColor bg-opacity-40" role= "none" onClick={() => addCalculator(<div><p className="text-black">Scientific calculator</p><ScientificCalculator /></div>, { width: 341, height: 466 })}>Scientific Calculator</div>
       <div className="border-2 mx-3 rounded-lg hover:cursor-pointer py-1 bg-secondaryColor bg-opacity-40" role= "none" onClick={() => addCalculator(<div style={{ width: '100%', height: '100%', overflow: 'auto' }}><p className="text-black">Graphing calculator</p><GraphingCalculators /></div>, { width: 918, height: 356.5 })}>Graphing Calculator</div>
+      <div className="border-2 mx-3 rounded-lg hover:cursor-pointer py-1 bg-secondaryColor bg-opacity-40" role= "none" onClick={() => addCalculator(<div style={{ width: '100%', height: '100%', overflow: 'auto' }}><p className="text-black">Programmers calculator</p><ProgrammersCalculator /></div>, { width: 515.6, height: 604 })}>Programmers Calculator</div>
 
       {calculators.map((id) => (
         
