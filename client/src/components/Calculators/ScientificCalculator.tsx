@@ -593,7 +593,7 @@ function ScientificCalculator() {
 
   return (
     <>
-      <div className="calculator_base bg-[#202020] w-[325px]  z-10">
+      <div className="calculator_base bg-[#202020]  w-full h-full z-10 border-4 border-solid border-gray-500">
         <div className="screen text-white text-right pr-5 pl-3 min-h-[70px]"></div>
         <div className="screen text-white text-right  min-h-[90px] max-h-[90px]">
           <Textfit min={10} max={15} mode="single" className="calculator_screen_h min-h-[20px] max-h-[20px] text-gray-400 text-right pr-3 pl-3">
@@ -604,7 +604,7 @@ function ScientificCalculator() {
           </Textfit>
         </div>
         <MathJaxContext config={config} version={3}>
-          <div className="calculator_buttons grid grid-cols-5 gap-1 p-1">
+          <div className="calculator_buttons grid grid-cols-5 gap-1 p-1" style={{ height: "calc(100% - 160px)" }}>
             {did2nd ? (
               <button onClick={() => handle2nd()} className="btnScientificCalc-equals">
                 <MathJax>{"\\(2^{nd}\\)"}</MathJax>

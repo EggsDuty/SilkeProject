@@ -4,21 +4,21 @@
 
 @layer components {
   .btnCalc-number {
-    @apply text-white bg-[#3b3b3b] rounded hover:bg-[#323232] w-[75px] h-[45px];
+    @apply text-white bg-[#3b3b3b] rounded hover:bg-[#323232] min-w-[75px] min-h-[45px] select-none;
   }
   .btnCalc-operation {
-    @apply text-white bg-[#323232] rounded hover:bg-[#3b3b3b] w-[75px] h-[45px];
+    @apply text-white bg-[#323232] rounded hover:bg-[#3b3b3b] min-w-[75px] min-h-[45px] select-none;
   }
   .btnCalc-equals {
-    @apply bg-[#76b9ed] text-black rounded w-[75px] h-[45px];
+    @apply bg-[#76b9ed] text-black rounded min-w-[75px] min-h-[45px] select-none;
   }
   .btnScientificCalc-number {
-    @apply text-white bg-[#3b3b3b] rounded hover:bg-[#323232] w-[60px] h-[30px];
+    @apply text-white bg-[#3b3b3b] rounded hover:bg-[#323232] min-w-[60px] min-h-[30px] select-none;
   }
   .btnScientificCalc-operation {
-    @apply text-white bg-[#323232] rounded hover:bg-[#3b3b3b] w-[60px] h-[30px];
+    @apply text-white bg-[#323232] rounded hover:bg-[#3b3b3b] min-w-[60px] min-h-[30px] select-none;
   }
   .btnScientificCalc-equals {
-    @apply bg-[#76b9ed] text-black rounded w-[60px] h-[30px];
+    @apply bg-[#76b9ed] text-black rounded min-w-[60px] min-h-[30px] select-none;
   }
 }
