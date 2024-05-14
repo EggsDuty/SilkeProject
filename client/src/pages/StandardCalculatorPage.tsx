@@ -6,7 +6,9 @@ function StandardCalculatorPage() {
     <>
       <Header />
       <div className="flex justify-center items-center h-screen">
-        <StandardCalculator />
+        <div className=" w-[341px] h-[470px] z-10 ">
+          <StandardCalculator />
+        </div>
       </div>
     </>
   );

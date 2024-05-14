@@ -20,3 +20,10 @@ export interface GroupInfo {
     leaderID: string,
     events: string[]
 }
+
+export interface Message {
+    userID: string,
+    name: string,
+    time: Timestamp,
+    message: string
+}

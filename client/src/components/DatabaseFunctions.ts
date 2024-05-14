@@ -1,6 +1,6 @@
 import firebase from '../firebase.tsx';
-import { arrayRemove, arrayUnion, deleteDoc, collection, doc, getDoc, getDocs, query, updateDoc, where, addDoc } from 'firebase/firestore';
-import { GroupInfo, UserInfo } from './DatabaseTypes.ts';
+import { arrayRemove, arrayUnion, deleteDoc, collection, doc, getDoc, getDocs, query, updateDoc, where, addDoc, Timestamp, orderBy, limit, startAt, startAfter } from 'firebase/firestore';
+import { GroupInfo, UserInfo, Message } from './DatabaseTypes.ts';
 
 export async function GetDataFromDocumentPromise(collection: string, id: string) {
     console.log("call");
@@ -186,7 +186,7 @@ export async function GetUsersWithDisplayNamePromise(name: string) {
 
     snapshot.forEach((_doc) => {
         const _data = _doc.data();
-        users.push({ userID: _doc.id, displayName: _data.displayName, image: _data.image })
+        users.push({ userID: _doc.id, displayName: _data.displayName, image: _data.image });
     });
 
     return users;
@@ -225,3 +225,37 @@ export async function DeleteEventInfoPromise(groupID: string, oldEventInfo: stri
     })
 }
 
+export async function CreateMessage(groupID: string, _userID: string, _username: string, _message: string) {
+    const messagesRef = collection(firebase.db, "groups", groupID, "messages");
+
+    const messageData: Message = {
+        userID: _userID,
+        name: _username,
+        time: Timestamp.now(),
+        message: _message
+    }
+
+    await addDoc(messagesRef, messageData);
+}
+
+export async function GetMessages(groupID: string, offsetDate?: Date) {
+    const messagesRef = collection(firebase.db, "groups", groupID, "messages");
+    if (!offsetDate) {
+        offsetDate = new Date(2500, 1, 1);
+    }
+    const _query = query(messagesRef, where("time", "<", offsetDate), orderBy("time", "desc"), limit(10));
+
+    const snapshot = await getDocs(_query);
+
+    interface ExtendedMessage extends Message {
+        messageID: string
+    }
+
+    const messages: ExtendedMessage[] = [];
+    snapshot.forEach((_doc) => {
+        const _data = _doc.data();
+        messages.push({ messageID: _doc.id, userID: _data.userID, name: _data.name, time: _data.time, message: _data.message });
+    });
+
+    return messages;
+}

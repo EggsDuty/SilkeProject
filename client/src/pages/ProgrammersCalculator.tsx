@@ -6,7 +6,9 @@ function ProgrammersCalculatorPage() {
     <>
       <Header />
       <div className="flex justify-center items-center h-screen">
-        <ProgrammersCalculator />
+        <div className=" h-[560px] w-[500px]">
+          <ProgrammersCalculator />
+        </div>
       </div>
     </>
   );
