@@ -3,7 +3,9 @@ import '@tldraw/tldraw/tldraw.css';
 import { useYjsStore } from '../useYjsStore.ts';
 import Header from '../components/Header';
 import Sidebar from '../components/Whiteboard/Sidebar.tsx';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { GetGroupInfoPromise } from '../components/DatabaseFunctions.ts';
 
 const HOST_URL =
     import.meta.env.MODE === 'development'
@@ -12,6 +14,32 @@ const HOST_URL =
 
 export default function YjsExample() {
     const { groupID } = useParams();
+    const userID  = localStorage.getItem("uid");
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(groupID === undefined){
+            return;
+        }
+        GetGroupInfoPromise(groupID!).then((_groupInfo) => {
+            if(_groupInfo.members === undefined){
+                navigate("/groups");
+                return;
+            }
+
+            let isPartOfGroup = false;
+            for(let i=0; i<_groupInfo.members.length; i++){
+                if(_groupInfo.members.at(i) === userID){
+                    isPartOfGroup = true;
+                    break;
+                }
+            }
+            if(!isPartOfGroup){
+                navigate("/groups");
+                return;
+            }
+        })
+    }, [])
 
     const store = useYjsStore({
         roomId: groupID,
@@ -24,7 +52,7 @@ export default function YjsExample() {
             <Sidebar />
 
             <div className="ml-32 mt-10" style={{ position: 'fixed', inset: 0 }}>
-                {groupID && localStorage.getItem("uid") ? // Checking if user is a guest and NOT giving them a store (otherwise all guests would be drawing on the same whiteboard)
+                {groupID && userID ? // Checking if user is a guest and NOT giving them a store (otherwise all guests would be drawing on the same whiteboard)
                     <Tldraw
                         autoFocus
                         store={store}
