@@ -3,8 +3,8 @@ import { Textfit } from "react-textfit";
 import { sqrt, square, divide, multiply, round } from "mathjs";
 
 function StandardCalculator() {
-  const [currentOperand, setCurrOperand] = useState("0");
-  const [previousOperand, setPrevOperand] = useState("");
+  const [currentOperand, setCurrentOperand] = useState("0");
+  const [previousOperand, setPreviousOperand] = useState("");
   const [currentOperation, setCurrentOperation] = useState("0");
   const [previousOperation, setPreviousOperation] = useState("");
   const [result, setResult] = useState("");
@@ -17,49 +17,49 @@ function StandardCalculator() {
       if (currentOperand.includes(".") && value === ".") {
         return;
       }
-      if (changedOperand == false) {
+      if (!changedOperand) {
         if (currentOperand === "0") {
           if (value === ".") {
             setCurrentOperation(currentOperation + value);
-            setCurrOperand(currentOperand + value.toString());
+            setCurrentOperand(currentOperand + value.toString());
           } else {
             setCurrentOperation(value);
-            setCurrOperand(value);
+            setCurrentOperand(value);
           }
         } else if (currentOperand.length < 16) {
           setCurrentOperation(currentOperand + value);
-          setCurrOperand(currentOperand + value);
+          setCurrentOperand(currentOperand + value);
         }
       } else {
         setCurrentOperation(value);
-        setCurrOperand(value);
+        setCurrentOperand(value);
         setChangedOperand(false);
       }
     } else {
       setDidCalculation(false);
       clearCalculator();
-      setCurrOperand(value);
+      setCurrentOperand(value);
       setCurrentOperation(value);
     }
   };
 
   const clearCurrentOperation = () => {
-    if (didCalculation == true) {
+    if (didCalculation) {
       setCurrentOperation("0");
-      setCurrOperand("0");
+      setCurrentOperand("0");
       setPreviousOperation("");
-      setPrevOperand("");
+      setPreviousOperand("");
       setOperation("");
       setChangedOperand(false);
     } else setCurrentOperation("0");
-    setCurrOperand("0");
+    setCurrentOperand("0");
   };
 
   const clearCalculator = () => {
     setCurrentOperation("0");
-    setCurrOperand("0");
+    setCurrentOperand("0");
     setPreviousOperation("");
-    setPrevOperand("");
+    setPreviousOperand("");
     setOperation("");
     setChangedOperand(false);
     setDidCalculation(false);
@@ -69,12 +69,12 @@ function StandardCalculator() {
     if (!didCalculation) {
       if (!currentOperand.startsWith("-") && currentOperand.length != 1) {
         setCurrentOperation(currentOperand.slice(0, currentOperand.length - 1));
-        setCurrOperand(currentOperand.slice(0, currentOperand.length - 1));
+        setCurrentOperand(currentOperand.slice(0, currentOperand.length - 1));
       } else if (currentOperand.startsWith("-") && currentOperand.length != 2) {
         setCurrentOperation(currentOperand.slice(0, currentOperand.length - 1));
-        setCurrOperand(currentOperand.slice(0, currentOperand.length - 1));
+        setCurrentOperand(currentOperand.slice(0, currentOperand.length - 1));
       } else {
-        setCurrOperand("0");
+        setCurrentOperand("0");
         setCurrentOperation("0");
       }
     } else {
@@ -86,14 +86,14 @@ function StandardCalculator() {
   const changeSign = () => {
     if (!didCalculation) {
       if (currentOperand === "0") {
-        setCurrOperand(currentOperand);
+        setCurrentOperand(currentOperand);
         setCurrentOperation(currentOperand);
       } else {
-        setCurrOperand(String(parseFloat(currentOperand) * -1));
+        setCurrentOperand(String(parseFloat(currentOperand) * -1));
         setCurrentOperation(String(parseFloat(currentOperand) * -1));
       }
     } else {
-      setCurrOperand(String(parseFloat(result) * -1));
+      setCurrentOperand(String(parseFloat(result) * -1));
       setCurrentOperation(String(parseFloat(result) * -1));
       setDidCalculation(false);
     }
@@ -103,13 +103,13 @@ function StandardCalculator() {
     const ops = ["+", "-", "*", "/"];
     if (!didCalculation) {
       if (!ops.some((op) => previousOperand.endsWith(op))) {
-        setPrevOperand(currentOperand + value);
+        setPreviousOperand(currentOperand + value);
         setPreviousOperation(currentOperand + value);
         setOperation(value);
         setChangedOperand(true);
         setDidCalculation(false);
       } else {
-        setPrevOperand(previousOperand.slice(0, previousOperand.length - 1) + value);
+        setPreviousOperand(previousOperand.slice(0, previousOperand.length - 1) + value);
         setPreviousOperation(previousOperation.slice(0, previousOperation.length - 1) + value);
         setOperation(value);
         setChangedOperand(true);
@@ -119,12 +119,12 @@ function StandardCalculator() {
       console.log("b");
       if (!ops.some((op) => previousOperand.endsWith(op))) {
         setPreviousOperation(previousOperand + value);
-        setCurrOperand(currentOperation);
+        setCurrentOperand(currentOperation);
         setOperation(value);
         setChangedOperand(true);
         setDidCalculation(false);
       } else {
-        setPrevOperand(previousOperand.slice(0, previousOperand.length - 1) + value);
+        setPreviousOperand(previousOperand.slice(0, previousOperand.length - 1) + value);
         setPreviousOperation(previousOperation.slice(0, previousOperation.length - 1) + value);
         setOperation(value);
         setChangedOperand(true);
@@ -140,8 +140,8 @@ function StandardCalculator() {
           let calculation = round(sqrt(parseFloat(currentOperand)), 3);
           setPreviousOperation("sqrt(" + currentOperand + ")");
           setCurrentOperation(calculation.toString());
-          setPrevOperand(calculation.toString());
-          setCurrOperand(calculation.toString());
+          setPreviousOperand(calculation.toString());
+          setCurrentOperand(calculation.toString());
         } else {
           let calculation = round(sqrt(parseFloat(currentOperand)), 3);
           if (didCalculation) {
@@ -152,8 +152,8 @@ function StandardCalculator() {
             console.log("opa");
           }
           setCurrentOperation(calculation.toString());
-          setPrevOperand(previousOperand);
-          setCurrOperand(calculation.toString());
+          setPreviousOperand(previousOperand);
+          setCurrentOperand(calculation.toString());
         }
       } else {
         setPreviousOperation("sqrt(" + currentOperand + ")");
@@ -170,15 +170,15 @@ function StandardCalculator() {
           let calculation = round(square(parseFloat(currentOperand)), 3);
           setPreviousOperation("sqr(" + currentOperand + ")");
           setCurrentOperation(calculation.toString());
-          setPrevOperand(calculation.toString());
-          setCurrOperand(calculation.toString());
+          setPreviousOperand(calculation.toString());
+          setCurrentOperand(calculation.toString());
         } else {
           console.log(previousOperand);
           let calculation = round(square(parseFloat(currentOperand)), 3);
           setPreviousOperation(previousOperation + "sqr(" + currentOperand + ")");
           setCurrentOperation(calculation.toString());
-          setPrevOperand(previousOperand);
-          setCurrOperand(calculation.toString());
+          setPreviousOperand(previousOperand);
+          setCurrentOperand(calculation.toString());
         }
       }
     } else {
@@ -186,8 +186,8 @@ function StandardCalculator() {
       let calculation = round(square(parseFloat(result)), 1);
       setPreviousOperation("sqr(" + result + ")");
       setCurrentOperation(calculation.toString());
-      setPrevOperand(previousOperand);
-      setCurrOperand(calculation.toString());
+      setPreviousOperand(previousOperand);
+      setCurrentOperand(calculation.toString());
     }
   };
 
@@ -199,15 +199,15 @@ function StandardCalculator() {
           let calculation = divide(1, currValue);
           setPreviousOperation("1/(" + currentOperand + ")");
           setCurrentOperation(calculation.toString());
-          setPrevOperand(calculation.toString());
-          setCurrOperand(calculation.toString());
+          setPreviousOperand(calculation.toString());
+          setCurrentOperand(calculation.toString());
         } else {
           const currValue = parseFloat(currentOperand);
           let calculation = divide(1, currValue);
           setPreviousOperation(previousOperation + "1/(" + currentOperand + ")");
           setCurrentOperation(calculation.toString());
-          setPrevOperand(previousOperand);
-          setCurrOperand(calculation.toString());
+          setPreviousOperand(previousOperand);
+          setCurrentOperand(calculation.toString());
         }
       }
     } else {
@@ -216,14 +216,14 @@ function StandardCalculator() {
           let calculation = divide(1, parseFloat(result));
           setPreviousOperation("1/(" + currentOperand + ")");
           setCurrentOperation(calculation.toString());
-          setPrevOperand(calculation.toString());
-          setCurrOperand(calculation.toString());
+          setPreviousOperand(calculation.toString());
+          setCurrentOperand(calculation.toString());
         } else {
           let calculation = divide(1, parseFloat(result));
           setPreviousOperation("1/(" + result + ")");
           setCurrentOperation(calculation.toString());
-          setPrevOperand(calculation.toString());
-          setCurrOperand(result);
+          setPreviousOperand(calculation.toString());
+          setCurrentOperand(result);
           console.log(calculation);
           console.log(previousOperand);
         }
@@ -238,7 +238,7 @@ function StandardCalculator() {
       console.log(prevValue);
       console.log(currentOperand);
       const percentage = multiply(divide(currValue, 100), prevValue);
-      setCurrOperand(percentage.toString());
+      setCurrentOperand(percentage.toString());
       setPreviousOperation(previousOperand + percentage);
       setCurrentOperation(percentage.toString());
       setDidCalculation(true);
@@ -257,28 +257,28 @@ function StandardCalculator() {
       switch (operation) {
         case "+":
           result = prevValue + currValue;
-          setPrevOperand(result.toString());
+          setPreviousOperand(result.toString());
           setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
           setCurrentOperation(result.toString());
           setResult(result.toString());
           break;
         case "-":
           result = prevValue - currValue;
-          setPrevOperand(result.toString());
+          setPreviousOperand(result.toString());
           setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
           setCurrentOperation(result.toString());
           setResult(result.toString());
           break;
         case "*":
           result = prevValue * currValue;
-          setPrevOperand(result.toString());
+          setPreviousOperand(result.toString());
           setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
           setCurrentOperation(result.toString());
           setResult(result.toString());
           break;
         case "/":
           result = prevValue / currValue;
-          setPrevOperand(result.toString());
+          setPreviousOperand(result.toString());
           setPreviousOperation(prevValue + " " + operation + " " + currValue + " =");
           setCurrentOperation(result.toString());
           setResult(result.toString());
@@ -288,93 +288,91 @@ function StandardCalculator() {
   };
 
   return (
-    <>
-      <div className="calculator_base bg-[#202020] w-[325px]  z-10">
-        <div className="screen text-white text-right pr-5 pl-3 min-h-[70px]"></div>
-        <div className="screen text-white text-right  min-h-[90px] max-h-[90px]">
-          <Textfit min={10} max={15} mode="single" className="calculator_screen_h min-h-[20px] max-h-[20px] text-gray-400 text-right pr-3 pl-3">
-            {previousOperation}
-          </Textfit>
-          <Textfit min={20} max={50} mode="single" className="calculator_screen min-h-[80px] max-h-[80px] text-white text-right pr-3 pl-3" data-testid="screen">
-            {currentOperation}
-          </Textfit>
-        </div>
-        <div className="calculator_buttons grid grid-cols-4 gap-1 p-1">
-          <button onClick={() => handlePercentage()} className="btnCalc-operation">
-            %
-          </button>
-          <button onClick={() => clearCurrentOperation()} className="btnCalc-operation">
-            CE
-          </button>
-          <button onClick={() => clearCalculator()} className="btnCalc-operation">
-            C
-          </button>
-          <button onClick={() => removeLastDigit()} className="btnCalc-operation" data-testid="removeLastDigit">
-            &#8592;
-          </button>
-          <button onClick={() => handleOneDividedBy()} className="btnCalc-operation">
-            1/x
-          </button>
-          <button onClick={() => handleSquare()} className="btnCalc-operation" data-testid="square">
-            x&#178;
-          </button>
-          <button onClick={() => handleSquareRoot()} className="btnCalc-operation" data-testid="squareRoot">
-            &#x221A;
-          </button>
-          <button onClick={() => swapOperand("/")} className="btnCalc-operation">
-            /
-          </button>
-          <button onClick={() => updateOperand("7")} className="btnCalc-number">
-            7
-          </button>
-          <button onClick={() => updateOperand("8")} className="btnCalc-number">
-            8
-          </button>
-          <button onClick={() => updateOperand("9")} className="btnCalc-number">
-            9
-          </button>
-          <button onClick={() => swapOperand("*")} className="btnCalc-operation" data-testid="multiplication">
-            &#215;
-          </button>
-          <button onClick={() => updateOperand("4")} className="btnCalc-number">
-            4
-          </button>
-          <button onClick={() => updateOperand("5")} className="btnCalc-number">
-            5
-          </button>
-          <button onClick={() => updateOperand("6")} className="btnCalc-number">
-            6
-          </button>
-          <button onClick={() => swapOperand("-")} className="btnCalc-operation" data-testid="subtraction">
-            &#8722;
-          </button>
-          <button onClick={() => updateOperand("1")} className="btnCalc-number">
-            1
-          </button>
-          <button onClick={() => updateOperand("2")} className="btnCalc-number">
-            2
-          </button>
-          <button onClick={() => updateOperand("3")} className="btnCalc-number">
-            3
-          </button>
-          <button onClick={() => swapOperand("+")} className="btnCalc-operation" data-testid="addition">
-            &#43;
-          </button>
-          <button onClick={() => changeSign()} className="btnCalc-number">
-            +/-
-          </button>
-          <button onClick={() => updateOperand("0")} className="btnCalc-number">
-            0
-          </button>
-          <button onClick={() => updateOperand(".")} className="btnCalc-number">
-            .
-          </button>
-          <button onClick={() => handleEquals()} className="btnCalc-equals">
-            =
-          </button>
-        </div>
+    <div className="calculator_base bg-[#202020] w-full h-full z-10 border-4 border-solid border-gray-500">
+      <div className="screen text-white text-right pr-5 pl-3 min-h-[70px]"></div>
+      <div className="screen text-white text-right  min-h-[90px] max-h-[90px]">
+        <Textfit min={10} max={15} mode="single" className="calculator_screen_h min-h-[20px] max-h-[20px] text-gray-400 text-right pr-3 pl-3">
+          {previousOperation}
+        </Textfit>
+        <Textfit min={20} max={50} mode="single" className="calculator_screen min-h-[80px] max-h-[80px] text-white text-right pr-3 pl-3">
+          {currentOperation}
+        </Textfit>
       </div>
-    </>
+      <div className="grid grid-cols-4 gap-1 p-1" style={{ height: "calc(100% - 160px)" }}>
+        <button onClick={() => handlePercentage()} className="btnCalc-operation">
+          %
+        </button>
+        <button onClick={() => clearCurrentOperation()} className="btnCalc-operation">
+          CE
+        </button>
+        <button onClick={() => clearCalculator()} className="btnCalc-operation">
+          C
+        </button>
+        <button onClick={() => removeLastDigit()} className="btnCalc-operation" data-testid="removeLastDigit">
+          &#8592;
+        </button>
+        <button onClick={() => handleOneDividedBy()} className="btnCalc-operation">
+          1/x
+        </button>
+        <button onClick={() => handleSquare()} className="btnCalc-operation" data-testid="square">
+          x&#178;
+        </button>
+        <button onClick={() => handleSquareRoot()} className="btnCalc-operation" data-testid="squareRoot">
+          &#x221A;
+        </button>
+        <button onClick={() => swapOperand("/")} className="btnCalc-operation">
+          /
+        </button>
+        <button onClick={() => updateOperand("7")} className="btnCalc-number">
+          7
+        </button>
+        <button onClick={() => updateOperand("8")} className="btnCalc-number">
+          8
+        </button>
+        <button onClick={() => updateOperand("9")} className="btnCalc-number">
+          9
+        </button>
+        <button onClick={() => swapOperand("*")} className="btnCalc-operation" data-testid="multiplication">
+          &#215;
+        </button>
+        <button onClick={() => updateOperand("4")} className="btnCalc-number">
+          4
+        </button>
+        <button onClick={() => updateOperand("5")} className="btnCalc-number">
+          5
+        </button>
+        <button onClick={() => updateOperand("6")} className="btnCalc-number">
+          6
+        </button>
+        <button onClick={() => swapOperand("-")} className="btnCalc-operation" data-testid="subtraction">
+          &#8722;
+        </button>
+        <button onClick={() => updateOperand("1")} className="btnCalc-number">
+          1
+        </button>
+        <button onClick={() => updateOperand("2")} className="btnCalc-number">
+          2
+        </button>
+        <button onClick={() => updateOperand("3")} className="btnCalc-number">
+          3
+        </button>
+        <button onClick={() => swapOperand("+")} className="btnCalc-operation" data-testid="addition">
+          &#43;
+        </button>
+        <button onClick={() => changeSign()} className="btnCalc-number">
+          +/-
+        </button>
+        <button onClick={() => updateOperand("0")} className="btnCalc-number">
+          0
+        </button>
+        <button onClick={() => updateOperand(".")} className="btnCalc-number">
+          .
+        </button>
+        <button onClick={() => handleEquals()} className="btnCalc-equals">
+          =
+        </button>
+      </div>
+    </div>
   );
 }
 

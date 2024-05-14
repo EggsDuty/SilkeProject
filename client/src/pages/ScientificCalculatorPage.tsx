@@ -6,7 +6,9 @@ function ScientificCalculatorPage() {
     <>
       <Header />
       <div className="flex justify-center items-center h-screen">
-        <ScientificCalculator />
+        <div className=" w-[325px] h-[420px] z-10 ">
+          <ScientificCalculator />
+        </div>
       </div>
     </>
   );

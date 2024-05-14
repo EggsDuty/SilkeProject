@@ -7,6 +7,7 @@
     cursor: pointer;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add soft outline */
+    user-select: none;
   }
   
   .buttonP:hover {
@@ -16,6 +17,7 @@
   .equals {
     grid-column: 4 / span 2;
     background-color: rgba(135, 89, 160, 0.627);
+    user-select: none;
   }
   
   .equals:hover {
@@ -24,6 +26,7 @@
 
   .buttonPClicked {
     background-color: rgba(213, 199, 43, 0.9);
+    user-select: none;
     
   }
 
@@ -31,4 +34,5 @@
     background-color: rgb(231, 154, 154);
     opacity: 0.5; 
     cursor: not-allowed; 
+    user-select: none;
   }
