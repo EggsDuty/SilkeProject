@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Calendar, dateFnsLocalizer, Event } from 'react-big-calendar'
 import format from 'date-fns/format'
 import parse from 'date-fns/parse'
@@ -21,7 +21,7 @@ interface Props {
 }
 
 
-function MyCalendar(props: Props) {
+function MyCalendar(props: Readonly<Props>) {
   const { groupID } = useParams();
   const [events, setEvents] = useState<Event[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -44,9 +44,6 @@ function MyCalendar(props: Props) {
 
   useEffect(() => {
     const eventsInfo: Event[] = [];
-    /* if(props.events === undefined){
-      return;
-    } */
     for(let i = 0; i < props.events.length; i++){
       const eventParts = props.events[i].split(";");
       const event: Event = {

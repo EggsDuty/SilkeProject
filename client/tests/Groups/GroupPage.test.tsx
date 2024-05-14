@@ -1,5 +1,5 @@
 import { test, expect, vi } from 'vitest'
-import { fireEvent, getByAltText, getByText, render, screen } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import GroupPage from '../../src/pages/GroupPage.tsx'
 import user from '@testing-library/user-event'
 import React from 'react'
@@ -19,6 +19,7 @@ interface GroupInfoWithUID extends GroupInfo {
 const userInfo: UserInfoWithUID = {
     uid: "userID123",
     displayName: "IkeaPen",
+    lowerCaseName: "ikeapen",
     email: "agne8rimk@gmail.com",
     description: "desc",
     image: "abc",
@@ -35,7 +36,8 @@ const groupInfo: GroupInfoWithUID = {
     creationDate: Timestamp.now(),
     members: ["userID123", "userID1", "userID2"],
     leaderID: "userID1231",
-    leaderName: "IkeaPen"
+    leaderName: "IkeaPen",
+    events: []
 };
 
 let count = 0;
@@ -73,8 +75,6 @@ test("Group info and members list in group page is rendered", async () => {
     expect(memberNames[0]).toBeInTheDocument();
     expect(memberNames.length).toBe(3);
 
- //   const leaderText = screen.getAllByText("Leader");
-//    expect(leaderText[0]).toBeInTheDocument();
 
 })
 

@@ -77,15 +77,13 @@ function GroupSettingsPage() {
 
     if (isLoading) {
         return (
-            <>
-                <div className="w-screen absolute text-center bg-repeat-y">
-                    <Header />
-                    <div className="flex flex-row  mt-6 ml-6 align-middle">
-                        <img src="/loading_picture.svg" className="animate-spin invert h-10" />
-                        <p className="text-gray-500 text-2xl font-bold ml-2">Loading...</p>
-                    </div>
+            <div className="w-screen absolute text-center bg-repeat-y">
+                <Header />
+                <div className="flex flex-row  mt-6 ml-6 align-middle">
+                    <img src="/loading_picture.svg" className="animate-spin invert h-10" alt="loading"/>
+                    <p className="text-gray-500 text-2xl font-bold ml-2">Loading...</p>
                 </div>
-            </>
+            </div>
         )
     }
 
@@ -151,18 +149,18 @@ function GroupSettingsPage() {
                 <div className="bg-blue-400 w-[400px] rounded-lg bg-opacity-20 mt-6 overflow-y-auto min-h-[400px] h-[50vh] overflow-x-hidden">
                     {isLoadingMembers ?
                         <div className="flex flex-row  mt-6 ml-6 align-middle">
-                            <img src="/loading_picture.svg" className="animate-spin invert h-10" />
+                            <img src="/loading_picture.svg" className="animate-spin invert h-10" alt="loading"/>
                             <p className="text-gray-500 text-2xl font-bold ml-2">Loading...</p>
                         </div>
                         :
                         userNameInfo.map((_memberInfo, index) => (
-                            <div key={index} className="flex flex-row relative">
+                            <div key={_memberInfo.userID} className="flex flex-row relative">
                                 <MemberBox memberID={_memberInfo.userID} image={_memberInfo.image} memberName={_memberInfo.displayName} isLeader={_memberInfo.userID === groupInfo?.leaderID} /> 
                                 {_memberInfo.userID === groupInfo?.leaderID ? "" : 
                                     <div className="flex flex-row absolute z-10 ml-[76%] pointer-events-auto">
                                         <Popup
                                             trigger={
-                                                <img className="mt-[11px] mr-[8px] h-8 hover:contrast-[30%] cursor-pointer brightness-[80%]" src="/full_star_picture.svg" title="Promote to leader" />
+                                                <img className="mt-[11px] mr-[8px] h-8 hover:contrast-[30%] cursor-pointer brightness-[80%]" src="/full_star_picture.svg" title="Promote to leader" alt="star"/>
                                             }
                                             modal
                                             nested
@@ -185,7 +183,7 @@ function GroupSettingsPage() {
 
                                         <Popup
                                             trigger={
-                                                <img className="mt-[11px] ml-[6px] h-8 hover:contrast-[30%] cursor-pointer brightness-[60%]" src="/member_delete_picture.svg" title="Remove from group" />
+                                                <img className="mt-[11px] ml-[6px] h-8 hover:contrast-[30%] cursor-pointer brightness-[60%]" src="/member_delete_picture.svg" title="Remove from group" alt="member delete"/>
                                             }
                                             modal
                                             nested
@@ -216,7 +214,7 @@ function GroupSettingsPage() {
                     <Popup
                         trigger={
                             <div className="relative cursor-pointer mb-20">
-                                <img src="/leave_group_picture.svg" className="invert absolute z-20 pl-4 mt-[21px] h-8 w-auto peer" />
+                                <img src="/leave_group_picture.svg" className="invert absolute z-20 pl-4 mt-[21px] h-8 w-auto peer" alt="leave group"/>
                                 <p className="w-max text-white py-2 pl-14 pr-4 mt-4 rounded-lg bg-red-950 border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Leave group</p>
                             </div>
                         }
@@ -243,7 +241,7 @@ function GroupSettingsPage() {
                         <Popup
                             trigger={
                             <div className="relative cursor-pointer mb-20">
-                                <img src="/group_delete_picture.svg" className="invert absolute z-20 pl-3 mt-[21px] h-8 w-auto peer" />
+                                <img src="/group_delete_picture.svg" className="invert absolute z-20 pl-3 mt-[21px] h-8 w-auto peer" alt="group delete"/>
                                 <p className="w-max text-white py-2 pl-12 pr-4 mt-4 rounded-lg bg-red-950 border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Delete group</p>
                             </div>
                             }

@@ -1,7 +1,6 @@
 import { FormEvent, useState } from "react";
 import Validator from "../Auth/Validator";
 import GroupField from "./GroupField";
-import { GroupInfo } from "../DatabaseTypes.ts";
 import { CreateNewEventPromise } from "../DatabaseFunctions.ts";
 import { useParams } from "react-router-dom";
 
@@ -10,7 +9,7 @@ interface Props {
     addEvent: any
 }
 
-function EventCreation(props: Props) {
+function EventCreation(props: Readonly<Props>) {
     const { groupID } = useParams();
     const [title, setTitle] = useState("");
     const [startDate, setStartDate] = useState("");

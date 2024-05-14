@@ -13,7 +13,7 @@ interface Props {
     groupInfo?: GroupInfo
 }
 
-function MemberBox(props: Props){
+function MemberBox(props: Readonly<Props>){
 
     const [isButtonPressed, setIsButtonPressed] = useState(false)
 
@@ -24,7 +24,7 @@ function MemberBox(props: Props){
 
     return (
         <div className="flex flex-row w-full bg-blue-400 bg-opacity-20 pb-3 px-3 h-14 items-center text-white border-b-[1px]">
-            <img src={props.image} className="rounded-full h-8 min-w-8 mt-[11px] mr-4" />
+            <img src={props.image} className="rounded-full h-8 min-w-8 mt-[11px] mr-4" alt="profile"/>
             <div className="min-w-[70%] mt-2 pl-3 text-left">
                 <Link to={`/profile/${props.memberID}`} className="truncate hover:underline">{props.memberName}</Link>
             </div>

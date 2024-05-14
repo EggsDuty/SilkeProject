@@ -1,5 +1,5 @@
 import { test, expect, vi } from 'vitest'
-import { fireEvent, getByText, render, screen } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import AllGroupsPage from '../../src/pages/AllGroupsPage.tsx'
 import user from '@testing-library/user-event'
 import React from 'react'
@@ -19,6 +19,7 @@ interface GroupInfoWithUID extends GroupInfo {
 const userInfo: UserInfoWithUID = {
     uid: "userID123",
     displayName: "IkeaPen",
+    lowerCaseName: "ikeapen",
     email: "agne8rimk@gmail.com",
     description: "desc",
     image: "abc",
@@ -35,7 +36,8 @@ const groupInfo: GroupInfoWithUID = {
     creationDate: Timestamp.now(),
     members: ["userID123"],
     leaderID: "userID123",
-    leaderName: "IkeaPen"
+    leaderName: "IkeaPen",
+    events: []
 };
 
 vi.mock('../../src/components/DatabaseFunctions.ts', async (importOriginal) => {
@@ -228,30 +230,3 @@ test("Group creation", async () => {
 
     expect(createGroupMock).toHaveBeenCalledOnce();
 })
-
-/* test("View invites", async () => {
-    user.setup();
-
-    render(
-        <BrowserRouter>
-            <AllGroupsPage />
-        </BrowserRouter>
-    )
-
-    await new Promise(res => setTimeout(res, 100));
-
-    const viewInvitesButton = screen.getByText("View Invites");
-    await user.click(viewInvitesButton);
-
-    await new Promise(res => setTimeout(res, 100));
-
-    let noInvitesText = screen.getByText("No invites!");
-    expect(noInvitesText).toBeInTheDocument();
-
-    const acceptButton = screen.getByText("Accept");
-    await user.click(acceptButton);
-
-    noInvitesText = screen.getByText("No invites!");
-    expect(noInvitesText).toBeInTheDocument();
-
-}) */

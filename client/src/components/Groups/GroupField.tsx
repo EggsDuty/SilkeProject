@@ -24,7 +24,7 @@ const errorMap: { [id: string]: ReactElement } = {
 
 
 
-function GroupField(props: Props) {
+function GroupField(props: Readonly<Props>) {
     const defaultValue: string[] = [];
     const [errors, setErrors] = useState(defaultValue);
 

@@ -15,19 +15,19 @@ interface Props {
 }
 
 
-function MemberAdd(props: Props) {
+function MemberAdd(props: Readonly<Props>) {
     const userID = localStorage.getItem("uid");
 
-    const [friendsInfo, setFriendInfo] = useState<FriendInfo[]>([])
-    const [filteredFriendsInfo, setFilteredFriendInfo] = useState<FriendInfo[]>([])
-    const [isLoadingFriends, setisLoadingFriends] = useState(true)
+    const [friendsInfo, setFriendsInfo] = useState<FriendInfo[]>([])
+    const [filteredFriendsInfo, setFilteredFriendsInfo] = useState<FriendInfo[]>([])
+    const [isLoadingFriends, setIsLoadingFriends] = useState(true)
     const [friendSearchBarValue, setFriendSearchBarValue] = useState(" ")
 
     useEffect(() => {
         GetFriendIDListOfUser(userID!).then((_friends) => {
             GetFriendInfo(_friends).then((_friendsList) => {
-                setFriendInfo(_friendsList);
-                setisLoadingFriends(false);
+                setFriendsInfo(_friendsList);
+                setIsLoadingFriends(false);
                 handleFriendSearch();
             })
         })
@@ -41,7 +41,7 @@ function MemberAdd(props: Props) {
                     tempFilteredFriends.push(friendsInfo.at(i)!);
                 }
             }
-            setFilteredFriendInfo(tempFilteredFriends);
+            setFilteredFriendsInfo(tempFilteredFriends);
         }
         else {
             return;

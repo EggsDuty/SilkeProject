@@ -9,7 +9,7 @@ interface Props {
     index: number
 }
 
-function GroupsBox(props: Props) {
+function GroupsBox(props: Readonly<Props>) {
 
     return (
         <div className="flex flex-row bg-blue-400 bg-opacity-20 pb-3 px-3 h-14 items-center text-white border-b-[1px]">

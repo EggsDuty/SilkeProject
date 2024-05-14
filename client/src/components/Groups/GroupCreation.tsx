@@ -15,7 +15,7 @@ interface ExtendedGroupInfo extends GroupInfo {
 }
 
 
-function GroupCreation(props: Props) {
+function GroupCreation(props: Readonly<Props>) {
     const userID = localStorage.getItem("uid");
     const [groupName, setGroupName] = useState("");
     const [description, setDescription] = useState("");
