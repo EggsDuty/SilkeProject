@@ -1,7 +1,8 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { CreateMessage, GetMessages } from "../DatabaseFunctions";
 import { Message } from "../DatabaseTypes";
-import { Timestamp } from "firebase/firestore";
+import { Timestamp, collection, onSnapshot, query, where } from "firebase/firestore";
+import firebase from "../../firebase";
 
 interface MemberInfo {
     userID: string,
@@ -9,26 +10,24 @@ interface MemberInfo {
     image: string
 }
 
-interface ExtendedMessage extends Message {
-    messageID: string
-}
-
 interface Props {
     groupID: string | undefined,
     memberInfo: MemberInfo[]
 }
+
+const db = firebase.db;
 
 function ChatComponent(props: Readonly<Props>) {
     const uid = localStorage.getItem("uid");
     const name = localStorage.getItem("username");
 
     const textBoxRef = useRef(null);
-    const [messages, setMessages] = useState<ExtendedMessage[]>([]);
+    const [messages, setMessages] = useState<Message[]>([]);
     const [oldestMessageDate, setOldestMessageDate] = useState<Date>();
     const [loadingMoreMessages, setLoadingMoreMessages] = useState<boolean>(false);
     const [reachedEnd, setReachedEnd] = useState<boolean>(false);
 
-    function generateMessage(messageInfo: ExtendedMessage) {
+    function generateMessage(messageInfo: Message) {
         let member: MemberInfo | null = null;
 
         for (const _member of props.memberInfo) {
@@ -129,6 +128,22 @@ function ChatComponent(props: Readonly<Props>) {
             }
             setMessages(_messages);
         });
+
+        const q = query(collection(db, "groups", props.groupID, "messages"), where("time", ">", Timestamp.now()));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                console.log(change);
+                if (change.type === "added") {
+                    const _message = change.doc.data() as Message;
+                    messages.unshift(_message);
+                    setMessages([...messages]);
+                }
+            });
+        });
+
+        return function cleanup() {
+            unsubscribe();
+        }
     }, []);
 
     const reversedImages = [...messages].reverse();
