@@ -1,5 +1,5 @@
 import firebase from '../firebase.tsx';
-import { arrayRemove, arrayUnion, deleteDoc, collection, doc, getDoc, getDocs, query, updateDoc, where, addDoc, Timestamp, orderBy, limit, startAt, startAfter } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, deleteDoc, collection, doc, getDoc, getDocs, query, updateDoc, where, addDoc, Timestamp, orderBy, limit } from 'firebase/firestore';
 import { GroupInfo, UserInfo, Message } from './DatabaseTypes.ts';
 
 export async function GetDataFromDocumentPromise(collection: string, id: string) {

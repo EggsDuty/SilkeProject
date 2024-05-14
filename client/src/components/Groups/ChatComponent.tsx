@@ -3,6 +3,7 @@ import { CreateMessage, GetMessages } from "../DatabaseFunctions";
 import { Message } from "../DatabaseTypes";
 import { Timestamp, collection, onSnapshot, query, where } from "firebase/firestore";
 import firebase from "../../firebase";
+import ChatMessage from "./ChatMessage";
 
 interface MemberInfo {
     userID: string,
@@ -10,13 +11,13 @@ interface MemberInfo {
     image: string
 }
 
+interface ExtendedMessage extends Message {
+    messageID: string
+}
+
 interface Props {
     groupID: string | undefined,
     memberInfo: MemberInfo[]
-}
-
-interface ExtendedMessage extends Message {
-    messageID: string
 }
 
 const db = firebase.db;
@@ -31,49 +32,13 @@ function ChatComponent(props: Readonly<Props>) {
     const [loadingMoreMessages, setLoadingMoreMessages] = useState<boolean>(false);
     const [reachedEnd, setReachedEnd] = useState<boolean>(false);
 
-    function generateMessage(messageInfo: Message) {
-        let member: MemberInfo | null = null;
-
-        for (const _member of props.memberInfo) {
-            if (_member.userID === messageInfo.userID) {
-                member = _member;
-                break;
-            }
-        }
-
-        if (!member) return;
-
-        const currentDay = new Date().getDate();
-
-        const date = messageInfo.time.toDate();
-        let hours: string | number = date.getHours();
-        if (hours < 10) {
-            hours = "0" + hours.toString();
-        }
-        let minutes: string | number = date.getMinutes();
-        if (minutes < 10) {
-            minutes = "0" + minutes.toString();
-        }
-
-        return (
-            <>
-                <div className="ml-2 flex flex-col items-start">
-                    <div className="flex flex-row items-start w-32">
-                        <img className="mt-1 h-7 w-7 rounded-full" src={member?.image} />
-                        <p className="ml-2 text-left px-1 w-24 text-neutral-300 truncate">{member.displayName}</p>
-                    </div>
-                    {date.getDate() < currentDay ? <p className="text-neutral-400 text-xs">{messageInfo.time.toDate().toDateString()}</p> : ""}
-                    <p className="w-min h-auto text-neutral-400">{hours + ":" + minutes}</p>
-                </div>
-                <p className="h-full p-1 text-xl text-white text-left text-wrap w-full">{messageInfo.message}</p>
-            </>
-        );
-    }
-
     async function handleSend(event: FormEvent) {
         event.preventDefault();
         const textBox = textBoxRef.current as HTMLTextAreaElement | null;
         if (!textBox) return;
+
+        const _message = textBox.value;
+        textBox.value = "";
 
         if (textBox.value === null || textBox.value === "") return;
 
@@ -81,13 +46,7 @@ function ChatComponent(props: Readonly<Props>) {
         if (!uid) return;
         if (!name) return;
 
-        await CreateMessage(props.groupID, uid, name, textBox.value);
-        textBox.value = "";
-    }
-
-    function scrollToBottom() {
-        const chatBox = document.getElementById("chat-scroll") as HTMLDivElement;
-        chatBox.scrollTop = chatBox.scrollHeight;
+        await CreateMessage(props.groupID, uid, name, _message);
     }
 
     async function loadMoreMessages() {
@@ -157,7 +116,7 @@ function ChatComponent(props: Readonly<Props>) {
             <div id="chat-scroll" className="divide-y overflow-y-scroll mb-10 w-full" onLoad={scrollToBottom} onScroll={(e) => onScroll(e)}>
                 {reversedMessages.map((_messageInfo) => (
                     <div className="bg-blue-400 bg-opacity-30 flex flex-row mt-0 mb-0 py-2 pl-1 w-full" key={_messageInfo.messageID}>
-                        {generateMessage(_messageInfo)}
+                        <ChatMessage allMembersInfo={props.memberInfo} messageInfo={_messageInfo} />
                     </div>
                 ))}
             </div>
@@ -167,6 +126,11 @@ function ChatComponent(props: Readonly<Props>) {
             </form>
         </div>
     );
+}
+
+function scrollToBottom() {
+    const chatBox = document.getElementById("chat-scroll") as HTMLDivElement;
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 export default ChatComponent;
