@@ -8,6 +8,7 @@ import Popup from "reactjs-popup";
 import MemberAdd from "../components/Groups/MemberAdd";
 import MyCalendar from "../components/Groups/MyCalendar";
 import EventCreation from "../components/Groups/EventCreation";
+import ChatComponent from "../components/Groups/ChatComponent";
 
 interface MemberInfo {
     userID: string,
@@ -28,18 +29,18 @@ function GroupPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(!isLoadingEvents) {
+        if (!isLoadingEvents) {
             return;
         }
         GetGroupInfoPromise(groupID!).then((_groupInfo) => {
             let isPartOfGroup = false;
-            for(let i=0; i<_groupInfo.members.length; i++){
-                if(_groupInfo.members.at(i) === userID){
+            for (let i = 0; i < _groupInfo.members.length; i++) {
+                if (_groupInfo.members.at(i) === userID) {
                     isPartOfGroup = true;
                     break;
                 }
             }
-            if(!isPartOfGroup){
+            if (!isPartOfGroup) {
                 navigate("/groups");
             }
             setGroupInfo(_groupInfo);
@@ -62,23 +63,23 @@ function GroupPage() {
         const membersInfo: MemberInfo[] = [];
 
         for (let i = 0; i < groupInfo?.members.length!; i++) {
-            if(groupInfo?.members.at(i) === groupInfo?.leaderID){
+            if (groupInfo?.members.at(i) === groupInfo?.leaderID) {
                 membersInfo.unshift(await GetUserInfoForMemberList(groupInfo?.members.at(i)!));
             }
-            else{
+            else {
                 membersInfo.push(await GetUserInfoForMemberList(groupInfo?.members.at(i)!));
             }
         }
         return membersInfo;
     }
 
-    function HandleGroupLeaveClick(){
+    function HandleGroupLeaveClick() {
         DeleteUserFromGroupPromise(userID!, groupID!).then(async () => {
             navigate("/groups");
         })
     }
 
-    function AddEvent(){
+    function AddEvent() {
         setIsLoadingEvents(true);
     }
 
@@ -118,12 +119,12 @@ function GroupPage() {
                     >
                         {/* @ts-ignore */}
                         {(close) => (
-                        <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[700px] m-auto overflow-y-scroll h-[80vh] min-h-[600px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
-                            <button onClick={close} className="text-3xl ml-2">X</button>
-                            <h1 className="text-4xl text-center mt-10">Add a member</h1>
-                            <MemberAdd groupInfo={groupInfo!} groupID={groupID!}/>
-                        </div>
-                            )}
+                            <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[700px] m-auto overflow-y-scroll h-[80vh] min-h-[600px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                                <button onClick={close} className="text-3xl ml-2">X</button>
+                                <h1 className="text-4xl text-center mt-10">Add a member</h1>
+                                <MemberAdd groupInfo={groupInfo!} groupID={groupID!} />
+                            </div>
+                        )}
 
                     </Popup>
                     <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Calendar</h2>
@@ -144,7 +145,7 @@ function GroupPage() {
                     </div>
 
                     <div className="bg-blue-400 min-w-[600px] rounded-lg bg-opacity-20 mt-3 ml-[1vw] min-h-[400px] overflow-x-hidden w-max drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
-                        {groupInfo?.events === undefined ? 
+                        {groupInfo?.events === undefined ?
                             <MyCalendar events={[]} />
                             :
                             <MyCalendar events={groupInfo?.events!} key={groupInfo?.events.length} />
@@ -155,44 +156,44 @@ function GroupPage() {
                 <div className="flex flex-row mb-20 overflow-x-hidden">
 
                     <Link className="absolute ml-[calc(9vw+8px)] mt-[13px] text-gray-300 bg-gradient-to-br from-purple-800 to-blue-700 hover:bg-gradient-to-bl rounded-lg py-[5px] text-center w-[160px] h-[38px] drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)] text-nowrap font-bold border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" to={"/whiteboard/" + groupID}>Go to whiteboard</Link>
-                    
+
                     {groupInfo?.leaderID === userID ?
-                    <div className="relative w-max cursor-pointer ml-[calc(270px+9vw)]" onClick={() => navigate("/group/"+groupID+"/settings")}>
-                        <img src="/group_settings_picture.svg" className="invert absolute z-20 pl-3 mt-[18px] h-[30px] w-auto peer" />
-                        <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Settings</p>
-                    </div>
-                    :
-                    <Popup
-                        trigger={
-                        <div className="relative w-max cursor-pointer ml-[calc(240px+9vw)]">
-                            <img src="/leave_group_picture.svg" className="invert absolute z-20 pl-3 mt-[19px] h-7 w-auto peer" />
-                            <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-red-950 border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Leave group</p>
+                        <div className="relative w-max cursor-pointer ml-[calc(270px+9vw)]" onClick={() => navigate("/group/" + groupID + "/settings")}>
+                            <img src="/group_settings_picture.svg" className="invert absolute z-20 pl-3 mt-[18px] h-[30px] w-auto peer" />
+                            <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Settings</p>
                         </div>
-                        }
-                        modal
-                        nested
-                        closeOnDocumentClick={false}
-                    >
-                        {/* @ts-ignore */}
-                        {(close) => (
-                        <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[600px] m-auto h-[230px] bg-opacity-90 brightness-125 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
-                            <button onClick={close} className="text-3xl ml-2">X</button>
-                            <h1 className="text-2xl text-center mt-10">Are you sure you want to leave this group?</h1>
-                            <div className="flex flex-row mt-10 ml-96">
-                                <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleGroupLeaveClick()}>Yes</button>
-                                <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
-                            </div>
-                        </div>
+                        :
+                        <Popup
+                            trigger={
+                                <div className="relative w-max cursor-pointer ml-[calc(240px+9vw)]">
+                                    <img src="/leave_group_picture.svg" className="invert absolute z-20 pl-3 mt-[19px] h-7 w-auto peer" />
+                                    <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-red-950 border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Leave group</p>
+                                </div>
+                            }
+                            modal
+                            nested
+                            closeOnDocumentClick={false}
+                        >
+                            {/* @ts-ignore */}
+                            {(close) => (
+                                <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[600px] m-auto h-[230px] bg-opacity-90 brightness-125 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                                    <button onClick={close} className="text-3xl ml-2">X</button>
+                                    <h1 className="text-2xl text-center mt-10">Are you sure you want to leave this group?</h1>
+                                    <div className="flex flex-row mt-10 ml-96">
+                                        <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleGroupLeaveClick()}>Yes</button>
+                                        <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
+                                    </div>
+                                </div>
                             )}
 
-                    </Popup>
+                        </Popup>
                     }
                     <Popup
                         trigger={
-                        <div className="relative w-max cursor-pointer ml-[calc(480px+9vw)]">
-                            <img src="/plus_sign_picture.svg" className="invert absolute z-20 pl-3 mt-[20px] h-7 w-auto peer" />
-                            <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Add event</p>
-                        </div>
+                            <div className="relative w-max cursor-pointer ml-[calc(480px+9vw)]">
+                                <img src="/plus_sign_picture.svg" className="invert absolute z-20 pl-3 mt-[20px] h-7 w-auto peer" />
+                                <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Add event</p>
+                            </div>
                         }
                         modal
                         nested
@@ -200,21 +201,18 @@ function GroupPage() {
                     >
                         {/* @ts-ignore */}
                         {(close) => (
-                        <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[40vw] min-w-[500px] m-auto overflow-y-scroll h-[80vh] min-h-[620px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
-                            <button onClick={close} className="text-3xl ml-2">X</button>
-                            <h1 className="text-4xl text-center mt-10">Create an event</h1>
-                            <EventCreation closeFunction={close} addEvent={AddEvent}/>
-                        </div>
-                            )}
+                            <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[40vw] min-w-[500px] m-auto overflow-y-scroll h-[80vh] min-h-[620px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                                <button onClick={close} className="text-3xl ml-2">X</button>
+                                <h1 className="text-4xl text-center mt-10">Create an event</h1>
+                                <EventCreation closeFunction={close} addEvent={AddEvent} />
+                            </div>
+                        )}
 
                     </Popup>
                 </div>
 
-                <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Chat (not yet functional)</h2>
-                <div className="bg-blue-400 min-w-[800px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] min-h-[500px] overflow-x-hidden w-max mb-20">
-
-                </div>
-                
+                <h2 className="text-left ml-[9vw] pl-5 text-white mt-10 text-2xl font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">Chat</h2>
+                <ChatComponent groupID={groupID} memberInfo={userNameInfo} />
             </div>
         </>
     )
