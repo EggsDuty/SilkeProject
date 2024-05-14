@@ -15,6 +15,10 @@ interface Props {
     memberInfo: MemberInfo[]
 }
 
+interface ExtendedMessage extends Message {
+    messageID: string
+}
+
 const db = firebase.db;
 
 function ChatComponent(props: Readonly<Props>) {
@@ -22,7 +26,7 @@ function ChatComponent(props: Readonly<Props>) {
     const name = localStorage.getItem("username");
 
     const textBoxRef = useRef(null);
-    const [messages, setMessages] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<ExtendedMessage[]>([]);
     const [oldestMessageDate, setOldestMessageDate] = useState<Date>();
     const [loadingMoreMessages, setLoadingMoreMessages] = useState<boolean>(false);
     const [reachedEnd, setReachedEnd] = useState<boolean>(false);
@@ -38,9 +42,6 @@ function ChatComponent(props: Readonly<Props>) {
         }
 
         if (!member) return;
-
-        //messageInfo.message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna orci, dictum ac nibh pellentesque, ultricies dapibus purus. Nullam vel tortor nec lorem ullamcorper congue. Cras ullamcorper rhoncus laoreet. Cras varius tortor et laoreet mollis. Duis in enim nec neque fringilla dignissim et non nibh. Sed id nisl maximus, tempor libero at, vehicula neque. Quisque lectus mi, molestie ut magna eget, sodales porttitor nisl. Proin mattis nisl vel euismod consequat. Donec molestie ipsum ut maximus bibendum."
-        //member.displayName = "OnlyTwentyCharacters";
 
         const currentDay = new Date().getDate();
 
@@ -128,15 +129,19 @@ function ChatComponent(props: Readonly<Props>) {
             }
             setMessages(_messages);
         });
+    }, []);
 
-        const q = query(collection(db, "groups", props.groupID, "messages"), where("time", ">", Timestamp.now()));
+    useEffect(() => {
+        if (!props.groupID) return;
+
+        const openingTime = Timestamp.now();
+        const q = query(collection(db, "groups", props.groupID, "messages"), where("time", ">", openingTime));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             snapshot.docChanges().forEach((change) => {
-                console.log(change);
                 if (change.type === "added") {
-                    const _message = change.doc.data() as Message;
-                    messages.unshift(_message);
-                    setMessages([...messages]);
+                    const _message = change.doc.data() as ExtendedMessage;
+                    _message.messageID = change.doc.id;
+                    setMessages((prev) => [_message, ...prev]);
                 }
             });
         });
@@ -146,12 +151,12 @@ function ChatComponent(props: Readonly<Props>) {
         }
     }, []);
 
-    const reversedImages = [...messages].reverse();
+    const reversedMessages = [...messages].reverse();
     return (
         <div className="relative flex flex-row bg-blue-400 w-[800px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] h-[500px] mb-20">
             <div id="chat-scroll" className="divide-y overflow-y-scroll mb-10 w-full" onLoad={scrollToBottom} onScroll={(e) => onScroll(e)}>
-                {reversedImages.map((_messageInfo) => (
-                    <div className="bg-blue-400 bg-opacity-30 flex flex-row mt-0 mb-0 py-2 pl-1 w-full" key={_messageInfo.userID + _messageInfo.message + _messageInfo.time}>
+                {reversedMessages.map((_messageInfo) => (
+                    <div className="bg-blue-400 bg-opacity-30 flex flex-row mt-0 mb-0 py-2 pl-1 w-full" key={_messageInfo.messageID}>
                         {generateMessage(_messageInfo)}
                     </div>
                 ))}
