@@ -48,7 +48,7 @@ vi.mock('../../src/components/DatabaseFunctions.ts', async (importOriginal) => {
         GetGroupInfoPromise: async () => { return (groupInfo as GroupInfo) }, 
         GetUserDisplayNamePromise: async () => { return "Leader vardas" },
         CreateNewGroupPromise: vi.fn(async () => { }),
-        GetUserGroupInvitesPromise: async () => { userInfo.groupInvites },
+        GetUserGroupInvitesPromise: async () => { return userInfo.groupInvites },
         AcceptUserIntoGroupPromise: vi.fn(async () => { }),
         DeleteUserGroupInvitePromise: vi.fn(async () => { }),
     }
