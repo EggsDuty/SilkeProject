@@ -206,3 +206,22 @@ export async function CreateNewEventPromise(groupID: string, eventInfo: string) 
     })
 }
 
+export async function UpdateEventInfoPromise(groupID: string, oldEventInfo: string, newEventInfo: string) {
+    const groupRef = doc(firebase.db, "groups", groupID);
+
+    await updateDoc(groupRef, {
+        events: arrayRemove(oldEventInfo)
+    })
+    await updateDoc(groupRef, {
+        events: arrayUnion(newEventInfo)
+    })
+}
+
+export async function DeleteEventInfoPromise(groupID: string, oldEventInfo: string) {
+    const groupRef = doc(firebase.db, "groups", groupID);
+
+    await updateDoc(groupRef, {
+        events: arrayRemove(oldEventInfo)
+    })
+}
+

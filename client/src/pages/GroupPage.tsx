@@ -2,7 +2,7 @@ import { useNavigate, Link, useParams } from "react-router-dom"
 import Header from "../components/Header"
 import { GroupInfo } from "../components/DatabaseTypes";
 import { useEffect, useState } from "react";
-import { DeleteGroupIDPromise, DeleteUserFromGroupPromise, GetGroupInfoPromise, GetUserInfoForMemberList } from "../components/DatabaseFunctions";
+import { DeleteUserFromGroupPromise, GetGroupInfoPromise, GetUserInfoForMemberList } from "../components/DatabaseFunctions";
 import MemberBox from "../components/Groups/MemberBox";
 import Popup from "reactjs-popup";
 import MemberAdd from "../components/Groups/MemberAdd";
@@ -19,7 +19,7 @@ function GroupPage() {
     const { groupID } = useParams();
     const userID = localStorage.getItem("uid");
 
-    const [groupInfo, setGroupInfo] = useState<GroupInfo>();
+    const [groupInfo, setGroupInfo] = useState<GroupInfo | null>();
     const defaultValue: MemberInfo[] = [];
     const [userNameInfo, setUserNameInfo] = useState(defaultValue);
     const [isLoading, setIsLoading] = useState(true);
@@ -32,6 +32,11 @@ function GroupPage() {
             return;
         }
         GetGroupInfoPromise(groupID!).then((_groupInfo) => {
+            if(_groupInfo.members === undefined){
+                navigate("/groups");
+                return;
+            }
+
             let isPartOfGroup = false;
             for(let i=0; i<_groupInfo.members.length; i++){
                 if(_groupInfo.members.at(i) === userID){
@@ -41,6 +46,7 @@ function GroupPage() {
             }
             if(!isPartOfGroup){
                 navigate("/groups");
+                return;
             }
             setGroupInfo(_groupInfo);
             setIsLoading(false);
@@ -80,6 +86,7 @@ function GroupPage() {
 
     function AddEvent(){
         setIsLoadingEvents(true);
+        setGroupInfo(null);
     }
 
     if (isLoading) {
@@ -130,7 +137,7 @@ function GroupPage() {
                 </div>
 
                 <div className="flex flex-row w-max overflow-x-hidden">
-                    <div className="bg-blue-400 min-w-[400px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] mr-[9vw] overflow-y-scroll min-h-[400px] h-[50vh] overflow-x-hidden">
+                    <div className="bg-blue-400 min-w-[400px] rounded-lg bg-opacity-20 mt-3 ml-[9vw] mr-[9vw] overflow-y-scroll min-h-[430px] h-[50vh] overflow-x-hidden">
                         {isLoadingMembers ?
                             <div className="flex flex-row  mt-6 ml-6 align-middle">
                                 <img src="/loading_picture.svg" className="animate-spin invert h-10" />
@@ -143,11 +150,11 @@ function GroupPage() {
                         }
                     </div>
 
-                    <div className="bg-blue-400 min-w-[600px] rounded-lg bg-opacity-20 mt-3 ml-[1vw] min-h-[400px] overflow-x-hidden w-max drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
+                    <div className="bg-blue-400 min-w-[600px] rounded-lg bg-opacity-20 mt-3 ml-[1vw] min-h-[430px] overflow-x-hidden w-max drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
                         {groupInfo?.events === undefined ? 
-                            <MyCalendar events={[]} />
+                            <MyCalendar events={[]} reload={AddEvent} />
                             :
-                            <MyCalendar events={groupInfo?.events!} key={groupInfo?.events.length} />
+                            <MyCalendar events={groupInfo?.events!} key={groupInfo?.events.length} reload={AddEvent} />
                         }
                     </div>
                 </div>
@@ -156,7 +163,10 @@ function GroupPage() {
 
                     <Link className="absolute ml-[calc(9vw+8px)] mt-[13px] text-gray-300 bg-gradient-to-br from-purple-800 to-blue-700 hover:bg-gradient-to-bl rounded-lg py-[5px] text-center w-[160px] h-[38px] drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)] text-nowrap font-bold border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" to={"/whiteboard/" + groupID}>Go to whiteboard</Link>
                     
-                    {groupInfo?.leaderID === userID ?
+                    {isLoadingEvents ?
+                    <div className="ml-[calc(396px+9vw)]"></div>
+                    :
+                    groupInfo?.leaderID === userID ?
                     <div className="relative w-max cursor-pointer ml-[calc(270px+9vw)]" onClick={() => navigate("/group/"+groupID+"/settings")}>
                         <img src="/group_settings_picture.svg" className="invert absolute z-20 pl-3 mt-[18px] h-[30px] w-auto peer" />
                         <p className="w-max text-white py-1 pl-12 pr-4 mt-4 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100">Settings</p>

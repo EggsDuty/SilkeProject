@@ -8,7 +8,7 @@ interface Props {
     var: string,
     setter: Dispatch<SetStateAction<string>>,
     isDescription?: boolean,
-    defaultValue?: string
+    defaultValue?: string | number
 }
 
 const errorMap: { [id: string]: ReactElement } = {
