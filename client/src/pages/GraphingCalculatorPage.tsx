@@ -4,12 +4,11 @@ import Header from "../components/Header";
 export default function GraphingCalculatorPage(){
     return(
         <>
-        <div className="">
+
             <Header />
-            <div className="">
+
             <GraphingCalculators />
-            </div>
-        </div>
+
         </>
     )
 }

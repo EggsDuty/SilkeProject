@@ -3,7 +3,7 @@ import functionPlot from "function-plot";
 import Popup from "reactjs-popup";
 import Select from "react-dropdown-select";
 import { validateInput } from "../Calculator/InputValidation";
-import { Background } from "@tsparticles/engine";
+
 interface Point {
   InputX: string;
   InputY: string;
@@ -320,87 +320,91 @@ function GraphingCalculators() {
           //Going through all inputs
           data: equations.map(
             ({
-              Input1: Input1,
+              Input1,
               type,
               color,
               closed,
-              Input2: Input2,
+              Input2,
               Input3,
               Input4,
               Points,
               Line,
             }) => {
               //Checking type of function (linear needs to have GraphType: 'polyline')
-              if (type === "linear") {
-                return {
-                  fnType: type,
-                  fn: validateInput(Input1, type)?Input1:"0",
-                  graphType: Line,
-                  color: color,
-                  closed: closed,
-                };
-              } else if (type === "implicit") {
-                return {
-                  fnType: type,
-                  fn: validateInput(Input1, type)?Input1:"0",
-                  color: color,
-                  closed: closed,
-                };
-              } else if (type === "polar") {
-                return {
-                  fnType: type,
-                  r: validateInput(Input1, type)?Input1:"0",
-                  graphType: Line,
-                  color: color,
-                  closed: closed,
-                };
-              } else if (type === "text") {
-                return {
-                  graphType: "text",
-                  text: Input1,
-                  location: [
-                    Input2 ? parseFloat(Input2) : 0, // Provide a default value of 0 if Input2 is undefined
-                    Input3 ? parseFloat(Input3) : 0, // Provide a default value of 0 if Input3 is undefined
-                  ],
-                  color: color,
-                  closed: closed,
-                };
-              } else if (type === "vector") {
-                return {
-                  fnType: "vector",
-                  graphType: Line,
-
-                  vector: [
-                    Input1 ? parseFloat(Input1) : 0, // Provide a default value of 0 if Input2 is undefined
-                    Input2 ? parseFloat(Input2) : 0, // Provide a default value of 0 if Input3 is undefined
-                  ],
-                  offset: [
-                    Input3 ? parseFloat(Input3) : 0, // Provide a default value of 0 if Input2 is undefined
-                    Input4 ? parseFloat(Input4) : 0, // Provide a default value of 0 if Input3 is undefined
-                  ],
-                  color: color,
-                };
-              } else if (type === "parametric") {
-                return {
-                  fnType: type,
-                  x: validateInput(Input1, type)?Input1:"0",
-                  y: validateInput(Input2?Input2:"", type)?Input1:"0",
-                  graphType: Line,
-                  color: color,
-                  closed: closed,
-                };
-              } else {
-                return {
-                  fnType: "points",
-                  points: Points.map(({ InputX, InputY }) => [
-                    parseFloat(InputX),
-                    parseFloat(InputY),
-                  ]),
-                  graphType: Line,
-                  color: color,
-                  closed: closed,
-                };
+              switch(type){
+                case "implicit":
+                  return {
+                    fnType: type,
+                    fn: validateInput(Input1, type)?Input1:"0",
+                    color: color,
+                    closed: closed,
+                  };
+                  break;
+                case "linear":
+                  return {
+                    fnType: type,
+                    fn: validateInput(Input1, type)?Input1:"0",
+                    graphType: Line,
+                    color: color,
+                    closed: closed,
+                  };
+                case "polar":
+                  return {
+                    fnType: type,
+                    r: validateInput(Input1, type)?Input1:"0",
+                    graphType: Line,
+                    color: color,
+                    closed: closed,
+                  };
+                case "parametric":
+                  return {
+                    fnType: type,
+                    x: validateInput(Input1, type)?Input1:"0",
+                    y: validateInput(Input2?Input2:"", type)?Input1:"0",
+                    graphType: Line,
+                    color: color,
+                    closed: closed,
+                  };
+                case "vector":
+                  return {
+                    fnType: "vector",
+                    graphType: Line,
+  
+                    vector: [
+                      Input1 ? parseFloat(Input1) : 0, // Provide a default value of 0 if Input2 is undefined
+                      Input2 ? parseFloat(Input2) : 0, // Provide a default value of 0 if Input3 is undefined
+                    ],
+                    offset: [
+                      Input3 ? parseFloat(Input3) : 0, // Provide a default value of 0 if Input2 is undefined
+                      Input4 ? parseFloat(Input4) : 0, // Provide a default value of 0 if Input3 is undefined
+                    ],
+                    color: color,
+                  };
+                case "text":
+                  return {
+                    graphType: "text",
+                    text: Input1,
+                    location: [
+                      Input2 ? parseFloat(Input2) : 0, // Provide a default value of 0 if Input2 is undefined
+                      Input3 ? parseFloat(Input3) : 0, // Provide a default value of 0 if Input3 is undefined
+                    ],
+                    color: color,
+                    closed: closed,
+                  };
+                case "points":
+                  return {
+                    fnType: "points",
+                    points: Points.map(({ InputX, InputY }) => [
+                      parseFloat(InputX),
+                      parseFloat(InputY),
+                    ]),
+                    graphType: Line,
+                    color: color,
+                    closed: closed,
+                  };
               }
+              
+              
             }
           ),
           tip: {
@@ -454,8 +458,7 @@ function GraphingCalculators() {
     (indexP: number, index: number) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const newEquations = [...equations];
-      //const newPoints = [...points];
-      //newPoints[indexP].InputY=e.target.value;
+      
       newEquations[index].Points[indexP].InputX = e.target.value;
 
       setEquations(newEquations);
@@ -464,8 +467,7 @@ function GraphingCalculators() {
     (indexP: number, index: number) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const newEquations = [...equations];
-      //const newPoints = [...points];
-      //newPoints[indexP].InputY=e.target.value;
+      
       newEquations[index].Points[indexP].InputY = e.target.value;
 
       setEquations(newEquations);
@@ -643,7 +645,7 @@ function GraphingCalculators() {
             {}
           </Popup>
           {equations.map((equation, index) => (
-            <div className=" my-4 border-b-4 border-b-black overflow-x-auto" key={index}>
+            <div className=" my-4 border-b-4 border-b-black overflow-x-auto overflow-y-visible" key={index}>
               <label
                 className="text-white"
                 htmlFor={`equationInput-${index}`} /*Input label */

@@ -36,11 +36,10 @@ function ChatComponent(props: Readonly<Props>) {
         event.preventDefault();
         const textBox = textBoxRef.current as HTMLTextAreaElement | null;
         if (!textBox) return;
+        if (textBox.value === null || textBox.value === "") return;
 
         const _message = textBox.value;
         textBox.value = "";
-
-        if (textBox.value === null || textBox.value === "") return;
 
         if (!props.groupID) return;
         if (!uid) return;

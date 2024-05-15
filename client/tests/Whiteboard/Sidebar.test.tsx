@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest'
-import { render, screen, fireEvent, findByText, queryByText } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import Sidebar from '../../src/components/Whiteboard/Sidebar'
 import user from '@testing-library/user-event'
 import React from 'react'
