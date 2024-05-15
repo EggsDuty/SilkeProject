@@ -55,13 +55,13 @@ function GroupSettingsPage() {
         if (isLoading) {
             return
         }
-        GetAllMemberNames().then((_membersNames) => {
+        getAllMemberNames().then((_membersNames) => {
             setUserNameInfo(_membersNames);
             setIsLoadingMembers(false);
         });
     }, [isLoading])
 
-    async function GetAllMemberNames() {
+    async function getAllMemberNames() {
         const membersInfo: MemberInfo[] = [];
 
         for (let i = 0; i < groupInfo?.members.length!; i++) {
@@ -87,7 +87,7 @@ function GroupSettingsPage() {
         )
     }
 
-    function HandleGroupLeaveClick() {
+    function handleGroupLeaveClick() {
         DeleteUserFromGroupPromise(userID!, groupID!).then(async () => {
             if (groupInfo?.members.length === 1) {
                 DeleteGroupIDPromise(groupID!);
@@ -99,7 +99,7 @@ function GroupSettingsPage() {
         })
     }
 
-    async function HandleGroupDeleteClick() {
+    async function handleGroupDeleteClick() {
         for (let i = 0; i < groupInfo?.members.length!; i++) {
             await DeleteUserGroupIDPromise(groupInfo?.members.at(i)!, groupID!);
         }
@@ -107,12 +107,12 @@ function GroupSettingsPage() {
         navigate("/groups");
     }
 
-    async function HandleMemberPromoteClick(newLeaderID: string) {
+    async function handleMemberPromoteClick(newLeaderID: string) {
         await UpdateLeaderIDInGroupListPromise(groupID!, newLeaderID);
         navigate("/group/"+groupID);
     }
 
-    async function HandleMemberDeleteClick(memberID: string, close: any, index: number){
+    async function handleMemberDeleteClick(memberID: string, close: any, index: number){
         await DeleteUserFromGroupPromise(memberID, groupID!);
         const newUserNameInfo = [...userNameInfo];
         newUserNameInfo.splice(index, 1);
@@ -120,7 +120,7 @@ function GroupSettingsPage() {
         close();
     }
 
-    async function HandleGroupInfoChange(newGroupName: string, newDescription: string){
+    async function handleGroupInfoChange(newGroupName: string, newDescription: string){
         if(hasErrors){
             return;
         }
@@ -140,7 +140,7 @@ function GroupSettingsPage() {
                 <p className="text-gray-300 text-lg mt-6 mr-36 pb-1 border-b-[1px] w-[40%] mb-2">Edit group name or description</p>
                 <GroupField name="Group name:" defaultValue={groupInfo?.name} placeholder="New group name..." type="text" validateFunction={Validator.ValidateGroupName} var={trimmedGroupName} setter={setGroupName} />
                 <GroupField isDescription={true} name="Description (optional):" defaultValue={groupInfo?.description} placeholder="New group description..." type="text" validateFunction={Validator.ValidateGroupDescription} var={trimmedDescription} setter={setDescription} />
-                <button onClick={() => HandleGroupInfoChange(trimmedGroupName, trimmedDescription)} className={`groupInfoChange w-max text-white py-1 px-5 mt-2 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100 ${hasErrors ? "cursor-not-allowed" : ""}`}>Save</button>
+                <button onClick={() => handleGroupInfoChange(trimmedGroupName, trimmedDescription)} className={`groupInfoChange w-max text-white py-1 px-5 mt-2 rounded-lg bg-primaryColor border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100 ${hasErrors ? "cursor-not-allowed" : ""}`}>Save</button>
                 <Tooltip place="top" isOpen={savedGroupInfoStatus} anchorSelect=".groupInfoChange">
                     Saved!
                 </Tooltip>
@@ -173,7 +173,7 @@ function GroupSettingsPage() {
                                                     <h1 className="text-2xl text-left mt-8 mx-[40px] text-gray-400">Are you sure you want to promote this member to a leader?</h1>
                                                     <h1 className="text-xl text-left mx-[40px] text-red-900">You will lose all of your leader perks</h1>
                                                     <div className="flex flex-row mt-8 ml-96">
-                                                        <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleMemberPromoteClick(_memberInfo.userID)}>Yes</button>
+                                                        <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => handleMemberPromoteClick(_memberInfo.userID)}>Yes</button>
                                                         <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
                                                     </div>
                                                 </div>
@@ -195,7 +195,7 @@ function GroupSettingsPage() {
                                                 <button onClick={close} className="text-3xl ml-2">X</button>
                                                 <h1 className="text-2xl text-left mx-[40px] mt-10">Are you sure you want to remove this member from this group?</h1>
                                                 <div className="flex flex-row mt-10 ml-96">
-                                                    <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleMemberDeleteClick(_memberInfo.userID, close, index)}>Yes</button>
+                                                    <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => handleMemberDeleteClick(_memberInfo.userID, close, index)}>Yes</button>
                                                     <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
                                                 </div>
                                             </div>
@@ -228,7 +228,7 @@ function GroupSettingsPage() {
                                 <button onClick={close} className="text-3xl ml-2">X</button>
                                 <h1 className="text-2xl text-center mt-10">Are you sure you want to leave this group?</h1>
                                 <div className="flex flex-row mt-10 ml-96">
-                                    <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleGroupLeaveClick()}>Yes</button>
+                                    <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => handleGroupLeaveClick()}>Yes</button>
                                     <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
                                 </div>
                             </div>
@@ -255,7 +255,7 @@ function GroupSettingsPage() {
                                 <button onClick={close} className="text-3xl ml-2">X</button>
                                 <h1 className="text-2xl text-center mt-10">Are you sure you want to delete this group?</h1>
                                 <div className="flex flex-row mt-10 ml-96">
-                                    <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleGroupDeleteClick()}>Yes</button>
+                                    <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => handleGroupDeleteClick()}>Yes</button>
                                     <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
                                 </div>
                             </div>

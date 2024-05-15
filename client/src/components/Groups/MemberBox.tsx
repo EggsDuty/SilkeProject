@@ -17,7 +17,7 @@ function MemberBox(props: Readonly<Props>){
 
     const [isButtonPressed, setIsButtonPressed] = useState(false)
 
-    function HandleClick(){
+    function handleClick(){
         CreateGroupInvitePromise(props.memberID, props.groupID!, props.groupInfo?.name!, props.groupInfo?.leaderID!)
         setIsButtonPressed(true);
     }
@@ -35,7 +35,7 @@ function MemberBox(props: Readonly<Props>){
             }
             {
             props.addFunction !== undefined && props.groupInfo !== undefined && props.addFunction === true ?
-            <div className="absolute z-10 mt-[8px] ml-[76%] pointer-events-auto" onClick={() => HandleClick()}>
+            <div className="absolute z-10 mt-[8px] ml-[76%] pointer-events-auto" onClick={() => handleClick()}>
                 {
                 isButtonPressed ?
                 <img alt="Check sign" className="h-9 invert" src="/check_sign_picture.svg" />

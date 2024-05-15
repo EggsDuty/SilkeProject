@@ -59,13 +59,13 @@ function GroupPage() {
         if (isLoading) {
             return
         }
-        GetAllMemberNames().then((_membersNames) => {
+        getAllMemberNames().then((_membersNames) => {
             setUserNameInfo(_membersNames);
             setIsLoadingMembers(false);
         });
     }, [isLoading])
 
-    async function GetAllMemberNames() {
+    async function getAllMemberNames() {
         const membersInfo: MemberInfo[] = [];
 
         for (let i = 0; i < groupInfo?.members.length!; i++) {
@@ -79,13 +79,13 @@ function GroupPage() {
         return membersInfo;
     }
 
-    function HandleGroupLeaveClick() {
+    function handleGroupLeaveClick() {
         DeleteUserFromGroupPromise(userID!, groupID!).then(async () => {
             navigate("/groups");
         })
     }
 
-    function AddEvent() {
+    function addEvent() {
         setIsLoadingEvents(true);
         setGroupInfo(null);
     }
@@ -150,9 +150,9 @@ function GroupPage() {
 
                 <div className="bg-blue-400 min-w-[600px] rounded-lg bg-opacity-20 mt-3 ml-[1vw] min-h-[430px] overflow-x-hidden w-max drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
                     {groupInfo?.events === undefined ? 
-                        <MyCalendar events={[]} reload={AddEvent} />
+                        <MyCalendar events={[]} reload={addEvent} />
                         :
-                        <MyCalendar events={groupInfo.events} key={groupInfo.events.length} reload={AddEvent} />
+                        <MyCalendar events={groupInfo.events} key={groupInfo.events.length} reload={addEvent} />
                     }
                 </div>
             </div>
@@ -187,7 +187,7 @@ function GroupPage() {
                         <button onClick={close} className="text-3xl ml-2">X</button>
                         <h1 className="text-2xl text-center mt-10">Are you sure you want to leave this group?</h1>
                         <div className="flex flex-row mt-10 ml-96">
-                            <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => HandleGroupLeaveClick()}>Yes</button>
+                            <button className="text-2xl bg-gray-800 px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={() => handleGroupLeaveClick()}>Yes</button>
                             <button className="ml-7 text-2xl bg-primaryColor px-4 py-1 rounded-lg border-2 border-opacity-0 hover:border-opacity-100 border-white peer-hover:border-opacity-100" onClick={close}>No</button>
                         </div>
                     </div>
@@ -211,7 +211,7 @@ function GroupPage() {
                         <div className="animate-anvil text-white bg-extraColor1 rounded-lg w-[40vw] min-w-[500px] m-auto overflow-y-scroll h-[80vh] min-h-[620px] bg-opacity-90 font-bold drop-shadow-[0_6.2px_6.2px_rgba(0,0,0,0.8)]">
                             <button onClick={close} className="text-3xl ml-2">X</button>
                             <h1 className="text-4xl text-center mt-10">Create an event</h1>
-                            <EventCreation closeFunction={close} addEvent={AddEvent} />
+                            <EventCreation closeFunction={close} addEvent={addEvent} />
                         </div>
                     )}
 

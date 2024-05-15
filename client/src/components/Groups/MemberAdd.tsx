@@ -25,7 +25,7 @@ function MemberAdd(props: Readonly<Props>) {
 
     useEffect(() => {
         GetFriendIDListOfUser(userID!).then((_friends) => {
-            GetFriendInfo(_friends).then((_friendsList) => {
+            getFriendInfo(_friends).then((_friendsList) => {
                 setFriendsInfo(_friendsList);
                 setIsLoadingFriends(false);
                 handleFriendSearch();
@@ -48,7 +48,7 @@ function MemberAdd(props: Readonly<Props>) {
         }
     }, [friendSearchBarValue,])
 
-    async function GetFriendInfo(friendsIDs: string[]) {
+    async function getFriendInfo(friendsIDs: string[]) {
         const tempFriendsInfo: FriendInfo[] = [];
 
         for (let i = 0; i < friendsIDs.length; i++) {
