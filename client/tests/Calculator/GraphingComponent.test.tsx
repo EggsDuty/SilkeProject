@@ -2,8 +2,6 @@ import { test, expect } from "vitest";
 import {
   render,
   screen,
-  fireEvent,
-  getAllByText,
 } from "@testing-library/react";
 import GraphingPage from "../../src/pages/GraphingCalculatorPage.tsx";
 import user from "@testing-library/user-event";
@@ -43,7 +41,7 @@ test("Remove button test", async () => {
     </BrowserRouter>
   );
   const addEquationButton = screen.getByText("Add Equation");
-  const removeButtons = screen.getAllByText("Remove");
+
 
   await user.click(screen.getAllByText("Remove")[0]);
   await user.click(screen.getAllByText("Remove")[0]);
@@ -55,7 +53,6 @@ test("Remove button test", async () => {
   await user.click(screen.getAllByText("Remove")[0]);
   await user.click(screen.getAllByText("Remove")[0]);
   await user.click(screen.getAllByText("Remove")[0]);
-  //const inputBoxes = screen.getAllByText('Remove');
   expect(screen.queryByText("Remove")).not.toBeInTheDocument();
   await user.click(addEquationButton);
   expect(screen.queryByText("Remove")).toBeInTheDocument();
