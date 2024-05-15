@@ -78,9 +78,9 @@ function MemberAdd(props: Readonly<Props>) {
         <>
             <div className="flex flex-row mb-5 w-full m-auto transition-transform mt-10">
 
-                <label className="text-2xl text-white mb-3 ml-[50px] min-w-[200px]">Select a friend</label>
+                <p className="text-2xl text-white mb-3 ml-[50px] min-w-[200px]">Select a friend</p>
                 <div className="absolute z-10 mt-[3px] ml-[396px] pointer-events-auto">
-                    <img className="h-7 invert contrast-[20%]" src="/search_picture.svg" />
+                    <img className="h-7 invert contrast-[20%]" src="/search_picture.svg" alt="search bar"/>
                 </div>
                 <input id="find-member-search-bar" onChange={handleFriendSearch} type="text" placeholder="Your friend name..." className="ml-[140px] w-[250px] bg-blue-950 border-indigo-300 focus:border-white outline-none border h-9 rounded-lg pl-10 pr-2 py-4 text-white placeholder:text-lg "></input>
             </div>
@@ -88,7 +88,7 @@ function MemberAdd(props: Readonly<Props>) {
             <div className="bg-blue-400 w-[590px] min-w-[400px] rounded-lg bg-opacity-20 mt-3 ml-[50px] min-h-[280px] h-[48vh] mb-[30px] overflow-auto">
                 {isLoadingFriends ?
                     <div className="flex flex-row  mt-6 ml-6 align-middle">
-                        <img src="/loading_picture.svg" className="animate-spin invert h-10" />
+                        <img src="/loading_picture.svg" className="animate-spin invert h-10" alt="loading"/>
                         <p className="text-gray-500 text-2xl font-bold ml-2">Loading...</p>
                     </div>
                     :
