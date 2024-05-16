@@ -84,6 +84,7 @@ function ProgrammersCalculator() {
     setEqualsClicked(true);
 
     if (CTBClicked) {
+      console.log("Equals calc.num:" + calc.num + "  calc.res: " + calc.res + "  binaryRes: " + calc.binaryRes);
       if (calc.sign && calc.num) {
         let result: string;
         if (calc.num === 0 && calc.sign === "/") {
@@ -92,6 +93,7 @@ function ProgrammersCalculator() {
           switch (calc.sign) {
             case "+":
               result = binaryAddition(calc.binaryRes, calc.num.toString());
+              console.log("Equals add result: " + result);
               break;
             case "-":
               result = binarySubtraction(calc.binaryRes, calc.num.toString());
@@ -109,7 +111,7 @@ function ProgrammersCalculator() {
 
         setCalc((prevCalc) => ({
           ...prevCalc,
-          res: Number(result), //
+          res: Number(result), 
           binaryRes: result,
           sign: "",
           num:0, 
@@ -167,82 +169,130 @@ function ProgrammersCalculator() {
   ) => {
     e.preventDefault();
     const value = e.currentTarget.innerHTML;
-    console.log("Sign button clicked");
+    console.log("-----SIGN BUTTON");
     console.log("sign value: " + value + " num: "+ calc.num);
+   // console.log("IN binaryRes: "+calc.binaryRes);
+
     console.log("equalsCliked: "+equalsClicked);
-    if (!equalsClicked) {
-      const subResBin = 
-      value === "+" || calc.binaryRes === "0" 
-        ? Number(binaryAddition(calc.binaryRes, calc.num.toString()))
-        : value === "-" 
-        ? Number(binarySubtraction(calc.binaryRes, calc.num.toString()))
-        : value === "X"
-        ? Number(binaryMultiplication(calc.binaryRes, calc.num.toString()))
-        : Number(binaryDivision(calc.binaryRes, calc.num.toString()));
+    if (CTBClicked) {
+      if (!equalsClicked) {
+        let subResBin;
+        if (calc.res && calc.num) { // to fix 12 + 1 - 1 (where result was 11)
+          subResBin = 
+          calc.sign === "+" || calc.binaryRes === "0" 
+          ? Number(binaryAddition(calc.binaryRes, calc.num.toString()))
+          : calc.sign === "-" 
+          ? Number(binarySubtraction(calc.binaryRes, calc.num.toString()))
+          : calc.sign === "X"
+          ? Number(binaryMultiplication(calc.binaryRes, calc.num.toString()))
+          : Number(binaryDivision(calc.binaryRes, calc.num.toString()));
+        } else {
+          subResBin = 
+          value === "+" || calc.binaryRes === "0" 
+          ? Number(binaryAddition(calc.binaryRes, calc.num.toString()))
+          : value === "-" 
+          ? Number(binarySubtraction(calc.binaryRes, calc.num.toString()))
+          : value === "X"
+          ? Number(binaryMultiplication(calc.binaryRes, calc.num.toString()))
+          : Number(binaryDivision(calc.binaryRes, calc.num.toString()));
+        }
+
+        console.log("subResBin: " + subResBin);
+        console.log("subResBin TO STRING(): " + subResBin.toString());
+        console.log("CTBCliked: "+ CTBClicked);
 
         setCalc({
           ...calc,
           sign: value,
           res:  
-              CTBClicked
-              ? subResBin
-              :!calc.res && calc.num 
-                ? calc.num 
-                : calc.res,
+             // CTBClicked
+               subResBin,
+             // :!calc.res && calc.num 
+             //   ? calc.num 
+             //   : calc.res,
           num: 0,
           binaryRes: subResBin.toString(),
         });
-    } else {
-      setCalc({
-        ...calc,
-        sign: value,
-        res:  
-            CTBClicked
-            ? calc.res
-            :!calc.res && calc.num 
-              ? calc.num 
-              : calc.res,
-        num: 0,
-        binaryRes: calc.res.toString(),
-      });
+        console.log("OUT binaryRes: "+ subResBin.toString());
+        console.log("OUT num: "+0);
+        console.log("OUT res: "+subResBin);
+        
+      } else {
+        console.log();
+        setCalc({
+          ...calc,
+          sign: value,
+          res:  
+             // CTBClicked
+               calc.res,
+             // :!calc.res && calc.num 
+             // ? calc.num 
+             // : calc.res,
+          num: 0,
+          binaryRes: calc.res.toString(),
+        });
+
+        console.log("OUT binaryRes: "+ calc.res.toString());
+        console.log("OUT num: "+0);
+        console.log("OUT res: "+calc.res);
+      }
     }
+     // console.log("calc.res: " + calc.res);
+     // console.log("calc.num: " + calc.num);
+    if (CTDClicked) {
+      if (!equalsClicked) {
 
-      console.log("calc.res: " + calc.res);
-      console.log("calc.num: " + calc.num);
-
-        if (!equalsClicked) {
-          const subResDec = 
+        let subResDec;
+        if (calc.res && calc.num) {
+          subResDec = 
+          calc.sign === "+" 
+          ? calc.res + calc.num
+          : calc.sign === "-"
+          ? calc.res - calc.num
+          : calc.sign === "X" 
+          ? calc.res * calc.num
+          : calc.res / calc.num;
+        } else {
+          subResDec = 
           value === "+" 
           ? calc.res + calc.num
           : value === "-"
           ? calc.res - calc.num
           : value === "X" 
           ? calc.res * calc.num
-        : calc.res / calc.num;
+          : calc.res / calc.num;
+        }
         
-    setCalc({
-      ...calc,
-      sign: value,
-      res:  
-          !calc.res && calc.num 
-            ? calc.num 
-            : subResDec,
-      num: 0,
-      binaryRes: "",
-    });
-  } else {
-    setCalc({
-      ...calc,
-      sign: value, 
-      res:  
-          !calc.res && calc.num 
-            ? calc.num 
-            : calc.res,
-      num: 0,
-    });
+        setCalc({
+          ...calc,
+          sign: value,
+          res:  
+            !calc.res && calc.num 
+              ? calc.num 
+              : subResDec,
+          num: 0,
+        });
+        console.log("OUT num: "+0);
+        console.log("OUT res: "+subResDec);
 
-  }
+      } else {
+        setCalc({
+          ...calc,
+          sign: value, 
+          res:  
+            !calc.res && calc.num 
+              ? calc.num 
+              : calc.res,
+            num: 0,
+        });
+      }
+    }
   setEqualsClicked(true);
+  console.log("--------------------------------");
+  //console.log("OUT binaryRes: "+calc.binaryRes);
+  console.log("OUT num: "+calc.num);
+  console.log("OUT res: "+calc.res);
+  console.log("END SIGN BUTTON------");
 
   };
 
@@ -251,9 +301,12 @@ function ProgrammersCalculator() {
   ) => {
     e.preventDefault();
     const value = e.currentTarget.innerHTML;
-    console.log("Number button clicked");
+    console.log("-----NUMBER BUTTON");
+    
+    console.log("IN binaryRes: "+calc.binaryRes);
+    console.log("IN num: "+ calc.num);
 
-    let binaryResult = calc.binaryRes;
+   // let binaryResult = calc.binaryRes;NEREIK
     if (String(calc.num).length < 16) {
       if (CTBClicked) {
       const updatedNum =
@@ -262,9 +315,9 @@ function ProgrammersCalculator() {
         : calc.num === 0 // If current number is 0
         ? value // Set number to input value
         : calc.num + value; // Concatenate input value to current number
-        binaryResult = Number(updatedNum).toString(); // Convert updated number to binary
+        //binaryResult = Number(updatedNum).toString(); // Convert updated number to binary
       }
-      console.log("binaryResult is numberfunc: "+binaryResult);
+    //  console.log("binaryResult is numberfunc: "+binaryResult);
 
       setCalc({
         ...calc,
@@ -274,11 +327,18 @@ function ProgrammersCalculator() {
             : calc.num % 1 === 0
             ? Number(calc.num + value)
             : calc.num + Number(value),
-        binaryRes: calc.binaryRes,
+        binaryRes: calc.binaryRes, // buvo calc.binyres
         res: !calc.sign ? 0 : calc.res,
       });
     }    
+
     setEqualsClicked(false);
+  //  console.log("OUT binaryRes: "+calc.binaryRes);
+  //  console.log("OUT num: "+calc.binaryRes);
+    console.log("OUT res: " + calc.res);
+
+    console.log("END NUMBER BUTTON-----");
+
   };
 
   const commaClickHandler = (
