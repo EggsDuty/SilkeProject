@@ -20,14 +20,14 @@ function ProgrammersCalculator() {
       "X",
     ],
     [
-      { value: "CTH", disabled: true }, // delete when implementing
+       "CTH",
       { value: 4, disabled: false },
       { value: 5, disabled: false },
       { value: 6, disabled: false },
       "-",
     ],
     [
-      { value: "CTO", disabled: true },
+      "CTO",
       { value: 1, disabled: false },
       { value: 2, disabled: false },
       { value: 3, disabled: false },
@@ -290,7 +290,7 @@ function ProgrammersCalculator() {
               ? calc.res - calc.num
               : value === "X"
               ? calc.res * calc.num
-              : calc.sign === "%" 
+              : calc.sign === "%"
               ? calc.num
               : calc.res / calc.num;
           console.log(calc.sign);
@@ -398,24 +398,6 @@ function ProgrammersCalculator() {
     });
   };
 
-  /*const percentClickHandler = () => {
-    console.log("------PERCENT CLICKED");
-
-
-    let num = calc.num ? parseFloat(removeSpaces(calc.num)) : 0;
-    let res = calc.res ? parseFloat(removeSpaces(calc.res)) : 0;
-
-    setCalc({
-      ...calc,
-      num: 0,
-      res: res % num,
-      sign: "",
-    });
-    console.log("OUT num: "+num);
-    console.log("OUT res: "+res);
-    console.log("END PERCENT-------");
-  };*/
-
   const resetClickHandler = () => {
     console.log("Reset button clicked");
 
@@ -432,18 +414,123 @@ function ProgrammersCalculator() {
     calc.num ? calc.num.toString() : calc.res.toString()
   );
 
+  const convertToHexHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    console.log("CTH clicked");
+    const value = parseFloat(calc.num.toString());
+
+    let hexNum = "";
+    if (CTHClicked === false) {
+      if (CTDClicked) {
+        hexNum = value.toString(16);
+        setCTDClicked(false);
+      } else if (CTOClicked) {
+        let decNum = parseInt(value.toString(), 8);
+        hexNum = decNum.toString(16).toUpperCase();
+        setCTOClicked(false);
+      } else if (CTBClicked) {
+        let decNum = parseInt(value.toString(), 2);
+        hexNum = decNum.toString(16).toUpperCase();
+        setCTBClicked(false);
+      }
+      setCTHClicked(true);
+
+
+      if (!isNaN(value)) {
+        const updatedBtnValues = btnValues.map((row) =>
+          row.map((btn) =>
+            typeof btn === "object" &&
+            btn.value !== undefined 
+
+              ? { ...btn, disabled: false } // disable button
+              : btn
+          )
+        );
+        setBtnValues(updatedBtnValues); // update button values
+
+        setCalc({
+          ...calc,
+          sign: "",
+          res: Number(hexNum),
+          num: calc.num === 0 ? 0 : Number(hexNum),
+        });
+      }
+    }
+  };
+
+  const convertToOctalHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    console.log("CTO clicked-----S");
+
+    const value = parseFloat(calc.num.toString());
+    let octNum = "";
+    if (!CTOClicked) {
+      if (CTDClicked) {
+        octNum = value.toString(8);
+        setCTDClicked(false);
+      } else if (CTBClicked) {
+        let decNum = parseInt(value.toString(), 2);
+        octNum= decNum.toString(8);
+        setCTBClicked(false);
+      } else if (CTHClicked) {
+        let decNum = parseInt(value.toString(), 16);
+        octNum= decNum.toString(8);
+        setCTHClicked(false);
+      }
+      setCTOClicked(true);
+
+      if (!isNaN(value)) {
+        const updatedBtnValues = btnValues.map((row) =>
+          row.map((btn) => {
+            if (typeof btn === "object" && btn.value !== undefined && typeof btn.value === "number") {
+              if (btn.value >= 0 && btn.value <= 7) {
+                return { ...btn, disabled: false }; // enable buttons with values 0-7
+              } else if (btn.value === 8 || btn.value === 9) {
+                return { ...btn, disabled: true }; // disable buttons with values 8 and 9
+              }
+            }
+            return btn;
+          })
+        );
+        setBtnValues(updatedBtnValues); // update button values
+
+        setCalc({
+          ...calc,
+          sign: "",
+          res: Number(octNum),
+          num: calc.num === 0 ? 0 : Number(octNum),
+        });
+      }
+    }
+    console.log("------END CTO");
+  };
+
   const convertToBinaryHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     console.log("CTB clicked");
     const value = parseFloat(calc.num.toString());
 
+    let binNum = "";
     if (CTBClicked === false) {
+      if (CTDClicked) {
+        binNum = value.toString(2);
+        setCTDClicked(false);
+      } else if (CTOClicked) {
+        let decNum = parseInt(value.toString(), 8);
+        binNum = decNum.toString(2);
+        setCTOClicked(false);
+      } else if (CTHClicked) {
+        let decNum = parseInt(value.toString(), 16);
+        binNum = decNum.toString(2);
+        setCTHClicked(false);
+      }
       setCTBClicked(true);
-      setCTDClicked(false);
+
 
       if (!isNaN(value)) {
-        const binNum = (value >>> 0).toString(2);
         const updatedBtnValues = btnValues.map((row) =>
           row.map((btn) =>
             typeof btn === "object" &&
@@ -471,11 +558,19 @@ function ProgrammersCalculator() {
   ) => {
     console.log("CTD clicked");
     const value = calc.num.toString();
-    const decNum = parseInt(value, 2);
-
+    let decNum = 0;
     if (CTDClicked === false) {
+      if (CTBClicked) {
+        decNum = parseInt(value, 2);
+        setCTBClicked(false);
+      } else if (CTOClicked) {
+        decNum = parseInt(value, 8);
+        setCTOClicked(false);
+      } else if (CTHClicked) {
+        decNum = parseInt(value, 16);
+        setCTHClicked(false);
+      }
       setCTDClicked(true);
-      setCTBClicked(false);
 
       if (!isNaN(decNum)) {
         const updatedBtnValues = btnValues.map((row) =>
@@ -520,12 +615,20 @@ function ProgrammersCalculator() {
                     ? "buttonPClicked"
                     : btn === "CTD" && CTDClicked
                     ? "buttonPClicked"
+                    : btn === "CTO" && CTOClicked
+                    ? "buttonPClicked"
+                    : btn === "CTH" && CTHClicked
+                    ? "buttonPClicked"
                     : ""
                 }
                 disabled={
                   CTBClicked
                     ? typeof btn === "object" && btn.disabled
                     : CTDClicked
+                    ? typeof btn === "object" && btn.disabled
+                    : CTOClicked
+                    ? typeof btn === "object" && btn.disabled
+                    : CTHClicked
                     ? typeof btn === "object" && btn.disabled
                     : false
                 }
@@ -537,6 +640,10 @@ function ProgrammersCalculator() {
                     ? convertToBinaryHandler
                     : btn === "CTD"
                     ? convertToDecimalHandler
+                    : btn === "CTO"
+                    ? convertToOctalHandler
+                    : btn === "CTH"
+                    ? convertToHexHandler
                     : btn === "C"
                     ? resetClickHandler
                     : btn === "+-"
