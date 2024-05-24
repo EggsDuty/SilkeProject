@@ -21,7 +21,7 @@ Once you've got your account setup, you can head over to the [groups page](clien
 From here you can view all the groups that you are a part of, accept group invites and even create your own!
 ![Groups page](https://github.com/EggsDuty/SilkeProject/assets/113368248/537847e8-e423-4e44-b794-b9dc5a974edb)
 
-After selecting a specific group, you will be taken to that groups page.
+After selecting a specific group, you will be taken to that groups' page.
 ![Group page](https://github.com/EggsDuty/SilkeProject/assets/113368248/9feb3c2d-1fa4-4fa5-afd8-6d173dffff23)
 ![Chat](https://github.com/EggsDuty/SilkeProject/assets/113368248/d04bcc8f-fdd4-45a7-85f4-e2b85a4639d6)
 
@@ -36,12 +36,12 @@ You can:
 * Delete an event
 
 **Chat**<br/>
-The chat allow for basic communication between you and your members.
+The chat allows for basic communication between you and your members.
 You can:
 * Send messages
 * Receive messages from others
 
-Finally, you can access your groups whiteboard by clicking a button.
+Finally, you can access your group's whiteboard by clicking a button.
 <hr/>
 
 ### Whiteboard
@@ -103,8 +103,8 @@ We also use various open source projects:
 * [Sonarqube](https://www.sonarsource.com)
 
 ## Contributors
-<a href="https://github.com/goingdust"><img src="https://avatars.githubusercontent.com/u/113368248?v=4" title="EggsDuty" width="50" height="50"></a>
-<a href="https://github.com/goingdust"><img src="https://avatars.githubusercontent.com/u/62091705?v=4" title="IkeaPen" width="50" height="50"></a>
-<a href="https://github.com/goingdust"><img src="https://avatars.githubusercontent.com/u/125706766?v=4" title="dainorak" width="50" height="50"></a>
-<a href="https://github.com/goingdust"><img src="https://avatars.githubusercontent.com/u/160549785?v=4" title="CowRules" width="50" height="50"></a>
-<a href="https://github.com/goingdust"><img src="https://avatars.githubusercontent.com/u/109175079?v=4" title="hriixs" width="50" height="50"></a>
+<a href="https://github.com/eggsduty"><img src="https://avatars.githubusercontent.com/u/113368248?v=4" title="EggsDuty" width="50" height="50"></a>
+<a href="https://github.com/ikeapen"><img src="https://avatars.githubusercontent.com/u/62091705?v=4" title="IkeaPen" width="50" height="50"></a>
+<a href="https://github.com/dainorak"><img src="https://avatars.githubusercontent.com/u/125706766?v=4" title="dainorak" width="50" height="50"></a>
+<a href="https://github.com/cowrules"><img src="https://avatars.githubusercontent.com/u/160549785?v=4" title="CowRules" width="50" height="50"></a>
+<a href="https://github.com/hriixs"><img src="https://avatars.githubusercontent.com/u/109175079?v=4" title="hriixs" width="50" height="50"></a>
